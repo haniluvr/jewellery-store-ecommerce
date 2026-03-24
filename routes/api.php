@@ -32,12 +32,15 @@ Route::get('/products', function (Request $request) {
             switch ($priceRange) {
                 case 'under-50k':
                     $query->where('price', '<', 50000);
+
                     break;
                 case '50k-100k':
                     $query->whereBetween('price', [50000, 100000]);
+
                     break;
                 case 'over-100k':
                     $query->where('price', '>', 100000);
+
                     break;
             }
         }

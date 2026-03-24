@@ -84,7 +84,7 @@ class ProductSeeder extends Seeder
         ];
 
         $prefixes = ['Éternelle', 'Lumière', 'Soleil', 'Clair', 'Aura', 'Celestial', 'Opulence', 'Royal', 'Divine', 'Radiance'];
-        
+
         $priceRanges = [
             1 => [ // Rings
                 1 => [45000, 250000], // Engagement
@@ -139,32 +139,32 @@ class ProductSeeder extends Seeder
                 $prefix = $prefixes[array_rand($prefixes)];
                 $material = $categoryData['materials'][array_rand($categoryData['materials'])];
                 $gem = $categoryData['gems'][array_rand($categoryData['gems'])];
-                
-                $gemText = $gem !== 'None' ? " with $gem" : "";
+
+                $gemText = $gem !== 'None' ? " with $gem" : '';
                 $productName = "{$prefix} {$subcategoryData['name']}{$gemText}";
-                
+
                 // Ensure unique name
                 $attempts = 0;
                 while (in_array($productName, $usedProductNames) && $attempts < 10) {
                     $prefix = $prefixes[array_rand($prefixes)];
-                    $productName = "{$prefix} {$subcategoryData['name']}{$gemText} " . rand(1, 100);
+                    $productName = "{$prefix} {$subcategoryData['name']}{$gemText} ".rand(1, 100);
                     $attempts++;
                 }
                 $usedProductNames[] = $productName;
 
                 $slug = Str::slug($productName);
-                
+
                 $basePrice = rand($priceRanges[$categoryId][$subcategoryId][0], $priceRanges[$categoryId][$subcategoryId][1]);
-                $costPrice = (int) round($basePrice * 0.4, 2); 
+                $costPrice = (int) round($basePrice * 0.4, 2);
                 $salePrice = (rand(1, 100) <= 20) ? (int) round($basePrice * 0.85, 2) : null;
                 $stockQuantity = rand($subcategoryData['min_qty'], $subcategoryData['min_qty'] + 10);
-                $weight = rand((int)($categoryData['weight_range'][0] * 100), (int)($categoryData['weight_range'][1] * 100)) / 100;
+                $weight = rand((int) ($categoryData['weight_range'][0] * 100), (int) ($categoryData['weight_range'][1] * 100)) / 100;
 
                 // Placeholder image for jewelry
-                $mainImage = "https://placehold.co/800x800/f4f1ea/333333?text=Eclore+Fine+Jewelry&font=playfair-display";
+                $mainImage = 'https://placehold.co/800x800/f4f1ea/333333?text=Eclore+Fine+Jewelry&font=playfair-display';
                 $galleryImages = [
-                    "https://placehold.co/800x800/f4f1ea/333333?text=Detail+1&font=playfair-display",
-                    "https://placehold.co/800x800/f4f1ea/333333?text=Detail+2&font=playfair-display"
+                    'https://placehold.co/800x800/f4f1ea/333333?text=Detail+1&font=playfair-display',
+                    'https://placehold.co/800x800/f4f1ea/333333?text=Detail+2&font=playfair-display',
                 ];
 
                 $description = "Crafted with the utmost precision, the {$productName} embodies eternal elegance. Set in radiant {$material}, this piece is designed to be cherished across generations. A masterclass in fine jewelry craftsmanship.";
@@ -193,17 +193,17 @@ class ProductSeeder extends Seeder
                     'manage_stock' => true,
                     'in_stock' => $stockQuantity > 0,
                     'weight' => $weight,
-                    'dimensions' => "N/A",
+                    'dimensions' => 'N/A',
                     'tax_class' => 'standard',
                     'material' => $material,
                     'images' => [$mainImage],
                     'gallery' => $galleryImages,
-                    'featured' => (rand(1, 100) <= 15), 
+                    'featured' => (rand(1, 100) <= 15),
                     'is_active' => true,
                     'view_count' => rand(500, 5000),
                     'sort_order' => $productCount + 1,
                     'meta_data' => [
-                        'keywords' => 'jewelry, luxury, ' . $material . ', ' . $subcategoryData['name'],
+                        'keywords' => 'jewelry, luxury, '.$material.', '.$subcategoryData['name'],
                         'og_title' => $productName,
                         'og_description' => $shortDescription,
                         'og_image' => $mainImage,

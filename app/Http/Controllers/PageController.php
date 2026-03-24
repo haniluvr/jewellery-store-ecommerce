@@ -81,7 +81,7 @@ class PageController extends Controller
     public function newsroom(\Illuminate\Http\Request $request)
     {
         $currentCategory = $request->get('category', 'Latest');
-        
+
         $query = \App\Models\CmsPage::published()
             ->where('type', 'news')
             ->orderBy('published_at', 'desc');
@@ -103,6 +103,7 @@ class PageController extends Controller
 
         return view('newsroom', compact('featuredStory', 'highlights', 'stories', 'currentCategory'));
     }
+
     /**
      * Display the VIP Club page.
      */

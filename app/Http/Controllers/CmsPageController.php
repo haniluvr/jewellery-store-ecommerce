@@ -26,7 +26,7 @@ class CmsPageController extends Controller
             $relatedArticles = CmsPage::published()
                 ->where('type', 'news')
                 ->where('id', '!=', $page->id)
-                ->where(function($query) use ($page) {
+                ->where(function ($query) use ($page) {
                     if ($page->category) {
                         $query->where('category', $page->category);
                     }

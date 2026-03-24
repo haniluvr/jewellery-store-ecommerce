@@ -367,7 +367,7 @@ class RealisticDataSeeder extends Seeder
         DB::table('settings')->insert([
             [
                 'key' => 'store_name',
-                'value' => "Éclore",
+                'value' => 'Éclore',
                 'type' => 'string',
                 'description' => 'The name of the store',
                 'created_at' => now(),

@@ -1,5 +1,8 @@
 name: CD Pipeline
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # This workflow runs after the CI Pipeline completes successfully
 # It will only deploy if all tests pass and code quality checks succeed
 
