@@ -40,8 +40,8 @@ class MessageReplyMail extends Mailable
     {
         return new Envelope(
             subject: $this->subject,
-            from: config('mail.from.address', 'noreply@davidswood.shop'),
-            replyTo: 'hello@davidswood.shop',
+            from: config('mail.from.address', 'noreply@eclore.shop'),
+            replyTo: 'hello@eclore.shop',
         );
     }
 

@@ -181,7 +181,7 @@ Returns JSON with service status:
 3. **Database Connection Issues**
    ```bash
    # Test connection
-   mysql -u davidswood_user -p -h 127.0.0.1 davidswood_furniture
+   mysql -u eclore_user -p -h 127.0.0.1 eclore_furniture
    ```
 
 ## 📚 Documentation

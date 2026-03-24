@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Checkout') - David's Wood Furniture</title>
+    <title>@yield('title', 'Checkout') - Éclore</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('frontend/assets/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('frontend/assets/favicon.png') }}">
@@ -22,108 +22,221 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('frontend/style.css') }}">
     
-    @stack('styles')
+<style>
+    :root {
+        --eclore-black: #1A1A1A;
+        --eclore-gold: #B6965D;
+        --eclore-white: #FAFAFA;
+        --eclore-gray: #eeeeee;
+    }
+    
+    body {
+        font-family: 'Outfit', sans-serif;
+        background-color: var(--eclore-white);
+        color: var(--eclore-black);
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+    .font-azeret { font-family: 'Azeret Mono', monospace; }
+    
+    h1, h2, h3, h4, .playfair {
+        font-family: 'Playfair Display', serif;
+        font-weight: 400;
+    }
+    
+    .mono {
+        font-family: 'Azeret Mono', monospace;
+        letter-spacing: 0.1em;
+    }
+    
+    .btn-gold {
+        background: var(--eclore-black);
+        color: #fff;
+        padding: 1.25rem 2.5rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1px solid var(--eclore-black);
+        border-radius: 0;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .btn-gold:hover {
+        background: transparent;
+        color: var(--eclore-black);
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: var(--eclore-black);
+        padding: 1.25rem 2.5rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1px solid var(--eclore-gray);
+        border-radius: 0;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    .btn-outline:hover {
+        border-color: var(--eclore-black);
+        background: var(--eclore-white);
+    }
+    
+    .form-input-premium {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--eclore-gray);
+        padding: 1.25rem 0;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border-radius: 0;
+        color: var(--eclore-black);
+    }
+    
+    .form-input-premium:focus {
+        outline: none;
+        border-bottom-color: var(--eclore-black);
+    }
+    
+    .form-label-premium {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .glass-sidebar {
+        background: #fff;
+        border: 1px solid var(--eclore-gray);
+        border-top: 2px solid var(--eclore-black);
+    }
+
+    /* Step Indicator Customization */
+    .step-line {
+        height: 1px;
+        background: var(--eclore-gray);
+        flex-grow: 1;
+        margin: 0 20px;
+        position: relative;
+    }
+    .step-line.active {
+        background: var(--eclore-black);
+    }
+    .step-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--eclore-gray);
+        transition: all 0.3s ease;
+    }
+    .step-dot.active {
+        background: var(--eclore-black);
+        transform: scale(1.5);
+    }
+</style>
+
+@stack('styles')
 </head>
-<body class="bg-gray-50">
+<body class="bg-[#FAFAFA] text-[#1A1A1A] antialiased">
     <!-- Checkout Header -->
-    <header class="bg-white shadow-sm border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-[#8b7355]">
-                        David's Wood Furniture
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-1">
+                    <a href="{{ route('home') }}" class="text-xs mono uppercase tracking-[0.3em] hover:text-[#B6965D] transition-colors">
+                        ← Back to Boutique
                     </a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Need help?</span>
-                    <a href="tel:+1234567890" class="text-[#8b7355] hover:text-[#6b5b47] font-medium">
-                        Call us
+                <div class="flex-shrink-0 flex justify-center">
+                    <a href="{{ route('home') }}" class="text-2xl md:text-3xl font-light text-[#1A1A1A] font-playfair tracking-[0.2em] uppercase">
+                        ÉCLORE
                     </a>
+                </div>
+                <div class="flex-1 flex justify-end items-center space-x-6">
+                    <div class="hidden md:flex flex-col text-right">
+                        <span class="text-[9px] text-gray-400 mono uppercase tracking-wider">Concierge Service</span>
+                        <a href="tel:+1234567890" class="text-xs text-[#1A1A1A] mono tracking-wider hover:text-[#B6965D]">CONSULT AN ADVISOR</a>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
-
     <!-- Progress Indicator -->
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center py-6">
-                <div class="flex items-center space-x-8">
+    @if(($currentStep ?? 1) < 5)
+    <div class="bg-white border-b border-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center py-10">
+                <div class="flex items-center w-full max-w-2xl px-4">
                     <!-- Step 1: Shipping -->
-                    <div class="flex items-center">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $currentStep >= 1 ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                            <i data-lucide="truck" class="w-4 h-4"></i>
-                        </div>
-                        <span class="ml-2 text-sm font-medium {{ $currentStep >= 1 ? 'text-[#8b7355]' : 'text-gray-500' }}">Shipping</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="step-dot {{ $currentStep >= 1 ? 'active' : '' }} mb-4"></div>
+                        <span class="text-[9px] mono tracking-[0.25em] uppercase {{ $currentStep >= 1 ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Shipping</span>
                     </div>
                     
-                    <!-- Arrow -->
-                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div class="step-line {{ $currentStep >= 2 ? 'active' : '' }} mb-6"></div>
                     
                     <!-- Step 2: Payment -->
-                    <div class="flex items-center">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $currentStep >= 2 ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                            <i data-lucide="credit-card" class="w-4 h-4"></i>
-                        </div>
-                        <span class="ml-2 text-sm font-medium {{ $currentStep >= 2 ? 'text-[#8b7355]' : 'text-gray-500' }}">Payment</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="step-dot {{ $currentStep >= 2 ? 'active' : '' }} mb-4"></div>
+                        <span class="text-[9px] mono tracking-[0.25em] uppercase {{ $currentStep >= 2 ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Payment</span>
                     </div>
                     
-                    <!-- Arrow -->
-                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div class="step-line {{ $currentStep >= 3 ? 'active' : '' }} mb-6"></div>
                     
                     <!-- Step 3: Review -->
-                    <div class="flex items-center">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $currentStep >= 3 ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        </div>
-                        <span class="ml-2 text-sm font-medium {{ $currentStep >= 3 ? 'text-[#8b7355]' : 'text-gray-500' }}">Review</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="step-dot {{ $currentStep >= 3 ? 'active' : '' }} mb-4"></div>
+                        <span class="text-[9px] mono tracking-[0.25em] uppercase {{ $currentStep >= 3 ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Review</span>
                     </div>
                     
-                    <!-- Arrow -->
-                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div class="step-line {{ $currentStep >= 4 ? 'active' : '' }} mb-6"></div>
                     
                     <!-- Step 4: Confirmation -->
-                    <div class="flex items-center">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $currentStep >= 4 ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                            <i data-lucide="clock" class="w-4 h-4"></i>
-                        </div>
-                        <span class="ml-2 text-sm font-medium {{ $currentStep >= 4 ? 'text-[#8b7355]' : 'text-gray-500' }}">Confirmation</span>
-                    </div>
-                    
-                    <!-- Arrow -->
-                    <div class="w-8 h-px bg-gray-300"></div>
-                    
-                    <!-- Step 5: Summary -->
-                    <div class="flex items-center">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $currentStep >= 5 ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                            <i data-lucide="file-check" class="w-4 h-4"></i>
-                        </div>
-                        <span class="ml-2 text-sm font-medium {{ $currentStep >= 5 ? 'text-[#8b7355]' : 'text-gray-500' }}">Summary</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="step-dot {{ $currentStep >= 4 ? 'active' : '' }} mb-4"></div>
+                        <span class="text-[9px] mono tracking-[0.25em] uppercase {{ $currentStep >= 4 ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Confirm</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 {{ $currentStep == 5 ? 'lg:grid-cols-1' : 'lg:grid-cols-3' }} gap-8">
             <!-- Checkout Form -->
-            <div class="{{ $currentStep == 5 ? 'lg:col-span-1' : 'lg:col-span-2' }}">
+            <div class="{{ ($currentStep ?? 1) == 5 ? 'lg:col-span-1' : 'lg:col-span-2' }}">
                 @yield('content')
             </div>
             
             <!-- Order Summary Sidebar (Hidden on Summary page) -->
-            @if($currentStep != 5)
+            @if(($currentStep ?? 1) < 5)
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-8 order-summary-sidebar">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
+                <div class="p-10 sticky top-32 bg-white border border-gray-100 shadow-sm">
+                    <h3 class="text-xl text-[#1A1A1A] mb-10 pb-5 border-b border-gray-50 font-playfair">Order Selection</h3>
                     
                     <!-- Cart Items -->
-                    <div class="space-y-3 mb-4">
+                    <div class="space-y-8 mb-10">
                         @foreach(($cartItems ?? []) as $item)
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-20 h-24 bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100">
                                 @php
                                     $product = $item->product ?? null;
                                     $images = $product && $product->images 
@@ -132,48 +245,48 @@
                                     $firstImage = is_array($images) && count($images) > 0 ? $images[0] : null;
                                 @endphp
                                 @if($firstImage)
-                                    <img src="{{ Storage::url($firstImage) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover rounded-lg">
+                                    <img src="{{ Storage::url($firstImage) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover">
                                 @else
-                                    <i data-lucide="package" class="w-6 h-6 text-gray-400"></i>
+                                    <i data-lucide="image" class="w-6 h-6 text-gray-200"></i>
                                 @endif
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 truncate">{{ $item->product_name }}</p>
-                                <p class="text-sm text-gray-500">Qty: {{ $item->quantity }}</p>
-                            </div>
-                            <div class="text-sm font-medium text-gray-900">
-                                ₱{{ number_format($item->total_price, 2) }}
+                            <div class="flex-1 min-w-0 pt-1">
+                                <p class="text-[10px] text-[#1A1A1A] uppercase tracking-[0.2em] truncate mb-2">{{ $item->product_name }}</p>
+                                <p class="text-[9px] text-gray-400 mono mb-3 uppercase tracking-wider">Quantity: {{ $item->quantity }}</p>
+                                <div class="text-sm text-[#1A1A1A] font-light">
+                                    €{{ number_format($item->total_price, 2) }}
+                                </div>
                             </div>
                         </div>
                         @endforeach
                     </div>
                     
                     <!-- Pricing Breakdown -->
-                    <div class="border-t pt-4 space-y-2">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Subtotal</span>
-                            <span class="text-gray-900">₱{{ number_format($subtotal, 2) }}</span>
+                    <div class="border-t border-gray-50 pt-8 space-y-5">
+                        <div class="flex justify-between text-[11px] mono uppercase tracking-wider">
+                            <span class="text-gray-400">Subtotal</span>
+                            <span class="text-[#1A1A1A]">€{{ number_format($subtotal, 2) }}</span>
                         </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Shipping</span>
-                            <span class="text-gray-900 shipping-cost-display">
+                        <div class="flex justify-between text-[11px] mono uppercase tracking-wider">
+                            <span class="text-gray-400">Shipping</span>
+                            <span class="text-[#1A1A1A] shipping-cost-display">
                                 @php
                                     $shippingCostValue = $defaultShippingCost ?? $shippingCost ?? Session::get('checkout.shipping.shipping_cost', 0);
                                 @endphp
                                 @if($shippingCostValue == 0)
-                                    <span class="text-green-600">Free</span>
+                                    <span class="text-[#B6965D]">Complimentary</span>
                                 @else
-                                    ₱{{ number_format($shippingCostValue, 2) }}
+                                    €{{ number_format($shippingCostValue, 2) }}
                                 @endif
                             </span>
                         </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">VAT (12%)</span>
-                            <span class="text-gray-900">₱{{ number_format($taxAmount, 2) }}</span>
+                        <div class="flex justify-between text-[11px] mono uppercase tracking-wider">
+                            <span class="text-gray-400">Tax Incl. (12%)</span>
+                            <span class="text-[#1A1A1A]">€{{ number_format($taxAmount, 2) }}</span>
                         </div>
-                        <div class="flex justify-between text-lg font-semibold border-t pt-2">
-                            <span class="text-gray-900">Total</span>
-                            <span class="text-[#8b7355] order-summary-total total-display" data-total="{{ $total }}">₱{{ number_format($total, 2) }}</span>
+                        <div class="flex justify-between items-end border-t border-gray-100 pt-8 mt-4">
+                            <span class="text-[11px] text-[#1A1A1A] uppercase tracking-[0.3em] font-medium">Total</span>
+                            <span class="text-2xl text-[#1A1A1A] font-playfair order-summary-total total-display" data-total="{{ $total }}">€{{ number_format($total, 2) }}</span>
                         </div>
                     </div>
                     
@@ -181,10 +294,9 @@
                         $shippingCostValue = $defaultShippingCost ?? $shippingCost ?? Session::get('checkout.shipping.shipping_cost', 0);
                     @endphp
                     @if($shippingCostValue == 0 && ($subtotal ?? 0) >= 5000)
-                    <div class="mt-4 p-3 bg-green-50 rounded-lg">
-                        <div class="flex items-center">
-                            <i data-lucide="truck" class="w-5 h-5 text-green-600 mr-2"></i>
-                            <span class="text-sm text-green-800 font-medium">Free shipping on orders over ₱5,000</span>
+                    <div class="mt-8 p-6 bg-gray-50 border-t border-b border-gray-100">
+                        <div class="flex items-center justify-center text-center">
+                            <span class="text-[9px] mono tracking-[0.2em] text-[#B6965D] uppercase">Complimentary White-Glove Shipping</span>
                         </div>
                     </div>
                     @endif

@@ -1,4 +1,4 @@
-# S3 Bucket Setup Guide for David's Wood Furniture
+# S3 Bucket Setup Guide for Éclore
 
 This guide will help you set up Amazon S3 storage for your Laravel application.
 

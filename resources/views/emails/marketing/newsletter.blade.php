@@ -2,50 +2,48 @@
 
 @section('content')
 <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #8B7355; margin: 0;">Latest News & Featured Products</h1>
-    <p style="color: #666; margin: 10px 0 0 0; font-style: italic;">David's Wood Furnitures</p>
+    <h1 style="color: #1A1A1A; margin: 0; font-family: 'Playfair Display', serif;">The Éclore Dispatch</h1>
 </div>
 
-<div style="background: #F8F8F8; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 0.75px solid #8B7355;">
-    <h2 style="color: #8B7355; margin: 0 0 20px 0;">Hello {{ $subscriber->name ?? 'Valued Customer' }},</h2>
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
+    <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Dear {{ $subscriber->name ?? 'Valued Collector' }},</h2>
     
-    <p style="color: #555; line-height: 1.6; margin: 0;">
-        Thank you for subscribing to our newsletter! Here's what's new at David's Wood Furnitures this month.
+    <p style="color: #555; line-height: 1.6; margin: 0; font-weight: 300;">
+        Thank you for subscribing to our correspondence. Here is what is capturing our attention at Éclore this season.
     </p>
 </div>
 
 @if($featuredProducts && count($featuredProducts) > 0)
-<h2 style="color: #8B7355; margin: 30px 0 15px 0;">Featured Products</h2>
-<div style="background: #F8F8F8; border-left: 4px solid #8B7355; padding: 20px; margin: 20px 0; border-radius: 0 6px 6px 0;">
-    <p style="color: #555; margin: 0;">Discover our handpicked selection of premium furniture pieces, crafted with the finest materials and attention to detail.</p>
+<h2 style="color: #1A1A1A; margin: 40px 0 20px 0; font-family: 'Playfair Display', serif; font-size: 20px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Curated Pieces</h2>
+<div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0;">
+    <p style="color: #555; margin: 0; font-weight: 300;">Discover our handpicked selection of high jewelry pieces, crafted with the rarest materials and uncompromising attention to detail.</p>
 </div>
 
 @foreach($featuredProducts as $product)
-<div style="border: 1px solid #E5E5E5; border-radius: 8px; padding: 20px; margin: 20px 0; background-color: #F8F8F8;">
-    <h3 style="color: #8B7355; margin: 0 0 10px 0;">{{ $product->name }}</h3>
-    <p style="margin: 0 0 15px 0; color: #666;">{{ Str::limit($product->description, 150) }}</p>
+<div style="border: 1px solid #eeeeee; padding: 25px; margin: 20px 0; background-color: #FAFAFA;">
+    <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 16px;">{{ $product->name }}</h3>
+    <p style="margin: 0 0 15px 0; color: #555; font-weight: 300;">{{ Str::limit($product->description, 150) }}</p>
     
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
         <div>
-            <span style="font-size: 24px; font-weight: 600; color: #8B7355;">₱{{ number_format($product->price, 2) }}</span>
+            <span style="font-size: 14px; font-weight: 400; color: #1A1A1A; font-family: 'Azeret Mono', monospace;">€{{ number_format($product->price, 2) }}</span>
             @if($product->sale_price && $product->sale_price < $product->price)
-                <span style="text-decoration: line-through; color: #999; margin-left: 10px;">₱{{ number_format($product->price, 2) }}</span>
-                <span style="background-color: #8B7355; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 10px;">SALE</span>
+                <span style="text-decoration: line-through; color: #999; margin-left: 10px; font-family: 'Azeret Mono', monospace; font-size: 12px;">€{{ number_format($product->price, 2) }}</span>
+                <span style="background-color: #1A1A1A; color: white; padding: 2px 8px; font-family: 'Azeret Mono', monospace; font-size: 10px; margin-left: 10px;">PRIVILEGE</span>
             @endif
         </div>
         <div>
-            <a href="{{ url('/products/' . $product->id) }}" style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 8px 20px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 600; display: inline-block;">View Product</a>
+            <a href="{{ url('/products/' . $product->id) }}" class="button" style="padding: 10px 20px; font-size: 10px;">ACQUIRE NOW</a>
         </div>
     </div>
     
     @if($product->average_rating > 0)
     <div style="margin: 10px 0;">
-        <span style="color: #fbbf24; font-size: 18px;">
+        <span style="color: #1A1A1A; font-size: 14px;">
             @for($i = 1; $i <= 5; $i++)
                 <span style="display: inline-block; margin-right: 2px;">{{ $i <= $product->average_rating ? '★' : '☆' }}</span>
             @endfor
         </span>
-        <span style="color: #666; font-size: 14px;">({{ number_format($product->average_rating, 1) }}/5 - {{ $product->reviews_count ?? 0 }} reviews)</span>
     </div>
     @endif
 </div>
@@ -53,45 +51,42 @@
 @endif
 
 @if($promotions && count($promotions) > 0)
-<h2 style="color: #8B7355; margin: 30px 0 15px 0;">Special Offers</h2>
+<h2 style="color: #1A1A1A; margin: 40px 0 20px 0; font-family: 'Playfair Display', serif; font-size: 20px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Exclusive Privileges</h2>
 @foreach($promotions as $promotion)
-<div style="background: #efe3df; border: 1px solid #8B7355; padding: 20px; border-radius: 6px; margin: 20px 0;">
-    <h3 style="color: #8B7355; margin: 0 0 10px 0;">{{ $promotion->title }}</h3>
-    <p style="margin: 0 0 15px 0; color: #555;">{{ $promotion->description }}</p>
+<div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0; text-align: center;">
+    <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 16px;">{{ $promotion->title }}</h3>
+    <p style="margin: 0 0 15px 0; color: #555; font-weight: 300;">{{ $promotion->description }}</p>
     @if($promotion->discount_code)
-        <p style="margin: 0 0 15px 0; color: #555;"><strong>Use Code:</strong> <span style="background-color: #8B7355; color: white; padding: 4px 8px; border-radius: 4px; font-family: monospace;">{{ $promotion->discount_code }}</span></p>
+        <p style="margin: 0 0 15px 0; color: #555;"><strong>Privilege Code:</strong> <span style="background-color: #1A1A1A; color: white; padding: 4px 10px; font-family: 'Azeret Mono', monospace; font-size: 12px;">{{ $promotion->discount_code }}</span></p>
     @endif
     @if($promotion->valid_until)
-        <p style="margin: 0; color: #8B7355; font-weight: 600;">Valid until {{ \Carbon\Carbon::parse($promotion->valid_until)->format('M d, Y') }}</p>
+        <p style="margin: 0; color: #B6965D; font-family: 'Azeret Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;">Valid until {{ \Carbon\Carbon::parse($promotion->valid_until)->format('M d, Y') }}</p>
     @endif
 </div>
 @endforeach
 @endif
 
-<h2 style="color: #8B7355; margin: 30px 0 15px 0;">What's New</h2>
-<div style="background: #F8F8F8; border-left: 4px solid #8B7355; padding: 20px; margin: 20px 0; border-radius: 0 6px 6px 0;">
-    <h3 style="color: #8B7355; margin: 0 0 10px 0;">New Collection: Modern Minimalist</h3>
-    <p style="color: #555; margin: 0 0 15px 0;">Introducing our latest collection featuring clean lines, natural wood finishes, and contemporary design. Perfect for modern homes and offices.</p>
+<h2 style="color: #1A1A1A; margin: 40px 0 20px 0; font-family: 'Playfair Display', serif; font-size: 20px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Recent Additions</h2>
+<div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0;">
+    <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 16px;">New Collection: Lumi Naturelle</h3>
+    <p style="color: #555; margin: 0 0 15px 0; font-weight: 300;">Introducing our latest high jewelry collection featuring brilliant-cut diamonds and natural organic contours. A testament to light and life.</p>
     <div style="text-align: center; margin: 20px 0;">
-        <a href="{{ url('/products?collection=modern-minimalist') }}" style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px;">Explore Collection</a>
+        <a href="{{ url('/catalogue') }}" class="button" style="padding: 10px 20px; font-size: 10px;">EXPLORE COLLECTION</a>
     </div>
 </div>
 
-<div style="background: #F8F8F8; border-left: 4px solid #8B7355; padding: 20px; margin: 20px 0; border-radius: 0 6px 6px 0;">
-    <h3 style="color: #8B7355; margin: 0 0 10px 0;">Custom Furniture Services</h3>
-    <p style="color: #555; margin: 0 0 15px 0;">Looking for something unique? Our master craftsmen can create custom furniture pieces tailored to your exact specifications and style preferences.</p>
+<div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0;">
+    <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 16px;">Bespoke Services</h3>
+    <p style="color: #555; margin: 0 0 15px 0; font-weight: 300;">Looking for something extraordinary? Our master jewelers remain at your disposal to create custom pieces tailored to your exact specifications.</p>
     <div style="text-align: center; margin: 20px 0;">
-        <a href="{{ url('/custom-furniture') }}" style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px;">Learn More</a>
+        <a href="{{ url('/about') }}" class="button" style="padding: 10px 20px; font-size: 10px; background: #1A1A1A; color: #ffffff !important;">DISCOVER BESPOKE</a>
     </div>
 </div>
 
 <div style="text-align: center; margin: 40px 0;">
-    <a href="{{ url('/products') }}" style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px; margin: 5px;">Shop All Products</a>
-    <a href="{{ url('/showroom') }}" style="background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px; margin: 5px;">Visit Showroom</a>
+    <a href="{{ url('/catalogue') }}" class="button" style="margin: 0 10px;">SHOP ALL CREATIONS</a>
 </div>
 
-<p style="color: #555; margin: 20px 0;">Thank you for being part of the David's Wood Furnitures family. We appreciate your continued support and look forward to helping you create beautiful spaces in your home.</p>
-
-<p style="color: #555; margin: 20px 0;">Happy shopping!</p>
+<p style="color: #555; margin: 30px 0 20px 0; font-weight: 300; text-align: center;">Thank you for being part of our esteemed community. We invite you to discover beauty with us.</p>
 @endsection
 

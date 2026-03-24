@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $subject ?? 'Email from David\'s Wood Furniture' }}</title>
+    <title>{{ $subject ?? 'Email from Éclore' }}</title>
     <link rel="icon" type="image/png" href="{{ config('app.url') }}/frontend/assets/favicon.png">
-    <meta name="author" content="David's Wood Furniture">
+    <meta name="author" content="Éclore">
     <meta property="og:image" content="{{ config('app.url') }}/frontend/assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <style>
         /* Reset styles */
         body, table, td, p, a, li, blockquote {
@@ -28,202 +31,168 @@
             width: 100% !important;
             min-width: 100%;
             height: 100%;
-            background-color: #F8F8F8;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FAFAFA;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 300;
             line-height: 1.6;
-            color: #333333;
+            color: #1A1A1A;
         }
 
         .email-container {
             max-width: 600px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 8px;
+            border-radius: 0;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eeeeee;
         }
 
         .header {
-            background: linear-gradient(135deg, #8B7355 0%, #b7a99a 100%);
-            padding: 30px 20px;
+            background: #1A1A1A;
+            padding: 60px 20px;
             text-align: center;
-        }
-
-        .logo {
-            max-width: 90px;
-            height: auto;
-            margin-bottom: 15px;
         }
 
         .company-name {
             color: #ffffff;
-            font-size: 24px;
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 300;
             margin: 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
         }
 
         .tagline {
-            color: #F5F5F5;
-            font-size: 14px;
-            margin: 5px 0 0 0;
-            font-weight: 300;
-            font-style: italic;
+            color: #B6965D;
+            font-family: 'Azeret Mono', monospace;
+            font-size: 9px;
+            margin: 15px 0 0 0;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
         }
 
         .content {
-            padding: 40px 30px;
+            padding: 60px 50px;
         }
 
         .content h1 {
-            color: #8B7355;
-            font-size: 28px;
-            margin: 0 0 20px 0;
-            font-weight: 600;
+            color: #1A1A1A;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin: 0 0 30px 0;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
         }
 
         .content h2 {
-            color: #374151;
+            color: #1A1A1A;
+            font-family: 'Playfair Display', serif;
             font-size: 22px;
-            margin: 30px 0 15px 0;
-            font-weight: 600;
+            margin: 40px 0 20px 0;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #FAFAFA;
+            padding-bottom: 15px;
         }
 
         .content p {
-            margin: 0 0 15px 0;
-            font-size: 16px;
-            line-height: 1.6;
+            margin: 0 0 20px 0;
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #444444;
         }
 
         .button {
             display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #8B7355 0%, #b7a99a 100%);
+            padding: 18px 45px;
+            background: #1A1A1A;
             color: #ffffff !important;
+            font-family: 'Azeret Mono', monospace;
             text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 16px;
-            margin: 20px 0;
+            border-radius: 0;
+            font-weight: 400;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin: 30px 0;
             transition: all 0.3s ease;
         }
 
-        .button:hover {
-            background: linear-gradient(135deg, #504538 0%, #b7a99a 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
-        }
-
         .info-box {
-            background-color: #F8F8F8;
-            border-left: 4px solid #8B7355;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 6px 6px 0;
+            background-color: #FAFAFA;
+            border: 1px solid #eeeeee;
+            padding: 30px;
+            margin: 40px 0;
         }
 
         .footer {
-            background-color: #F8F8F8;
-            padding: 30px;
+            background-color: #FAFAFA;
+            padding: 60px 50px;
             text-align: center;
-            border-top: 1px solid #E5E5E5;
+            border-top: 1px solid #eeeeee;
         }
 
         .footer p {
-            margin: 0 0 10px 0;
-            font-size: 12px;
-            color: #6b7280;
+            margin: 0 0 15px 0;
+            font-size: 10px;
+            color: #999999;
+            letter-spacing: 0.05em;
+            line-height: 2;
+            font-family: 'Azeret Mono', monospace;
+            text-transform: uppercase;
         }
 
         .social-links {
-            margin: 9px 0 20px 0;
+            margin: 30px 0 40px 0;
         }
 
         .social-links a {
             display: inline-block;
-            margin: 0 10px;
-            color: #6b7280;
+            margin: 0 15px;
+            color: #1A1A1A;
             text-decoration: none;
-            font-size: 12px;
-        }
-
-        .social-links a:hover {
-            color: #3b82f6;
-        }
-
-        .unsubscribe {
+            font-family: 'Azeret Mono', monospace;
             font-size: 9px;
-            color: #9ca3af;
-            margin-top: 20px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 2px;
         }
 
-        .unsubscribe a {
-            color: #9ca3af;
-            text-decoration: none;
-        }
-
-        /* Responsive styles */
-        @media only screen and (max-width: 600px) {
-            .email-container {
-                margin: 0;
-                border-radius: 0;
-            }
-            
-            .header {
-                padding: 20px 15px;
-            }
-            
-            .content {
-                padding: 30px 20px;
-            }
-            
-            .content h1 {
-                font-size: 24px;
-            }
-            
-            .footer {
-                padding: 20px 15px;
-            }
-        }
-
-        /* Table styles for order details */
+        /* Order Table */
         .order-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .order-table th,
-        .order-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            margin: 40px 0;
         }
 
         .order-table th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: #374151;
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #1A1A1A;
+            font-family: 'Azeret Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #1A1A1A;
         }
 
-        .order-table tr:last-child td {
-            border-bottom: none;
+        .order-table td {
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #FAFAFA;
+            font-size: 14px;
+            color: #444444;
         }
 
-        .total-row {
-            background-color: #f8fafc;
-            font-weight: 600;
-        }
-
-        /* Rating stars */
-        .rating {
-            color: #fbbf24;
-            font-size: 18px;
-        }
-
-        .rating .star {
-            display: inline-block;
-            margin-right: 2px;
+        @media only screen and (max-width: 600px) {
+            .email-container { margin: 0; width: 100% !important; }
+            .content { padding: 40px 25px; }
+            .footer { padding: 40px 25px; }
         }
     </style>
 </head>
@@ -231,9 +200,8 @@
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ config('app.url') }}/frontend/assets/favicon.png" alt="David's Wood Furniture" class="logo" style="display: block; margin: 0 auto;">
-            <h1 class="company-name">DAVID'S WOOD FURNITURES</h1>
-            <p class="tagline">Nature's grain shaped by artistry</p>
+            <h1 class="company-name">ÉCLORE</h1>
+            <p class="tagline">The Art of Timeless Selection</p>
         </div>
 
         <!-- Main Content -->
@@ -243,25 +211,26 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>DAVID'S WOOD FURNITURES</strong></p>
+            <p style="color: #1A1A1A; font-weight: 500; font-size: 11px;">ÉCLORE MAISON</p>
             <p>123 Santa Rosa - Tagaytay Rd, Silang, 4118 Cavite</p>
-            <p>Phone: +63 (917) 123-4567 | Email: info@davidswood.shop</p>
+            <p>CONCIERGE: +63 (917) 123-4567 | HELLO@ECLOREJEWELLERY.SHOP</p>
             
             <div class="social-links">
-                <a href="#">LinkedIn</a>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
+                <a href="#">INSTAGRAM</a>
+                <a href="#">FACEBOOK</a>
+                <a href="#">PINTEREST</a>
             </div>
             
-            <p>Thank you for choosing David's Wood Furnitures for your home furnishing needs.</p>
+            <p style="font-size: 9px; color: #BBBBBB;">Discover the art of eternal beauty with Éclore.</p>
             
-            <div class="unsubscribe">
-                <p>You received this email because you have an account with us or subscribed to our newsletter.</p>
-                <p><a href="#">Unsubscribe</a> | <a href="#">Update Preferences</a></p>
+            <div style="margin-top: 40px; border-top: 1px solid #eeeeee; padding-top: 40px;">
+                <p style="font-size: 8px; color: #CCCCCC; letter-spacing: 0.1em;">
+                    You are receiving this communication as a valued member of the Éclore community.
+                    <br>
+                    <a href="#" style="color: #CCCCCC; text-decoration: underline;">UNSUBSCRIBE</a> | <a href="#" style="color: #CCCCCC; text-decoration: underline;">PREFERENCES</a>
+                </p>
             </div>
         </div>
     </div>
 </body>
 </html>
-

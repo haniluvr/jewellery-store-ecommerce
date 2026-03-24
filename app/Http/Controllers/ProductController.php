@@ -97,7 +97,7 @@ class ProductController extends Controller
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::where('is_active', true)->orderBy('sort_order')->get();
 
-        return view('products', compact('products', 'categories'));
+        return view('catalogue', compact('products', 'categories'));
     }
 
     public function show(Product $product)

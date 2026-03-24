@@ -2,25 +2,24 @@
 
 @section('content')
 <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #8B7355; margin: 0;">Admin Login Verification</h1>
-    <p style="color: #666; margin: 10px 0 0 0; font-style: italic;">David's Wood Furniture Admin Panel</p>
+    <h1 style="color: #1A1A1A; margin: 0; font-family: 'Playfair Display', serif;">Admin Authentication</h1>
 </div>
 
-<div style="background: #F8F8F8; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 0.75px solid #8B7355;">
-    <h2 style="color: #8B7355; margin: 0 0 20px 0;">Hello {{ $admin->first_name }},</h2>
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
+    <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Dear {{ $admin->first_name }},</h2>
     
-    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0;">
-        You're signing in to the admin panel. Use the verification code below to complete your login:
+    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0; font-weight: 300;">
+        You are signing in to the Éclore Admin operations. Use the security code below to complete your authentication:
     </p>
 
     <div style="text-align: center; margin: 30px 0;">
-        <div style="background: #8B7355; color: white; padding: 20px; border-radius: 8px; display: inline-block; font-size: 32px; font-weight: bold; letter-spacing: 8px; font-family: monospace;">
+        <div style="background: #1A1A1A; color: white; padding: 20px; border-radius: 0; display: inline-block; font-size: 32px; font-weight: bold; letter-spacing: 8px; font-family: 'Azeret Mono', monospace;">
             {{ $otpCode }}
         </div>
     </div>
 
-    <p style="color: #666; font-size: 14px; margin: 20px 0 0 0;">
-        This code will expire in 5 minutes for security reasons.
+    <p style="color: #555; font-size: 11px; font-family: 'Azeret Mono', monospace; text-transform: uppercase; margin: 20px 0 0 0; text-align: center;">
+        Valid for 5 Minutes
     </p>
 </div>
 

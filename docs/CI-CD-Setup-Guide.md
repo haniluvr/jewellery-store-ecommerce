@@ -85,9 +85,9 @@ ssh -i your-key-pair.pem ubuntu@your-ec2-public-ip
    sudo mysql -u root -p
    ```
    ```sql
-   CREATE DATABASE davidswood_furniture;
-   CREATE USER 'davidswood_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-   GRANT ALL PRIVILEGES ON davidswood_furniture.* TO 'davidswood_user'@'localhost';
+   CREATE DATABASE eclore_furniture;
+   CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+   GRANT ALL PRIVILEGES ON eclore_furniture.* TO 'eclore_user'@'localhost';
    FLUSH PRIVILEGES;
    EXIT;
    ```
@@ -254,7 +254,7 @@ The deployment script includes:
    sudo cp -r /var/www/davids-wood-furniture /var/backups/davids-wood-furniture/manual-$(date +%Y%m%d-%H%M%S)
    
    # Database backup
-   mysqldump -u davidswood_user -p davidswood_furniture > backup-$(date +%Y%m%d-%H%M%S).sql
+   mysqldump -u eclore_user -p eclore_furniture > backup-$(date +%Y%m%d-%H%M%S).sql
    ```
 
 ## Troubleshooting
@@ -287,7 +287,7 @@ The deployment script includes:
 3. **Database Connection Issues**
    ```bash
    # Test MySQL connection
-   mysql -u davidswood_user -p -h 127.0.0.1 davidswood_furniture
+   mysql -u eclore_user -p -h 127.0.0.1 eclore_furniture
    
    # Check MySQL status
    sudo systemctl status mysql

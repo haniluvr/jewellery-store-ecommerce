@@ -3,7 +3,7 @@
 # Quick Domain Setup Script
 # This helps you set up a domain for your application
 
-echo "=== Domain Setup for David's Wood Furniture ==="
+echo "=== Domain Setup for Éclore ==="
 echo ""
 
 echo "Choose your preferred option:"
@@ -20,7 +20,7 @@ case $choice in
         echo ""
         echo "=== Freenom Setup ==="
         echo "1. Go to https://www.freenom.com"
-        echo "2. Search for available domains (try: davidswood.tk, davidswood.ml)"
+        echo "2. Search for available domains (try: eclore.tk, eclore.ml)"
         echo "3. Register the domain (free for 12 months)"
         echo "4. In Freenom control panel:"
         echo "   - Go to 'My Domains'"

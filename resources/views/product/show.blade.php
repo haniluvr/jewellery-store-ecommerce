@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->name . ' - David\'s Wood Furniture')
+@section('title', $product->name . ' - Éclore')
 
 @section('content')
 <style>
@@ -633,10 +633,10 @@
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="{{ route('home') }}">Home</a>
         <span class="separator">/</span>
-        <a href="{{ route('products') }}">Products</a>
+        <a href="{{ route('catalogue') }}">Catalogue</a>
         <span class="separator">/</span>
         @if($product->category)
-            <a href="{{ route('products', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a>
+            <a href="{{ route('catalogue', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a>
             <span class="separator">/</span>
         @endif
         <span>{{ $product->name }}</span>

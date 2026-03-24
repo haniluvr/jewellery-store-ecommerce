@@ -1,44 +1,49 @@
 @extends('emails.layouts.branded')
 
 @section('content')
-<div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
-    <h2 style="color: #8b7355; margin-bottom: 20px;">Refund Request Update</h2>
+<div style="text-align: center; margin-bottom: 30px;">
+    <h1 style="color: #1A1A1A; margin: 0; font-family: 'Playfair Display', serif;">Refund Request Update</h1>
+</div>
+
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
+    <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Dear {{ ($returnRepair->user->first_name ?? '') . ' ' . ($returnRepair->user->last_name ?? '') ?: $returnRepair->user->email }},</h2>
     
-    <p>Hello {{ ($returnRepair->user->first_name ?? '') . ' ' . ($returnRepair->user->last_name ?? '') ?: $returnRepair->user->email }},</p>
+    <p style="color: #555; line-height: 1.6; margin: 0; font-weight: 300;">
+        We have completed the formal review of your refund request and must share the following assessment.
+    </p>
+
+    <div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 20px; margin: 25px 0;">
+        <p style="margin: 0; font-family: 'Azeret Mono', monospace; font-size: 11px; color: #1A1A1A;"><strong>RETURN AUTHORIZATION:</strong> {{ $returnRepair->rma_number }}</p>
+        <p style="margin: 10px 0 0 0; font-family: 'Azeret Mono', monospace; font-size: 11px; color: #1A1A1A;"><strong>ORDER REFERENCE:</strong> #{{ $returnRepair->order->order_number ?? 'N/A' }}</p>
+        <p style="margin: 10px 0 0 0; font-family: 'Azeret Mono', monospace; font-size: 11px; color: #1A1A1A;"><strong>CURRENT STATUS:</strong> {{ strtoupper($returnRepair->status) }}</p>
+    </div>
+</div>
     
-    <p>We regret to inform you that your refund request has been rejected.</p>
+<h2 style="color: #1A1A1A; margin: 40px 0 20px 0; font-family: 'Playfair Display', serif; font-size: 20px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Assessment Details</h2>
     
-    <div style="background-color: #f9f9f9; border-left: 4px solid #8b7355; padding: 15px; margin: 20px 0;">
-        <p style="margin: 0;"><strong>RMA Number:</strong> {{ $returnRepair->rma_number }}</p>
-        <p style="margin: 5px 0 0 0;"><strong>Order Number:</strong> #{{ $returnRepair->order->order_number ?? 'N/A' }}</p>
-        <p style="margin: 5px 0 0 0;"><strong>Status:</strong> {{ ucfirst($returnRepair->status) }}</p>
+    <div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 20px; margin: 20px 0;">
+        <p style="margin: 0; color: #555; font-weight: 300;">{{ $rejectionReason }}</p>
     </div>
     
-    <h3 style="color: #8b7355; margin-top: 30px; margin-bottom: 15px;">Reason for Rejection</h3>
+<h2 style="color: #1A1A1A; margin: 40px 0 20px 0; font-family: 'Playfair Display', serif; font-size: 20px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Further Consultation</h2>
     
-    <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px;">
-        <p style="margin: 0; color: #856404;">{{ $rejectionReason }}</p>
-    </div>
+    <p style="color: #555; font-weight: 300;">If you believe this assessment requires further review or if you have additional information to present, please contact our concierge services:</p>
     
-    <h3 style="color: #8b7355; margin-top: 30px; margin-bottom: 15px;">What You Can Do</h3>
-    
-    <p>If you believe this decision was made in error or if you have additional information that might change the outcome, please contact our customer service team:</p>
-    
-    <ul style="line-height: 1.8; margin: 15px 0;">
-        <li>Email: <a href="mailto:hello@davidswood.shop" style="color: #8b7355;">hello@davidswood.shop</a></li>
-        <li>Include your RMA number ({{ $returnRepair->rma_number }}) in your inquiry</li>
-        <li>Our team will review your case and respond within 2-3 business days</li>
+    <ul style="line-height: 2; margin: 20px 0; color: #555; font-weight: 300; font-size: 13px;">
+        <li>Email: <a href="mailto:concierge@eclore.com" style="color: #1A1A1A; text-decoration: underline;">concierge@eclore.com</a></li>
+        <li>Kindly reference your unique authorization number: <span style="font-family: 'Azeret Mono', monospace; font-size: 11px;">{{ $returnRepair->rma_number }}</span></li>
+        <li>Our advisors will review your inquiry within 48-72 operational hours.</li>
     </ul>
     
-    <p>We appreciate your understanding and are here to help resolve any concerns you may have.</p>
+    <p style="color: #555; font-weight: 300;">We remain at your disposal to resolve any concerns you may have regarding this decision.</p>
     
-    <div style="margin-top: 30px; text-align: center;">
-        <a href="{{ route('account') }}#orders" style="display: inline-block; background-color: #8b7355; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Your Orders</a>
+    <div style="margin: 40px 0; text-align: center;">
+        <a href="{{ route('account') }}#orders" class="button">VIEW YOUR PORTFOLIO</a>
     </div>
     
-    <p style="margin-top: 30px; color: #666; font-size: 14px;">
-        Best regards,<br>
-        The David's Wood Furniture Team
+    <p style="margin-top: 40px; color: #555; font-size: 13px; font-weight: 300; text-align: center;">
+        Sincerely,<br>
+        <span style="color: #1A1A1A; font-family: 'Playfair Display', serif;">The Éclore Concierge Team</span>
     </p>
 </div>
 @endsection

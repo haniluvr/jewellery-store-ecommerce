@@ -27,8 +27,8 @@ class AdminRouteHelper
             if ($httpHost === 'admin.localhost' || str_contains($httpHost, 'admin.localhost')) {
                 return 'admin.local.'.$routeName;
             }
-            // Handle admin.davidswood.test with any port
-            elseif ($httpHost === 'admin.davidswood.test' || str_contains($httpHost, 'admin.davidswood.test')) {
+            // Handle admin.eclore.test with any port
+            elseif ($httpHost === 'admin.eclore.test' || str_contains($httpHost, 'admin.eclore.test')) {
                 return 'admin.test.'.$routeName;
             }
             // Default fallback for local development
@@ -69,7 +69,7 @@ class AdminRouteHelper
                 // Rebuild URL with current host and port
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
                 $url = $currentScheme.'://admin.localhost'.$port.$path.$query.$fragment;
-            } elseif (str_contains($currentHost, 'admin.davidswood.test')) {
+            } elseif (str_contains($currentHost, 'admin.eclore.test')) {
                 // Extract the path from the generated URL
                 $parsedUrl = parse_url($url);
                 $path = $parsedUrl['path'] ?? '/';
@@ -79,17 +79,17 @@ class AdminRouteHelper
                 // Rebuild URL with current host and port
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
                 $scheme = ($currentPort == 8443) ? 'https' : $currentScheme;
-                $url = $scheme.'://admin.davidswood.test'.$port.$path.$query.$fragment;
+                $url = $scheme.'://admin.eclore.test'.$port.$path.$query.$fragment;
             }
         } elseif ($env === 'production') {
-            // For production, ensure URL uses admin.davidswood.shop
+            // For production, ensure URL uses admin.eclore.shop
             $parsedUrl = parse_url($url);
             $path = $parsedUrl['path'] ?? '/';
             $query = isset($parsedUrl['query']) ? '?'.$parsedUrl['query'] : '';
             $fragment = isset($parsedUrl['fragment']) ? '#'.$parsedUrl['fragment'] : '';
 
             // Rebuild URL with production domain
-            $url = 'https://admin.davidswood.shop'.$path.$query.$fragment;
+            $url = 'https://admin.eclore.shop'.$path.$query.$fragment;
         }
 
         return $url;
@@ -119,14 +119,14 @@ class AdminRouteHelper
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
 
                 return $currentScheme.'://admin.localhost'.$port.$path.$query.$fragment;
-            } elseif (str_contains($currentHost, 'admin.davidswood.test')) {
+            } elseif (str_contains($currentHost, 'admin.eclore.test')) {
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
                 $scheme = ($currentPort == 8443) ? 'https' : $currentScheme;
 
-                return $scheme.'://admin.davidswood.test'.$port.$path.$query.$fragment;
+                return $scheme.'://admin.eclore.test'.$port.$path.$query.$fragment;
             }
         } elseif ($env === 'production') {
-            return 'https://admin.davidswood.shop'.$path.$query.$fragment;
+            return 'https://admin.eclore.shop'.$path.$query.$fragment;
         }
 
         // Fallback: return original URL if we can't determine environment
@@ -163,7 +163,7 @@ class AdminRouteHelper
                 // Rebuild URL with current host and port
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
                 $url = $currentScheme.'://localhost'.$port.$path.$query.$fragment;
-            } elseif (str_contains($currentHost, 'davidswood.test') && ! str_contains($currentHost, 'admin')) {
+            } elseif (str_contains($currentHost, 'eclore.test') && ! str_contains($currentHost, 'admin')) {
                 // Extract the path from the generated URL
                 $parsedUrl = parse_url($url);
                 $path = $parsedUrl['path'] ?? '/';
@@ -173,16 +173,16 @@ class AdminRouteHelper
                 // Rebuild URL with current host and port
                 $port = ($currentPort && $currentPort != 80 && $currentPort != 443) ? ':'.$currentPort : '';
                 $scheme = ($currentPort == 8443) ? 'https' : $currentScheme;
-                $url = $scheme.'://davidswood.test'.$port.$path.$query.$fragment;
+                $url = $scheme.'://eclore.test'.$port.$path.$query.$fragment;
             }
         } elseif ($env === 'production') {
-            // For production, ensure URL uses davidswood.shop domain
+            // For production, ensure URL uses eclore.shop domain
             $parsedUrl = parse_url($url);
             $path = $parsedUrl['path'] ?? '/';
             $query = isset($parsedUrl['query']) ? '?'.$parsedUrl['query'] : '';
             $fragment = isset($parsedUrl['fragment']) ? '#'.$parsedUrl['fragment'] : '';
 
-            $url = 'https://davidswood.shop'.$path.$query.$fragment;
+            $url = 'https://eclore.shop'.$path.$query.$fragment;
         }
 
         return $url;

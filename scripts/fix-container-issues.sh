@@ -15,7 +15,7 @@ sudo systemctl status mysql
 sudo systemctl start mysql
 
 echo "=== Testing MySQL Connection ==="
-mysql -h localhost -u davidswood_user -p'DWF#2025$Secure!' -e "SELECT 1;" davids_wood 2>/dev/null && echo "✅ MySQL connection OK" || echo "❌ MySQL connection failed"
+mysql -h localhost -u eclore_user -p'DWF#2025$Secure!' -e "SELECT 1;" davids_wood 2>/dev/null && echo "✅ MySQL connection OK" || echo "❌ MySQL connection failed"
 
 echo "=== Starting New Container ==="
 # Start container with correct environment variables
@@ -29,7 +29,7 @@ docker run -d --name davids-wood-furniture --restart unless-stopped -p 8080:80 \
   -e DB_HOST=host.docker.internal \
   -e DB_PORT=3306 \
   -e DB_DATABASE=davids_wood \
-  -e DB_USERNAME=davidswood_user \
+  -e DB_USERNAME=eclore_user \
   -e DB_PASSWORD='DWF#2025$Secure!' \
   -e REDIS_HOST=localhost \
   -e REDIS_PORT=6379 \

@@ -180,7 +180,7 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                David's Wood Furniture
+                Éclore
             </div>
             <div class="packing-title">
                 <h1>PACKING SLIP</h1>
@@ -310,7 +310,7 @@
         <div class="footer">
             <p><strong>Packed by:</strong> _________________ <strong>Date:</strong> _________________</p>
             <p><strong>Verified by:</strong> _________________ <strong>Date:</strong> _________________</p>
-            <p style="margin-top: 20px;">Thank you for choosing David's Wood Furniture!</p>
+            <p style="margin-top: 20px;">Thank you for choosing Éclore!</p>
         </div>
     </div>
 </body>

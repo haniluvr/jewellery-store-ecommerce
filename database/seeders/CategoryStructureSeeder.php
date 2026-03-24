@@ -20,51 +20,43 @@ class CategoryStructureSeeder extends Seeder
         $categories = [
             [
                 'id' => 1,
-                'name' => 'Beds',
-                'slug' => 'beds',
-                'description' => 'Various types of beds and sleeping furniture',
+                'name' => 'Rings',
+                'slug' => 'rings',
+                'description' => 'Engagement, wedding bands, and statement rings.',
                 'is_active' => true,
                 'sort_order' => 1,
             ],
             [
                 'id' => 2,
-                'name' => 'Cabinets',
-                'slug' => 'cabinets',
-                'description' => 'Storage furniture including wardrobes and drawers',
+                'name' => 'Necklaces & Pendants',
+                'slug' => 'necklaces-pendants',
+                'description' => 'Fine chains, statement necklaces, and elegant pendants.',
                 'is_active' => true,
                 'sort_order' => 2,
             ],
             [
                 'id' => 3,
-                'name' => 'Chairs',
-                'slug' => 'chairs',
-                'description' => 'Seating furniture for indoor and outdoor use',
+                'name' => 'Earrings',
+                'slug' => 'earrings',
+                'description' => 'From classic studs to elegant chandelier earrings.',
                 'is_active' => true,
                 'sort_order' => 3,
             ],
             [
                 'id' => 4,
-                'name' => 'Tables',
-                'slug' => 'tables',
-                'description' => 'Various types of tables for different purposes',
+                'name' => 'Bracelets & Bangles',
+                'slug' => 'bracelets-bangles',
+                'description' => 'Tennis bracelets, cuffs, and delicate chain bracelets.',
                 'is_active' => true,
                 'sort_order' => 4,
             ],
             [
                 'id' => 5,
-                'name' => 'Shelves',
-                'slug' => 'shelves',
-                'description' => 'Storage and display shelving units',
+                'name' => 'Timepieces & Fine Accessories',
+                'slug' => 'timepieces-fine-accessories',
+                'description' => 'Luxury watches, cufflinks, and other fine accessories.',
                 'is_active' => true,
                 'sort_order' => 5,
-            ],
-            [
-                'id' => 6,
-                'name' => 'Sofas',
-                'slug' => 'sofas',
-                'description' => 'Comfortable seating for living spaces',
-                'is_active' => true,
-                'sort_order' => 6,
             ],
         ];
 
@@ -75,47 +67,40 @@ class CategoryStructureSeeder extends Seeder
 
         // Create subcategories
         $subcategories = [
-            // Beds subcategories (category_id = 1)
-            ['name' => 'King/Queen Sized Bed', 'slug' => 'king-queen-sized-bed', 'parent_id' => 1],
-            ['name' => 'Bunk Bed', 'slug' => 'bunk-bed', 'parent_id' => 1],
-            ['name' => 'Bed with Storage', 'slug' => 'bed-with-storage', 'parent_id' => 1],
-            ['name' => 'Loft Bed', 'slug' => 'loft-bed', 'parent_id' => 1],
-            ['name' => 'Sofa Bed', 'slug' => 'sofa-bed', 'parent_id' => 1],
-            ['name' => 'Day Bed', 'slug' => 'day-bed', 'parent_id' => 1],
-            ['name' => 'Nursery Bed', 'slug' => 'nursery-bed', 'parent_id' => 1],
+            // Rings
+            ['name' => 'Engagement Rings', 'slug' => 'engagement-rings', 'parent_id' => 1],
+            ['name' => 'Wedding Bands', 'slug' => 'wedding-bands', 'parent_id' => 1],
+            ['name' => 'Statement Rings', 'slug' => 'statement-rings', 'parent_id' => 1],
+            ['name' => 'Gemstone Rings', 'slug' => 'gemstone-rings', 'parent_id' => 1],
+            ['name' => 'Signet & Mens Rings', 'slug' => 'signet-mens-rings', 'parent_id' => 1],
 
-            // Cabinets subcategories (category_id = 2)
-            ['name' => 'Chest Drawer', 'slug' => 'chest-drawer', 'parent_id' => 2],
-            ['name' => 'Wardrobe', 'slug' => 'wardrobe', 'parent_id' => 2],
-            ['name' => 'Cupboard', 'slug' => 'cupboard', 'parent_id' => 2],
-            ['name' => 'Sideboard', 'slug' => 'sideboard', 'parent_id' => 2],
-            ['name' => 'Display Cabinet', 'slug' => 'display-cabinet', 'parent_id' => 2],
+            // Necklaces & Pendants
+            ['name' => 'Solitaire Pendants', 'slug' => 'solitaire-pendants', 'parent_id' => 2],
+            ['name' => 'Statement Necklaces', 'slug' => 'statement-necklaces', 'parent_id' => 2],
+            ['name' => 'Fine Chains', 'slug' => 'fine-chains', 'parent_id' => 2],
+            ['name' => 'Lockets & Charms', 'slug' => 'lockets-charms', 'parent_id' => 2],
+            ['name' => 'Chokers & Collars', 'slug' => 'chokers-collars', 'parent_id' => 2],
 
-            // Chairs subcategories (category_id = 3)
-            ['name' => 'Armchair', 'slug' => 'armchair', 'parent_id' => 3],
-            ['name' => 'Dining Chair', 'slug' => 'dining-chair', 'parent_id' => 3],
-            ['name' => 'Stool', 'slug' => 'stool', 'parent_id' => 3],
-            ['name' => 'Outdoor Chair', 'slug' => 'outdoor-chair', 'parent_id' => 3],
-            ['name' => 'Sunlounge', 'slug' => 'sunlounge', 'parent_id' => 3],
+            // Earrings
+            ['name' => 'Diamond Studs', 'slug' => 'diamond-studs', 'parent_id' => 3],
+            ['name' => 'Drop & Dangle Earrings', 'slug' => 'drop-dangle-earrings', 'parent_id' => 3],
+            ['name' => 'Hoop Earrings', 'slug' => 'hoop-earrings', 'parent_id' => 3],
+            ['name' => 'Chandelier Earrings', 'slug' => 'chandelier-earrings', 'parent_id' => 3],
+            ['name' => 'Ear Cuffs & Climbers', 'slug' => 'ear-cuffs-climbers', 'parent_id' => 3],
 
-            // Tables subcategories (category_id = 4)
-            ['name' => 'Dressing Table', 'slug' => 'dressing-table', 'parent_id' => 4],
-            ['name' => 'Console Table', 'slug' => 'console-table', 'parent_id' => 4],
-            ['name' => 'Dining Table', 'slug' => 'dining-table', 'parent_id' => 4],
-            ['name' => 'Coffee Table', 'slug' => 'coffee-table', 'parent_id' => 4],
-            ['name' => 'Night Table', 'slug' => 'night-table', 'parent_id' => 4],
-            ['name' => 'Side Table', 'slug' => 'side-table', 'parent_id' => 4],
-            ['name' => 'Desk', 'slug' => 'desk', 'parent_id' => 4],
-            ['name' => 'Bar Table', 'slug' => 'bar-table', 'parent_id' => 4],
-            ['name' => 'Outdoor Table', 'slug' => 'outdoor-table', 'parent_id' => 4],
+            // Bracelets & Bangles
+            ['name' => 'Tennis Bracelets', 'slug' => 'tennis-bracelets', 'parent_id' => 4],
+            ['name' => 'Charm Bracelets', 'slug' => 'charm-bracelets', 'parent_id' => 4],
+            ['name' => 'Cuff Bracelets', 'slug' => 'cuff-bracelets', 'parent_id' => 4],
+            ['name' => 'Bangle Sets', 'slug' => 'bangle-sets', 'parent_id' => 4],
+            ['name' => 'Chain Bracelets', 'slug' => 'chain-bracelets', 'parent_id' => 4],
 
-            // Shelves subcategories (category_id = 5)
-            ['name' => 'Wall Shelf', 'slug' => 'wall-shelf', 'parent_id' => 5],
-            ['name' => 'Bookcase', 'slug' => 'bookcase', 'parent_id' => 5],
-
-            // Sofas subcategories (category_id = 6)
-            ['name' => 'Indoor Sofa', 'slug' => 'indoor-sofa', 'parent_id' => 6],
-            ['name' => 'Outdoor Sofa', 'slug' => 'outdoor-sofa', 'parent_id' => 6],
+            // Timepieces & Fine Accessories
+            ['name' => 'Luxury Womens Watches', 'slug' => 'luxury-womens-watches', 'parent_id' => 5],
+            ['name' => 'Mens Dress Watches', 'slug' => 'mens-dress-watches', 'parent_id' => 5],
+            ['name' => 'Jewelry Boxes & Travel Cases', 'slug' => 'jewelry-boxes-travel-cases', 'parent_id' => 5],
+            ['name' => 'Cufflinks & Tie Bars', 'slug' => 'cufflinks-tie-bars', 'parent_id' => 5],
+            ['name' => 'Brooches & Pins', 'slug' => 'brooches-pins', 'parent_id' => 5],
         ];
 
         foreach ($subcategories as $subcategory) {

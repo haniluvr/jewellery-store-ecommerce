@@ -7,7 +7,7 @@
 
 <p>Thank you for your order! We have received your order and are processing it. You will receive another email when your order ships.</p>
 
-<div style="background: #F8F8F8; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 0.75px solid #8B7355;">
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
     <h2>Order Details</h2>
     <p><strong>Order Number:</strong> #{{ $order->order_number }}</p>
     <p><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y \a\t g:i A') }}</p>
@@ -67,42 +67,42 @@
                 @endif
             </td>
             <td>{{ $item->quantity }}</td>
-            <td>₱{{ number_format($item->unit_price, 2) }}</td>
-            <td>₱{{ number_format($item->total_price, 2) }}</td>
+            <td>€{{ number_format($item->unit_price, 2) }}</td>
+            <td>€{{ number_format($item->total_price, 2) }}</td>
         </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
             <td colspan="3"><strong>Subtotal:</strong></td>
-            <td><strong>₱{{ number_format($order->subtotal, 2) }}</strong></td>
+            <td><strong>€{{ number_format($order->subtotal, 2) }}</strong></td>
         </tr>
         @if($order->shipping_cost > 0)
         <tr>
             <td colspan="3"><strong>Shipping:</strong></td>
-            <td><strong>₱{{ number_format($order->shipping_cost, 2) }}</strong></td>
+            <td><strong>€{{ number_format($order->shipping_cost, 2) }}</strong></td>
         </tr>
         @else
         <tr>
             <td colspan="3"><strong>Shipping:</strong></td>
-            <td><strong style="color: #10b981;">Free</strong></td>
+            <td><strong style="color: #1A1A1A; font-family: 'Azeret Mono', monospace; font-size: 10px; text-transform: uppercase;">Complimentary</strong></td>
         </tr>
         @endif
         @if($order->tax_amount > 0)
         <tr>
-            <td colspan="3"><strong>Tax (VAT 12%):</strong></td>
-            <td><strong>₱{{ number_format($order->tax_amount, 2) }}</strong></td>
+            <td colspan="3"><strong>Tax (VAT Included):</strong></td>
+            <td><strong>€{{ number_format($order->tax_amount, 2) }}</strong></td>
         </tr>
         @endif
         @if($order->discount_amount > 0)
         <tr>
             <td colspan="3"><strong>Discount:</strong></td>
-            <td><strong style="color: #10b981;">-₱{{ number_format($order->discount_amount, 2) }}</strong></td>
+            <td><strong style="color: #10b981;">-€{{ number_format($order->discount_amount, 2) }}</strong></td>
         </tr>
         @endif
         <tr class="total-row">
             <td colspan="3"><strong>Total:</strong></td>
-            <td><strong style="font-size: 18px; color: #8B7355;">₱{{ number_format($order->total_amount, 2) }}</strong></td>
+            <td><strong style="font-size: 18px; color: #1A1A1A;">€{{ number_format($order->total_amount, 2) }}</strong></td>
         </tr>
     </tfoot>
 </table>
@@ -122,6 +122,6 @@
 
 <p>If you have any questions about your order, please don't hesitate to contact our customer service team.</p>
 
-<p>Thank you for choosing David's Wood Furniture!</p>
+<p>Thank you for choosing Éclore!</p>
 @endsection
 

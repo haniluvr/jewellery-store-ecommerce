@@ -130,21 +130,19 @@ function initModal(id) {
 
     // Create global functions for show/hide
     const show = function() { 
-        
         // Force remove hidden class and override all styles
         el.classList.remove('hidden');
         el.classList.add('block');
-        
-        el.classList.remove('hidden');
-        el.
-        
-        // Set opacity immediately for instant display
         el.style.opacity = '1';
+        // Lock body scroll
+        document.body.classList.add('overflow-hidden');
     };
 
     const hide = function() { 
         el.style.display = 'none';
         el.classList.add('hidden');
+        // Unlock body scroll
+        document.body.classList.remove('overflow-hidden');
     };
 
     // Create global function references
@@ -229,239 +227,93 @@ async function initProductsSection() {
         }
 
         // Sync UI with URL-derived filter/sort/room
-        const filterButtons = document.querySelectorAll('.filter-btn');
         const sortSelect = document.getElementById('sort-select');
-        const roomSelect = document.getElementById('room-select');
+        const filterCategory = document.getElementById('filter-category');
+        const filterColor = document.getElementById('filter-color');
+        const filterMaterial = document.getElementById('filter-material');
+        const filterGemstone = document.getElementById('filter-gemstone');
+        const filterDiamonds = document.getElementById('filter-diamonds');
+        const filterPrice = document.getElementById('filter-price');
         
-        // Set active filter button based on URL
-        if (filterButtons && filterButtons.length) {
-            let foundActive = false;
-            filterButtons.forEach(btn => {
-                const val = btn.getAttribute('data-filter');
-                if (val === initialCategory) {
-                    btn.classList.add('active');
-                    foundActive = true;
-                } else {
-                    btn.classList.remove('active');
+        // Function to gather all filter states and trigger update
+        async function handleFilterChange() {
+            const filters = {
+                category: filterCategory ? filterCategory.value : 'all',
+                color: filterColor ? filterColor.value : '',
+                material: filterMaterial ? filterMaterial.value : '',
+                gemstone: filterGemstone ? filterGemstone.value : '',
+                diamonds: filterDiamonds ? filterDiamonds.value : '',
+                price: filterPrice ? filterPrice.value : '',
+                sort: sortSelect ? sortSelect.value : 'popularity'
+            };
+
+            // Update global state
+            window.currentProductsFilter = filters.category;
+            window.currentProductsSort = filters.sort;
+            window.currentProductsPage = 1;
+
+            try {
+                const params = {
+                    per_page: window.productsPerPage,
+                    page: 1,
+                    sort: filters.sort
+                };
+
+                // Add active filters to API params
+                if (filters.category !== 'all') params.category = filters.category;
+                if (filters.color) params.color = filters.color;
+                if (filters.material) params.material = filters.material;
+                if (filters.gemstone) params.gemstone = filters.gemstone;
+                if (filters.diamonds) params.diamonds = filters.diamonds;
+                if (filters.price) params.price = filters.price;
+
+                const response = await window.api.getProducts(params);
+                const products = response.data || [];
+                renderProductsWithFilter(products);
+
+                // Update pagination
+                if (window.isProductsPage && response.meta) {
+                    renderPagination(response.meta);
                 }
-            });
-            if (!foundActive) {
-                // fallback to 'all'
-                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
-                if (allBtn) allBtn.classList.add('active');
+
+                // Update URL to persist state
+                if (window.isProductsPage) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    Object.keys(filters).forEach(key => {
+                        if (filters[key] && filters[key] !== '' && filters[key] !== 'all') {
+                            urlParams.set(key, filters[key]);
+                        } else {
+                            urlParams.delete(key);
+                        }
+                    });
+                    urlParams.set('page', '1');
+                    window.history.replaceState({}, '', window.location.pathname + '?' + urlParams.toString());
+                }
+            } catch (error) {
+                console.error('Filtering error:', error);
+                renderProductsWithFilter([]);
+                const pagContainer = document.getElementById('pagination-container');
+                if (pagContainer) pagContainer.innerHTML = '';
             }
         }
-        
-        // Set sort dropdown based on URL
-        if (sortSelect) {
-            sortSelect.value = initialSort;
-        }
-        
-        // Set room dropdown based on URL
-        if (roomSelect) {
-            roomSelect.value = initialRoom;
-        }
-        
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', async () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
 
-                const filter = btn.getAttribute('data-filter');
-                window.currentProductsFilter = filter;
-                window.currentProductsPage = 1; // Reset to page 1 on filter change
-                
-                try {
-                    // Get current sort and room settings
-                    const currentSort = sortSelect ? sortSelect.value : 'popularity';
-                    const currentRoom = roomSelect ? roomSelect.value : 'all';
-                    
-                    const filterParams = {};
-                    if (filter !== 'all') {
-                        filterParams.category = filter;
-                    }
-                    if (currentRoom !== 'all') {
-                        filterParams.room = currentRoom;
-                    }
-                    const response = await window.api.getProducts({ 
-                        ...filterParams, 
-                        sort: currentSort, 
-                        per_page: window.productsPerPage,
-                        page: 1
-                    });
-                    const filteredProducts = response.data || [];
-                    renderProductsWithFilter(filteredProducts);
-                    
-                    // Update pagination
-                    if (window.isProductsPage && response.meta) {
-                        renderPagination(response.meta);
-                    }
-
-                    // Update URL to persist state
-                    if (window.isProductsPage) {
-                        const params = new URLSearchParams(window.location.search);
-                        if (filter && filter !== 'all') {
-                            params.set('category', filter);
-                        } else {
-                            params.delete('category');
-                        }
-                        if (currentRoom && currentRoom !== 'all') {
-                            params.set('room', currentRoom);
-                        } else {
-                            params.delete('room');
-                        }
-                        if (currentSort && currentSort !== 'popularity') {
-                            params.set('sort', currentSort);
-                        } else {
-                            params.delete('sort');
-                        }
-                        params.set('page', '1');
-                        const newUrl = window.location.pathname + '?' + params.toString();
-                        window.history.replaceState({}, '', newUrl);
-                    }
-                } catch (error) {
-                    // Filter error, show empty results
-                    renderProductsWithFilter([]);
-                    if (window.isProductsPage) {
-                        document.getElementById('pagination-container').innerHTML = '';
-                    }
-                }
-            });
+        // Attach listeners
+        [filterCategory, filterColor, filterMaterial, filterGemstone, filterDiamonds, filterPrice, sortSelect].forEach(el => {
+            if (el) el.addEventListener('change', handleFilterChange);
         });
 
-        // Sort dropdown
-        
-        if (sortSelect) {
-            sortSelect.addEventListener('change', async () => {
-                const sort = sortSelect.value;
-                window.currentProductsSort = sort;
-                window.currentProductsPage = 1; // Reset to page 1 on sort change
-            
-                // Get current active filter
-                const activeFilterBtn = document.querySelector('.filter-btn.active');
-                const currentFilter = activeFilterBtn ? activeFilterBtn.getAttribute('data-filter') : 'all';
-            
-                try {
-                    // Get current room setting
-                    const currentRoom = roomSelect ? roomSelect.value : 'all';
-                    
-                    const filterParams = {};
-                    if (currentFilter !== 'all') {
-                        filterParams.category = currentFilter;
-                    }
-                    if (currentRoom !== 'all') {
-                        filterParams.room = currentRoom;
-                    }
-                    const response = await window.api.getProducts({ 
-                        ...filterParams, 
-                        sort, 
-                        per_page: window.productsPerPage,
-                        page: 1
-                    });
-                    const sortedProducts = response.data || [];
-                    renderProductsWithFilter(sortedProducts);
-                    
-                    // Update pagination
-                    if (window.isProductsPage && response.meta) {
-                        renderPagination(response.meta);
-                    }
-
-                    // Update URL to persist state
-                    if (window.isProductsPage) {
-                        const params = new URLSearchParams(window.location.search);
-                        if (currentFilter && currentFilter !== 'all') {
-                            params.set('category', currentFilter);
-                        } else {
-                            params.delete('category');
-                        }
-                        if (currentRoom && currentRoom !== 'all') {
-                            params.set('room', currentRoom);
-                        } else {
-                            params.delete('room');
-                        }
-                        if (sort && sort !== 'popularity') {
-                            params.set('sort', sort);
-                        } else {
-                            params.delete('sort');
-                        }
-                        params.set('page', '1');
-                        const newUrl = window.location.pathname + '?' + params.toString();
-                        window.history.replaceState({}, '', newUrl);
-                    }
-                } catch (error) {
-                    // Show error message instead of fallback
-                    showNotification('Unable to sort products. Please try again.', 'error');
-                }
-            });
+        // Initialize UI from URL
+        if (filterCategory) filterCategory.value = urlParams.get('category') || 'all';
+        if (filterColor) filterColor.value = urlParams.get('color') || '';
+        if (filterMaterial) filterMaterial.value = urlParams.get('material') || '';
+        if (filterGemstone) filterGemstone.value = urlParams.get('gemstone') || '';
+        if (filterDiamonds) filterDiamonds.value = urlParams.get('diamonds') || '';
+        if (filterPrice) filterPrice.value = urlParams.get('price') || '';
+        if (sortSelect) sortSelect.value = urlParams.get('sort') || 'popularity';
+        } catch (error) {
+            console.error('Initialization error:', error);
+            initDatabaseProducts();
         }
-
-        // Room dropdown
-        if (roomSelect) {
-            roomSelect.addEventListener('change', async () => {
-                const room = roomSelect.value;
-                window.currentProductsRoom = room;
-                window.currentProductsPage = 1; // Reset to page 1 on room change
-            
-                // Get current active filter and sort
-                const activeFilterBtn = document.querySelector('.filter-btn.active');
-                const currentFilter = activeFilterBtn ? activeFilterBtn.getAttribute('data-filter') : 'all';
-                const currentSort = sortSelect ? sortSelect.value : 'popularity';
-            
-                try {
-                    const filterParams = {};
-                    if (currentFilter !== 'all') {
-                        filterParams.category = currentFilter;
-                    }
-                    if (room !== 'all') {
-                        filterParams.room = room;
-                    }
-                    const response = await window.api.getProducts({ 
-                        ...filterParams, 
-                        sort: currentSort, 
-                        per_page: window.productsPerPage,
-                        page: 1
-                    });
-                    const filteredProducts = response.data || [];
-                    renderProductsWithFilter(filteredProducts);
-                    
-                    // Update pagination
-                    if (window.isProductsPage && response.meta) {
-                        renderPagination(response.meta);
-                    }
-
-                    // Update URL to persist state
-                    if (window.isProductsPage) {
-                        const params = new URLSearchParams(window.location.search);
-                        if (currentFilter && currentFilter !== 'all') {
-                            params.set('category', currentFilter);
-                        } else {
-                            params.delete('category');
-                        }
-                        if (room && room !== 'all') {
-                            params.set('room', room);
-                        } else {
-                            params.delete('room');
-                        }
-                        if (currentSort && currentSort !== 'popularity') {
-                            params.set('sort', currentSort);
-                        } else {
-                            params.delete('sort');
-                        }
-                        params.set('page', '1');
-                        const newUrl = window.location.pathname + '?' + params.toString();
-                        window.history.replaceState({}, '', newUrl);
-                    }
-                } catch (error) {
-                    // Show error message
-                    showNotification('Unable to filter by room. Please try again.', 'error');
-                }
-            });
-        }
-
-    } catch (error) {
-        // Fallback to the original database products function
-        initDatabaseProducts();
-    }
     }
 
 // ── Render Products with Filter (Global) ──
@@ -516,51 +368,60 @@ async function initProductsSection() {
             }
 
             col.innerHTML = `
-                <div class="card product-card flex flex-col h-full rounded-2xl border bg-white">
-                    <div class="relative">
-                        <img src="${getStorageUrl((productData.images && productData.images[0]) || productData.primary_image || productData.image)}" class="w-full h-64 object-cover" alt="${productData.name}">
-                        <div class="absolute inset-0 flex p-4 h-full">
-                            <div class="flex-1">
-                                <div class="rounded-full stock-badge ${productData.stock === 'low' ? 'low' : 'in-stock'} px-3 py-1 text-xs font-medium">
-                                ${productData.stock === 'low' ? 'Low stock' : 'In stock'}
-                            </div>
+                <div class="group flex flex-col h-full bg-white transition-all duration-500">
+                    <div class="relative overflow-hidden bg-[#f9f9f9] aspect-square">
+                        <img src="${getStorageUrl((productData.images && productData.images[0]) || productData.primary_image || productData.image)}" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                             alt="${productData.name}">
+                        
+                        <div class="absolute top-4 right-4 z-10">
+                            <button class="wishlist-btn bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-sm hover:bg-white transition-colors" 
+                                    data-product-id="${productData.id || ''}" onclick="event.stopPropagation();">
+                                <i id="heart-icon-${productData.id || ''}" data-lucide="heart" class="w-4 h-4 text-[#1a1a1a] group-[.is-wishlisted]:fill-red-500 group-[.is-wishlisted]:text-red-500"></i>
+                            </button>
                         </div>
-                        <div class="absolute top-4 right-4">
-                            <button class="wishlist-btn" data-product-id="${productData.id || ''}" onclick="event.stopPropagation();">
-                                <i id="heart-icon-${productData.id || ''}" data-lucide="heart" class="heart-toggle-icon"></i>
+
+                        ${productData.stock === 'low' ? `
+                            <div class="absolute bottom-4 left-4">
+                                <span class="bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-widest px-2 py-1 text-[#B6965D] font-medium">Limited Edition</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <!-- Quick Add Overlay (High-End Editorial Redesign) -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 bg-white/95 backdrop-blur-lg flex gap-2 border-t border-gray-100 z-30">
+                             <button class="btn-quick-view flex-1 bg-[#1a1a1a] border border-[#1A1A1A] text-[#1A1A1A] py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#000000] transition-all duration-400" 
+                                    data-product-id="${productData.id}" data-product-slug="${productData.slug}">
+                                Quick View
+                            </button>
+                            <button class="btn-add-to-cart flex-1 bg-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#a6864d] transition-all duration-400" 
+                                    data-product-id="${productData.id}">
+                                Add to Cart
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="p-4 flex flex-col flex-1">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                        <div class="md:col-span-2">
-                            <h6 class="product-title text-lg font-semibold cursor-pointer hover:text-blue-600 transition-colors" onclick="window.open('/products/${productData.slug || productData.id}', '_blank')">${productData.name}</h6>
-                            <p class="product-desc text-sm text-gray-600">${productData.description}</p>
+                    
+                    <div class="pt-6 pb-2 flex flex-col items-center text-center">
+                        <div class="mb-1">
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-light">
+                                ${productData.category ? productData.category.name : 'Fine Jewelry'}
+                            </span>
                         </div>
-                        <div class="text-right">
-                            <div class="text-gray-500 text-sm">Price</div>
-                            <div class="price text-xl font-bold">₱${Math.floor(productData.price).toLocaleString('en-US')}</div>
-                            <div class="rating flex items-center justify-end mt-1">
-                                <div class="flex items-center space-x-1">
-                                    <i data-lucide="star" class="w-4 h-4 ${productData.average_rating > 0 ? 'text-amber-400 fill-current' : 'text-amber-500'}"></i>
-                                    <span class="text-sm font-medium text-amber-500">${productData.average_rating > 0 ? productData.average_rating.toFixed(1) : '0.0'}</span>
-                                </div>
+                        <h3 class="font-playfair text-lg text-[#1a1a1a] mb-2 cursor-pointer hover:text-[#B6965D] transition-colors line-clamp-1" 
+                            onclick="window.open('/products/${productData.slug || productData.id}', '_blank')">
+                            ${productData.name}
+                        </h3>
+                        <div class="flex items-center gap-3">
+                            <span class="text-[#B6965D] font-medium tracking-wider">₱${Math.floor(productData.price).toLocaleString('en-US')}</span>
+                            <div class="w-1 h-1 rounded-full bg-gray-300"></div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-current"></i>
+                                <span class="text-[11px] text-gray-500">${productData.average_rating > 0 ? productData.average_rating.toFixed(1) : '5.0'}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-auto flex p-4 justify-between">
-                    <button class="btn btn-quick-view max-w-[45%] shrink flex items-center justify-center py-2 px-0" data-product-id="${productData.id}" data-product-slug="${productData.slug}">
-                        <i data-lucide="proportions" class="lucide-small"></i> 
-                        <span class="font-medium ml-2">Quick view</span>
-                    </button>
-                    <button class="btn btn-add-to-cart max-w-[45%] shrink flex items-center justify-center py-2 px-0" data-product-id="${productData.id}" style="cursor: pointer !important;">
-                        <i data-lucide="shopping-cart" class="lucide-small"></i> 
-                        <span class="font-medium ml-2">Add to cart</span>
-                    </button>
-                </div>
-            </div>
             `;
                 grid.appendChild(col);
             });
@@ -2064,25 +1925,21 @@ function initNavbarButtons() {
             event.preventDefault();
             event.stopPropagation();
             
-            // Don't toggle if animating
-            if (isAnimating) {
-                return;
-            }
+            if (isAnimating) return;
             
-            if ($(accountMenu).is(':visible')) {
-                // CLOSE with blind animation
-                isAnimating = true;
-                
-                $(accountMenu).hide('blind', { direction: 'up' }, 300, function() {
+            const isOpen = $(accountMenu).is(':visible');
+            isAnimating = true;
+            
+            if (isOpen) {
+                $(accountMenu).fadeOut(200, function() {
                     isAnimating = false;
                 });
-                
             } else {
-                // OPEN with blind animation  
-                isAnimating = true;
-                
-                $(accountMenu).show('blind', { direction: 'up' }, 300, function() {
+                $(accountMenu).fadeIn(200, function() {
                     isAnimating = false;
+                    // Reset any problematic styles from animations
+                    accountMenu.style.height = 'auto';
+                    accountMenu.style.overflow = 'visible';
                 });
             }
         });
@@ -2348,51 +2205,56 @@ function showNotification(message, type = 'info') {
 async function updateCartCount() {
     try {
         const response = await window.api.getCart();
-        const cartData = response.data;
-        const count = cartData.total_items || 0;
+        const cartData = response.data || response || {};
+        const count = cartData.total_items ?? (Array.isArray(cartData.items) ? cartData.items.length : 0);
         
         const cartCountElement = document.getElementById('cart-count');
+        const offcanvasCartCount = document.getElementById('offcanvas-cart-count');
+        
         if (cartCountElement) {
             if (count > 0) {
-                // Show "9+" if count is greater than 9, otherwise show actual count
                 cartCountElement.textContent = count > 9 ? '9+' : count.toString();
                 cartCountElement.classList.remove('hidden');
             } else {
+                cartCountElement.textContent = '';
                 cartCountElement.classList.add('hidden');
             }
-        } else {
+        }
+        
+        if (offcanvasCartCount) {
+            offcanvasCartCount.textContent = count.toString();
         }
     } catch (error) {
-        // Keep the cart count element hidden on error
         const cartCountElement = document.getElementById('cart-count');
-        if (cartCountElement) {
-            cartCountElement.classList.add('hidden');
-        }
+        if (cartCountElement) cartCountElement.classList.add('hidden');
     }
 }
 
 async function updateWishlistCount() {
     try {
         const response = await window.api.getWishlist();
-        const wishlistItems = response || [];
+        const wishlistItems = Array.isArray(response) ? response : (response.data || []);
         const count = wishlistItems.length || 0;
         
         const wishlistCountElement = document.getElementById('wishlist-count');
+        const offcanvasWishlistCount = document.getElementById('offcanvas-wishlist-count');
+        
         if (wishlistCountElement) {
             if (count > 0) {
-                // Show "9+" if count is greater than 9, otherwise show actual count
                 wishlistCountElement.textContent = count > 9 ? '9+' : count.toString();
                 wishlistCountElement.classList.remove('hidden');
             } else {
+                wishlistCountElement.textContent = '';
                 wishlistCountElement.classList.add('hidden');
             }
         }
-    } catch (error) {
-        // Keep the wishlist count element hidden on error
-        const wishlistCountElement = document.getElementById('wishlist-count');
-        if (wishlistCountElement) {
-            wishlistCountElement.classList.add('hidden');
+        
+        if (offcanvasWishlistCount) {
+            offcanvasWishlistCount.textContent = count.toString();
         }
+    } catch (error) {
+        const wishlistCountElement = document.getElementById('wishlist-count');
+        if (wishlistCountElement) wishlistCountElement.classList.add('hidden');
     }
 }
 

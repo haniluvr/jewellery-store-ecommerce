@@ -20,6 +20,7 @@ class CmsPage extends Model
         'meta_description',
         'meta_keywords',
         'type',
+        'category',
         'is_active',
         'is_featured',
         'featured_image',

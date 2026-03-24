@@ -101,7 +101,7 @@
                     <img src="{{ asset('admin/images/logo/favicon.png') }}" alt="Logo" class="h-8">
                 </div>
                 <div x-show="!sidebarCollapsed" x-transition>
-                    <h1 class="text-gray-900 dark:text-white text-xl font-bold">David's Wood</h1>
+                    <h1 class="text-gray-900 dark:text-white text-xl font-bold">Éclore</h1>
                     <p class="text-gray-500 dark:text-gray-400 text-xs">Admin Panel</p>
                 </div>
             </div>

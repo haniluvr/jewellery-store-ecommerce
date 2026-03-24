@@ -30,8 +30,8 @@ class RefundApprovedMail extends Mailable
     {
         return new Envelope(
             subject: 'Refund Request Approved - '.$this->returnRepair->rma_number.' - David\'s Wood Furniture',
-            from: config('mail.from.address', 'noreply@davidswood.shop'),
-            replyTo: 'hello@davidswood.shop',
+            from: config('mail.from.address', 'noreply@eclore.shop'),
+            replyTo: 'hello@eclore.shop',
         );
     }
 

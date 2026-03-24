@@ -177,7 +177,7 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                David's Wood Furniture
+                Éclore
             </div>
             <div class="invoice-title">
                 <h1>INVOICE</h1>
@@ -302,7 +302,7 @@
         <!-- Footer -->
         <div class="footer">
             <p>Thank you for your business!</p>
-            <p>David's Wood Furniture - Quality furniture for your home</p>
+            <p>Éclore - Quality furniture for your home</p>
             <p>For questions about this invoice, please contact our customer service team.</p>
         </div>
     </div>

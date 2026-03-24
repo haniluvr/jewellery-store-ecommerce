@@ -100,8 +100,8 @@ If emails are not sending, check:
    MAIL_USERNAME=your-username
    MAIL_PASSWORD=your-password
    MAIL_ENCRYPTION=tls
-   MAIL_FROM_ADDRESS=noreply@davidswood.shop
-   MAIL_FROM_NAME="David's Wood Furniture"
+   MAIL_FROM_ADDRESS=noreply@eclore.shop
+   MAIL_FROM_NAME="Éclore"
    ```
 
 2. Check logs: `storage/logs/laravel.log` for email errors

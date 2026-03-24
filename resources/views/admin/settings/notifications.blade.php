@@ -407,7 +407,7 @@
                         type="email"
                         id="admin_notification_email"
                         name="admin_notification_email"
-                        value="{{ old('admin_notification_email', setting('admin_notification_email', 'admin@davidswood.com')) }}"
+                        value="{{ old('admin_notification_email', setting('admin_notification_email', 'admin@eclore.com')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('admin_notification_email') border-red-500 @enderror"
                     />
                     @error('admin_notification_email')
@@ -441,7 +441,7 @@
                         type="email"
                         id="manager_notification_email"
                         name="manager_notification_email"
-                        value="{{ old('manager_notification_email', setting('manager_notification_email', 'manager@davidswood.com')) }}"
+                        value="{{ old('manager_notification_email', setting('manager_notification_email', 'manager@eclore.com')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('manager_notification_email') border-red-500 @enderror"
                     />
                     @error('manager_notification_email')
@@ -458,7 +458,7 @@
                         type="email"
                         id="support_notification_email"
                         name="support_notification_email"
-                        value="{{ old('support_notification_email', setting('support_notification_email', 'support@davidswood.com')) }}"
+                        value="{{ old('support_notification_email', setting('support_notification_email', 'support@eclore.com')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('support_notification_email') border-red-500 @enderror"
                     />
                     @error('support_notification_email')

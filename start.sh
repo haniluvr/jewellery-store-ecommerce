@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # Simplified Laravel startup script for Docker Compose
 echo "Starting Laravel application..."
@@ -9,7 +9,7 @@ export PORT=${PORT:-80}
 # Create .env file with environment variables from Docker Compose
 echo "Creating .env file..."
 cat > .env << EOF
-APP_NAME="David's Wood Furniture"
+APP_NAME="Éclore"
 APP_ENV=${APP_ENV:-production}
 APP_DEBUG=${APP_DEBUG:-false}
 APP_KEY=
@@ -22,7 +22,7 @@ DB_CONNECTION=${DB_CONNECTION:-mysql}
 DB_HOST=${DB_HOST:-mysql}
 DB_PORT=${DB_PORT:-3306}
 DB_DATABASE=${DB_DATABASE:-davids_wood}
-DB_USERNAME=${DB_USERNAME:-davidswood_user}
+DB_USERNAME=${DB_USERNAME:-eclore_user}
 DB_PASSWORD=${DB_PASSWORD}
 
 BROADCAST_DRIVER=log
@@ -43,9 +43,9 @@ MAIL_USERNAME=${MAIL_USERNAME}
 MAIL_PASSWORD=${MAIL_PASSWORD}
 MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}
 MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
-MAIL_FROM_NAME=${MAIL_FROM_NAME:-"David's Wood Furniture"}
+MAIL_FROM_NAME=${MAIL_FROM_NAME:-"Éclore"}
 
-VITE_APP_NAME="David's Wood Furniture"
+VITE_APP_NAME="Éclore"
 EOF
 
 # Generate APP_KEY

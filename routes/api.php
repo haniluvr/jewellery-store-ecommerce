@@ -12,11 +12,34 @@ Route::get('/products', function (Request $request) {
         $query = \App\Models\Product::where('is_active', true)
             ->with(['category']);
 
-        // Handle filtering
-        if ($request->has('category') && $request->get('category') !== 'all') {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->get('category'));
-            });
+        // Handle jewelry-specific filters
+        $jewelryFilters = ['color', 'material', 'gemstone', 'diamonds', 'category'];
+        foreach ($jewelryFilters as $filter) {
+            if ($request->has($filter) && $request->get($filter) !== '' && $request->get($filter) !== 'all') {
+                if ($filter === 'category') {
+                    $query->whereHas('category', function ($q) use ($request) {
+                        $q->where('slug', $request->get('category'));
+                    });
+                } else {
+                    $query->where($filter, $request->get($filter));
+                }
+            }
+        }
+
+        // Handle price range filtering
+        if ($request->has('price') && $request->get('price') !== '') {
+            $priceRange = $request->get('price');
+            switch ($priceRange) {
+                case 'under-50k':
+                    $query->where('price', '<', 50000);
+                    break;
+                case '50k-100k':
+                    $query->whereBetween('price', [50000, 100000]);
+                    break;
+                case 'over-100k':
+                    $query->where('price', '>', 100000);
+                    break;
+            }
         }
 
         // Handle room filtering

@@ -28,10 +28,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Production domains
         if ($appEnv === 'production') {
-            if ($host === 'admin.davidswood.shop' || str_contains($host, 'admin.davidswood.shop')) {
-                config(['app.url' => 'https://admin.davidswood.shop']);
-            } elseif ($host === 'davidswood.shop' || str_contains($host, 'davidswood.shop')) {
-                config(['app.url' => 'https://davidswood.shop']);
+            if ($host === 'admin.eclore.shop' || str_contains($host, 'admin.eclore.shop')) {
+                config(['app.url' => 'https://admin.eclore.shop']);
+            } elseif ($host === 'eclore.shop' || str_contains($host, 'eclore.shop')) {
+                config(['app.url' => 'https://eclore.shop']);
             } else {
                 // Fallback: construct URL from current request in production
                 $portString = (($scheme === 'https' && $port === 443) || ($scheme === 'http' && $port === 80)) ? '' : ':'.$port;
@@ -40,10 +40,10 @@ class AppServiceProvider extends ServiceProvider
         }
         // Local development domains
         elseif ($appEnv === 'local') {
-            if ($host === 'admin.davidswood.test') {
-                config(['app.url' => 'https://admin.davidswood.test:8443']);
-            } elseif ($host === 'davidswood.test') {
-                config(['app.url' => 'https://davidswood.test:8443']);
+            if ($host === 'admin.eclore.test') {
+                config(['app.url' => 'https://admin.eclore.test:8443']);
+            } elseif ($host === 'eclore.test') {
+                config(['app.url' => 'https://eclore.test:8443']);
             } elseif ($host === 'admin.localhost') {
                 config(['app.url' => 'http://admin.localhost:8080']);
             } elseif ($host === 'localhost') {

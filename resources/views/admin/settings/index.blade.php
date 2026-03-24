@@ -32,11 +32,11 @@
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Name</label>
-                    <input type="text" name="site_name" value="{{ old('site_name', "David's Wood Furniture") }}" class="mt-1 w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-form-input py-2 px-3" />
+                    <input type="text" name="site_name" value="{{ old('site_name', "Éclore") }}" class="mt-1 w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-form-input py-2 px-3" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Email</label>
-                    <input type="email" name="site_email" value="{{ old('site_email', 'info@davidswoodfurniture.com') }}" class="mt-1 w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-form-input py-2 px-3" />
+                    <input type="email" name="site_email" value="{{ old('site_email', 'hello@eclorejewellery.shop') }}" class="mt-1 w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-form-input py-2 px-3" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Currency</label>

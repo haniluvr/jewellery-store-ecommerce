@@ -2,33 +2,30 @@
 
 @section('content')
 <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #8B7355; margin: 0;">Complete Your Login</h1>
-    <p style="color: #666; margin: 10px 0 0 0; font-style: italic;">David's Wood Furnitures</p>
+    <h1 style="color: #1A1A1A; margin: 0; font-family: 'Playfair Display', serif;">Secure Authentication</h1>
 </div>
 
-<div style="background: #F8F8F8; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 0.75px solid #8B7355;">
-    <h2 style="color: #8B7355; margin: 0 0 20px 0;">Hello {{ $user->first_name }},</h2>
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
+    <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Dear {{ $user->first_name }},</h2>
     
-    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0;">
-        You're almost logged in! Click the button below to complete your two-factor authentication and access your account.
+    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0; font-weight: 300;">
+        You are moments away from accessing your portfolio. Please proceed by clicking the secure link below.
     </p>
 
     <div style="text-align: center; margin: 30px 0;">
         @if($user instanceof \App\Models\Admin)
-            <a href="{{ admin_route('verify-magic-link', $token) }}" 
-               style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px;">
-                Complete Login
+            <a href="{{ admin_route('verify-magic-link', $token) }}" class="button" style="margin: 0 auto;">
+                AUTHENTICATE NOW
             </a>
         @else
-            <a href="{{ route('auth.verify-email', $token) }}" 
-               style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px;">
-                Complete Login
+            <a href="{{ route('auth.verify-email', $token) }}" class="button" style="margin: 0 auto;">
+                AUTHENTICATE NOW
             </a>
         @endif
     </div>
 
-    <p style="color: #666; font-size: 14px; margin: 20px 0 0 0;">
-        This link will expire in 1 hour for security reasons.
+    <p style="color: #555; font-size: 11px; font-family: 'Azeret Mono', monospace; text-transform: uppercase; margin: 20px 0 0 0; text-align: center;">
+        Valid for 1 Hour
     </p>
 </div>
 

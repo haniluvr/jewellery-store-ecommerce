@@ -1,4 +1,4 @@
-# David's Wood Furniture - S3 Storage Enabled - E-Commerce Platform 🚀
+﻿# Éclore - S3 Storage Enabled - E-Commerce Platform 🚀
 
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-12.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12.0">
@@ -110,23 +110,23 @@ A modern, full-featured e-commerce platform for a wood furniture business, built
 
 ## Demo
 
-**Public Site**: `https://davidswood.test:8443`  
-**Admin Panel**: `https://admin.davidswood.test:8443`
+**Public Site**: `https://eclore.test:8443`  
+**Admin Panel**: `https://admin.eclore.test:8443`
 
 > **Note**: The site runs on custom ports (8080 for HTTP, 8443 for HTTPS) to avoid conflicts with other services.
 
 ### Default Admin Credentials
 ```
 Super Admin:
-Email: admin@davidswood.com
+Email: admin@eclore.com
 Password: password123
 
 Manager:
-Email: manager@davidswood.com
+Email: manager@eclore.com
 Password: password123
 
 Staff:
-Email: staff@davidswood.com
+Email: staff@eclore.com
 Password: password123
 ```
 
@@ -188,7 +188,7 @@ php artisan key:generate
 
 ### 2. Subdomain Configuration
 
-The admin panel is accessed via a subdomain (`admin.davidswood.test`). Follow these steps to configure it:
+The admin panel is accessed via a subdomain (`admin.eclore.test`). Follow these steps to configure it:
 
 #### Windows (XAMPP)
 
@@ -197,8 +197,8 @@ The admin panel is accessed via a subdomain (`admin.davidswood.test`). Follow th
 File Location: C:\Windows\System32\drivers\etc\hosts
 
 Add these lines:
-127.0.0.1    davidswood.test
-127.0.0.1    admin.davidswood.test
+127.0.0.1    eclore.test
+127.0.0.1    admin.eclore.test
 ```
 
 **Step 2: Configure Apache Virtual Hosts**
@@ -208,30 +208,30 @@ File Location: C:\xampp\apache\conf\extra\httpd-vhosts.conf
 # Main domain
 <VirtualHost *:80>
     DocumentRoot "C:/xampp/htdocs/davids-wood-furniture/public"
-    ServerName davidswood.test
-    ServerAlias www.davidswood.test
+    ServerName eclore.test
+    ServerAlias www.eclore.test
     
     <Directory "C:/xampp/htdocs/davids-wood-furniture/public">
         AllowOverride All
         Require all granted
     </Directory>
     
-    ErrorLog "logs/davidswood-error.log"
-    CustomLog "logs/davidswood-access.log" common
+    ErrorLog "logs/eclore-error.log"
+    CustomLog "logs/eclore-access.log" common
 </VirtualHost>
 
 # Admin subdomain
 <VirtualHost *:80>
     DocumentRoot "C:/xampp/htdocs/davids-wood-furniture/public"
-    ServerName admin.davidswood.test
+    ServerName admin.eclore.test
     
     <Directory "C:/xampp/htdocs/davids-wood-furniture/public">
         AllowOverride All
         Require all granted
     </Directory>
     
-    ErrorLog "logs/admin-davidswood-error.log"
-    CustomLog "logs/admin-davidswood-access.log" common
+    ErrorLog "logs/admin-eclore-error.log"
+    CustomLog "logs/admin-eclore-access.log" common
 </VirtualHost>
 ```
 
@@ -259,12 +259,12 @@ For secure local development with HTTPS on port 8443:
 
 **Create Certificate Directories** (Windows - XAMPP)
 ```powershell
-mkdir C:\xampp\apache\conf\ssl.crt\davidswood
+mkdir C:\xampp\apache\conf\ssl.crt\eclore
 ```
 
 **Create OpenSSL Configuration File**
 
-Create `C:\xampp\apache\conf\ssl.crt\davidswood\req-v2.conf`:
+Create `C:\xampp\apache\conf\ssl.crt\eclore\req-v2.conf`:
 ```ini
 [req]
 default_bits = 2048
@@ -279,7 +279,7 @@ ST = State
 L = City
 O = Organization
 OU = Organizational Unit
-CN = davidswood.test
+CN = eclore.test
 
 [v3_req]
 subjectAltName = @alt_names
@@ -288,9 +288,9 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
 
 [alt_names]
-DNS.1 = davidswood.test
-DNS.2 = *.davidswood.test
-DNS.3 = admin.davidswood.test
+DNS.1 = eclore.test
+DNS.2 = *.eclore.test
+DNS.3 = admin.eclore.test
 ```
 
 **Generate Certificate with Proper Extensions**
@@ -300,9 +300,9 @@ cd C:\xampp\apache\bin
 
 # Generate certificate (valid for 365 days) with SAN
 .\openssl.exe req -new -x509 -nodes -days 365 `
-  -keyout C:\xampp\apache\conf\ssl.crt\davidswood\davidswood-v2.key `
-  -out C:\xampp\apache\conf\ssl.crt\davidswood\davidswood-v2.crt `
-  -config C:\xampp\apache\conf\ssl.crt\davidswood\req-v2.conf `
+  -keyout C:\xampp\apache\conf\ssl.crt\eclore\eclore-v2.key `
+  -out C:\xampp\apache\conf\ssl.crt\eclore\eclore-v2.crt `
+  -config C:\xampp\apache\conf\ssl.crt\eclore\req-v2.conf `
   -extensions v3_req
 ```
 
@@ -310,18 +310,18 @@ cd C:\xampp\apache\bin
 
 **Create HTTPS Virtual Hosts**
 
-Create `C:\xampp\apache\conf\extra\httpd-davidswood-ssl.conf`:
+Create `C:\xampp\apache\conf\extra\httpd-eclore-ssl.conf`:
 ```apache
-# SSL Configuration for davidswood.test on port 8443
+# SSL Configuration for eclore.test on port 8443
 <VirtualHost *:8443>
     DocumentRoot "C:/xampp/htdocs/davids-wood-furniture/public"
-    ServerName davidswood.test:8443
-    ServerAlias www.davidswood.test:8443
+    ServerName eclore.test:8443
+    ServerAlias www.eclore.test:8443
     
     # SSL Configuration
     SSLEngine on
-    SSLCertificateFile "conf/ssl.crt/davidswood/davidswood-v2.crt"
-    SSLCertificateKeyFile "conf/ssl.crt/davidswood/davidswood-v2.key"
+    SSLCertificateFile "conf/ssl.crt/eclore/eclore-v2.crt"
+    SSLCertificateKeyFile "conf/ssl.crt/eclore/eclore-v2.key"
     
     # Modern SSL Configuration
     SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
@@ -329,8 +329,8 @@ Create `C:\xampp\apache\conf\extra\httpd-davidswood-ssl.conf`:
     SSLHonorCipherOrder on
     
     # Logging
-    ErrorLog "C:/xampp/apache/logs/davidswood_ssl_error.log"
-    TransferLog "C:/xampp/apache/logs/davidswood_ssl_access.log"
+    ErrorLog "C:/xampp/apache/logs/eclore_ssl_error.log"
+    TransferLog "C:/xampp/apache/logs/eclore_ssl_access.log"
     
     # Directory configuration
     <Directory "C:/xampp/htdocs/davids-wood-furniture/public">
@@ -341,15 +341,15 @@ Create `C:\xampp\apache\conf\extra\httpd-davidswood-ssl.conf`:
     </Directory>
 </VirtualHost>
 
-# SSL Configuration for admin.davidswood.test on port 8443
+# SSL Configuration for admin.eclore.test on port 8443
 <VirtualHost *:8443>
     DocumentRoot "C:/xampp/htdocs/davids-wood-furniture/public"
-    ServerName admin.davidswood.test:8443
+    ServerName admin.eclore.test:8443
     
     # SSL Configuration
     SSLEngine on
-    SSLCertificateFile "conf/ssl.crt/davidswood/davidswood-v2.crt"
-    SSLCertificateKeyFile "conf/ssl.crt/davidswood/davidswood-v2.key"
+    SSLCertificateFile "conf/ssl.crt/eclore/eclore-v2.crt"
+    SSLCertificateKeyFile "conf/ssl.crt/eclore/eclore-v2.key"
     
     # Modern SSL Configuration
     SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
@@ -357,8 +357,8 @@ Create `C:\xampp\apache\conf\extra\httpd-davidswood-ssl.conf`:
     SSLHonorCipherOrder on
     
     # Logging
-    ErrorLog "C:/xampp/apache/logs/admin_davidswood_ssl_error.log"
-    TransferLog "C:/xampp/apache/logs/admin_davidswood_ssl_access.log"
+    ErrorLog "C:/xampp/apache/logs/admin_eclore_ssl_error.log"
+    TransferLog "C:/xampp/apache/logs/admin_eclore_ssl_access.log"
     
     # Directory configuration
     <Directory "C:/xampp/htdocs/davids-wood-furniture/public">
@@ -378,7 +378,7 @@ Edit `C:\xampp\apache\conf\httpd.conf`:
 Listen 8443
 
 # Include SSL configuration at the end of the file
-Include conf/extra/httpd-davidswood-ssl.conf
+Include conf/extra/httpd-eclore-ssl.conf
 ```
 
 **Install Certificate to Trust Store (Windows)**
@@ -386,10 +386,10 @@ Include conf/extra/httpd-davidswood-ssl.conf
 Run PowerShell as Administrator:
 ```powershell
 # Install the certificate to Trusted Root Certification Authorities
-certutil -addstore -f "ROOT" "C:\xampp\apache\conf\ssl.crt\davidswood\davidswood-v2.crt"
+certutil -addstore -f "ROOT" "C:\xampp\apache\conf\ssl.crt\eclore\eclore-v2.crt"
 
 # Verify installation
-certutil -store "ROOT" | findstr -i "davidswood"
+certutil -store "ROOT" | findstr -i "eclore"
 ```
 
 **Restart Apache**
@@ -496,10 +496,10 @@ php artisan optimize:clear
 
 Update `.env` with your settings:
 ```env
-APP_NAME="David's Wood Furniture"
+APP_NAME="Éclore"
 APP_ENV=local
 APP_DEBUG=true
-APP_URL=https://davidswood.test:8443
+APP_URL=https://eclore.test:8443
 
 # Session
 SESSION_DRIVER=database
@@ -518,7 +518,7 @@ MAIL_PORT=2525
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="noreply@davidswood.test"
+MAIL_FROM_ADDRESS="noreply@eclore.test"
 MAIL_FROM_NAME="${APP_NAME}"
 
 # Google OAuth (optional)
@@ -588,13 +588,13 @@ npm run dev
 ```
 
 Access the application:
-- **Public Site**: `https://davidswood.test:8443`
-- **Admin Panel**: `https://admin.davidswood.test:8443`
-- **HTTP Access**: `http://davidswood.test:8080` (redirects to HTTPS)
+- **Public Site**: `https://eclore.test:8443`
+- **Admin Panel**: `https://admin.eclore.test:8443`
+- **HTTP Access**: `http://eclore.test:8080` (redirects to HTTPS)
 
 ### Using the Admin Panel
 
-1. Navigate to `stilhttps://admin.davidswood.test:8443/login`
+1. Navigate to `stilhttps://admin.eclore.test:8443/login`
 2. Login with admin credentials (see [Demo](#-demo) section)
 3. Access available features:
    - **Dashboard**: View statistics and recent activity
@@ -1098,7 +1098,7 @@ davids-wood-furniture/
 #### Message Management Enhancements
 - **Message Reply System**: Complete message reply functionality
   - Fixed message reply route and controller handling
-  - Email reply system with proper from/replyTo addresses (`hello@davidswood.shop` for replies)
+  - Email reply system with proper from/replyTo addresses (`hello@eclore.shop` for replies)
   - Custom notification UI replacing browser-native alerts
   - Improved error visibility and user feedback
   - Automatic notification marking as read when message is viewed/replied
@@ -1144,7 +1144,7 @@ davids-wood-furniture/
 - **Environment-Aware Routing**: Centralized route generation system
   - `AdminRouteHelper` for dynamic URL generation based on environment
   - Automatic detection of local vs. production environments
-  - Support for multiple local environments (admin.localhost, admin.davidswood.test)
+  - Support for multiple local environments (admin.localhost, admin.eclore.test)
   - Port-aware URL generation (8080, 8443, etc.)
   - `rebuildUrl()` method for fixing notification links
   - Consistent URL generation across all admin routes
@@ -1841,8 +1841,8 @@ davids-wood-furniture/
 ### Version 1.4.7 (October 2025)
 
 #### Domain & Routing Updates
-- **Migrated to custom domain**: Changed from localhost to `davidswood.test`
-- **Subdomain implementation**: Admin panel now accessible at `admin.davidswood.test`
+- **Migrated to custom domain**: Changed from localhost to `eclore.test`
+- **Subdomain implementation**: Admin panel now accessible at `admin.eclore.test`
 - **Dynamic URL configuration**: Updated all frontend JavaScript files to use dynamic API endpoints
 - **Route fixes**: Corrected admin navigation routes
 
@@ -1953,7 +1953,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ```
 MIT License
 
-Copyright (c) 2025 David's Wood Furniture
+Copyright (c) 2025 Éclore
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -2133,20 +2133,20 @@ sudo chmod -R 775 storage bootstrap/cache
 **Step 1: Verify certificate has SAN (Subject Alternative Names)**
 ```powershell
 cd C:\xampp\apache\bin
-.\openssl.exe x509 -in C:\xampp\apache\conf\ssl.crt\davidswood\davidswood-v2.crt -text -noout | Select-String -Pattern "DNS:"
+.\openssl.exe x509 -in C:\xampp\apache\conf\ssl.crt\eclore\eclore-v2.crt -text -noout | Select-String -Pattern "DNS:"
 ```
-Should show: `DNS:davidswood.test, DNS:*.davidswood.test, DNS:admin.davidswood.test`
+Should show: `DNS:eclore.test, DNS:*.eclore.test, DNS:admin.eclore.test`
 
 **Step 2: Install certificate to Windows Trust Store** (Run PowerShell as Administrator)
 ```powershell
 # Remove old certificate (if exists)
-certutil -delstore "ROOT" "davidswood.test"
+certutil -delstore "ROOT" "eclore.test"
 
 # Install new certificate
-certutil -addstore -f "ROOT" "C:\xampp\apache\conf\ssl.crt\davidswood\davidswood-v2.crt"
+certutil -addstore -f "ROOT" "C:\xampp\apache\conf\ssl.crt\eclore\eclore-v2.crt"
 
 # Verify installation
-certutil -store "ROOT" | findstr -i "davidswood"
+certutil -store "ROOT" | findstr -i "eclore"
 ```
 
 **Step 3: Clear browser cache and SSL state**
@@ -2154,13 +2154,13 @@ certutil -store "ROOT" | findstr -i "davidswood"
 2. Press `Ctrl+Shift+Delete`
 3. Clear "Cached images and files" and "Cookies"
 4. Restart browser
-5. Visit `https://davidswood.test:8443`
+5. Visit `https://eclore.test:8443`
 
 **Step 4: If still not working, check Apache is using correct certificate**
 ```apache
-# In C:\xampp\apache\conf\extra\httpd-davidswood-ssl.conf
-SSLCertificateFile "conf/ssl.crt/davidswood/davidswood-v2.crt"
-SSLCertificateKeyFile "conf/ssl.crt/davidswood/davidswood-v2.key"
+# In C:\xampp\apache\conf\extra\httpd-eclore-ssl.conf
+SSLCertificateFile "conf/ssl.crt/eclore/eclore-v2.crt"
+SSLCertificateKeyFile "conf/ssl.crt/eclore/eclore-v2.key"
 ```
 
 **Step 5: Restart Apache**
@@ -2168,7 +2168,7 @@ SSLCertificateKeyFile "conf/ssl.crt/davidswood/davidswood-v2.key"
 
 #### Issue: Admin subdomain not working
 **Solution:**
-1. Verify hosts file includes `admin.davidswood.test`
+1. Verify hosts file includes `admin.eclore.test`
 2. Check virtual host configuration
 3. Ensure subdomain routes are defined in `routes/web.php`
 4. Clear route cache: `php artisan route:clear`
@@ -2423,12 +2423,12 @@ php artisan db:seed
 
 # 5. Configure hosts (Windows - as Administrator)
 # Add to C:\Windows\System32\drivers\etc\hosts:
-# 127.0.0.1    davidswood.test
-# 127.0.0.1    admin.davidswood.test
+# 127.0.0.1    eclore.test
+# 127.0.0.1    admin.eclore.test
 
 # 6. Setup Apache virtual hosts and SSL (see Installation section)
-# - Configure httpd-davidswood-ssl.conf (port 8443)
-# - Configure httpd-davidswood.conf (port 8080 redirects)
+# - Configure httpd-eclore-ssl.conf (port 8443)
+# - Configure httpd-eclore.conf (port 8080 redirects)
 # - Generate SSL certificates with SAN
 # - Install certificate to trust store
 
@@ -2446,12 +2446,12 @@ npm run build
 # 9. Start Apache via XAMPP Control Panel
 
 # 10. Access the application
-# Public: https://davidswood.test:8443
-# Admin: https://admin.davidswood.test:8443
+# Public: https://eclore.test:8443
+# Admin: https://admin.eclore.test:8443
 # For OAuth: https://localhost:8443
 ```
 
 ---
 
-<p align="center">Made with care by David's Wood Furniture Team</p>
-<p align="center">© 2025 David's Wood Furniture. All rights reserved.</p>
+<p align="center">Made with care by Éclore Team</p>
+<p align="center">© 2025 Éclore. All rights reserved.</p>

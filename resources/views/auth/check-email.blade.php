@@ -1,228 +1,225 @@
 @extends('layouts.app')
 
+@section('title', 'Check Your Email | Éclore')
+
 @push('styles')
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f3efe7;
-        min-height: 100vh;
-    }
-    
-    .check-email-container {
-        min-height: 100vh;
+    .verification-page {
+        width: 100%;
+        min-height: calc(100vh - 104px);
+        background-image: url('{{ asset("frontend/assets/category-bracelet.webp") }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem;
         position: relative;
+        padding: 4rem 1rem;
     }
-    
-    .check-email-content {
-        max-width: 800px;
+
+    .verification-page::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1;
+    }
+
+    .glass-card {
         width: 100%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        align-items: center;
+        grid-template-columns: 1fr 1.2fr;
+        position: relative;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    
-    .check-email-info {
-        padding-right: 2rem;
+
+    .card-left {
+        padding: 5rem 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.2);
     }
-    
-    .check-email-title {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 1.5rem;
-        line-height: 3rem;
+
+    .card-right {
+        padding: 5rem 4rem;
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    
-    .check-email-description {
-        font-size: 1.1rem;
-        color: #4a4a4a;
-        line-height: 1.6;
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #fff;
         margin-bottom: 2rem;
     }
-    
-    .check-email-form {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
+
+    .hero-description {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        line-height: 2.2;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
     }
-    
-    .form-group {
-        margin-bottom: 2rem;
-    }
-    
+
     .form-label {
-        display: block;
-        font-weight: 600;
-        color: #1a1a1a;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
         margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        display: block;
     }
-    
-    .form-input {
+
+    .form-input-premium {
         width: 100%;
-        padding: 0.75rem 0;
-        border: none;
-        border-bottom: 2px solid #8B7355;
         background: transparent;
-        font-size: 1rem;
-        color: #1a1a1a;
-        transition: border-color 0.3s ease;
-    }
-    
-    .form-input:focus {
-        outline: none;
-        border-bottom-color: #6b5b47;
-    }
-    
-    .form-input::placeholder {
-        color: #999;
-    }
-    
-    .btn-primary {
-        background: white;
-        color: #1a1a1a;
-        border: 2px solid #8B7355;
-        padding: 1rem 2rem;
-        border-radius: 25px;
-        font-weight: 600;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 0;
+        color: #fff;
+        font-family: 'Azeret Mono', monospace;
         font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        cursor: pointer;
         transition: all 0.3s ease;
+    }
+
+    .form-input-premium:focus {
+        outline: none;
+        border-bottom-color: #B6965D;
+    }
+    
+    .form-input-premium[readonly] {
+        opacity: 0.7;
+        cursor: not-allowed;
+        border-bottom-style: dashed;
+    }
+
+    .btn-gold {
         width: 100%;
+        background: #B6965D;
+        color: #fff;
+        padding: 1.25rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: none;
+        margin-top: 1rem;
+        cursor: pointer;
+        display: block;
+        text-align: center;
     }
-    
-    .btn-primary:hover {
-        background: #8B7355;
-        color: white;
+
+    .btn-gold:hover {
+        background: #D4AF37;
+        transform: translateY(-2px);
     }
-    
+
     .status-message {
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-weight: 500;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        padding: 1.25rem;
+        margin-bottom: 2rem;
+        border: 1px solid transparent;
         display: flex;
         align-items: center;
+        gap: 0.75rem;
+        animation: fadeIn 0.4s ease-out;
     }
-    
+
     .status-message.success {
-        background: #f0f9f0;
-        color: #065f46;
-        border: 1px solid #10b981;
+        background: rgba(182, 150, 93, 0.1);
+        border-color: rgba(182, 150, 93, 0.3);
+        color: #B6965D;
     }
-    
-    .status-message.error {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #ef4444;
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .status-message i {
-        margin-right: 0.5rem;
-    }
-    
-    .brown-accent {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 4px;
-        height: 100%;
-        background: #8B7355;
-    }
-    
+
     @media (max-width: 768px) {
-        .check-email-content {
+        .glass-card {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            margin: 0 1rem;
         }
-        
-        .check-email-info {
-            padding-right: 0;
-            text-align: center;
+        .card-left {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem;
         }
-        
-        .check-email-title {
-            font-size: 2rem;
-        }
-        
-        .brown-accent {
-            display: none;
+        .card-right {
+            padding: 4rem 2rem;
         }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="check-email-container">
-    <div class="brown-accent"></div>
-    
-    <div class="check-email-content">
-        <!-- Left Section - Information -->
-        <div class="check-email-info">
-            <h1 class="check-email-title">Check Your Email</h1>
-            <p class="check-email-description">
-                We've sent you a secure magic link to complete your login. Please check your email inbox and click the link to continue.
+<div class="verification-page">
+    <div class="glass-card" data-aos="zoom-in">
+        <!-- Sidebar Content -->
+        <div class="card-left" data-aos="fade-right" data-aos-delay="200">
+            <h1 class="hero-title">Check Your Email</h1>
+            <p class="hero-description">
+                A secure login link has been dispatched to your designated electronic address.
+                <br><br>
+                Please verify your inbox to seamlessly access the Éclore sanctuary.
             </p>
         </div>
-        
-        <!-- Right Section - Form -->
-        <div class="check-email-form">
-            <!-- Status Messages -->
-            <div id="status-messages"></div>
-            
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" placeholder="your.email@example.com" readonly>
+
+        <!-- Action Form -->
+        <div class="card-right" data-aos="fade-left" data-aos-delay="400">
+            <div id="status-messages">
+                <div class="status-message success">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> Magic link successfully sent.
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label class="form-label">Status</label>
-                <input type="text" class="form-input" value="Magic link sent" readonly>
-            </div>
-            
-            <button type="button" class="btn-primary" onclick="window.location.href='{{ route('login') }}'">
-                Back to Login
-            </button>
+
+            <form class="space-y-8">
+                <div class="form-group mb-10">
+                    <label class="form-label">AUTHENTICATION EMAIL</label>
+                    <input 
+                        type="email" 
+                        class="form-input-premium" 
+                        placeholder="your@email.com"
+                        value="{{ session('email') ?? '' }}"
+                        readonly
+                    >
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <a href="{{ route('login') }}" class="btn-gold">
+                        RETURN TO SIGN IN
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Lucide icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
-    }
-    
-    function showMessage(type, message) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `status-message ${type}`;
-        messageDiv.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4"></i> ${message}`;
-        document.getElementById('status-messages').appendChild(messageDiv);
-        
-        // Re-initialize Lucide icons
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        
-        // Auto-hide success messages after 5 seconds
-        if (type === 'success') {
-            setTimeout(() => {
-                messageDiv.remove();
-            }, 5000);
-        }
     }
 });
 </script>
 @endsection
-
-

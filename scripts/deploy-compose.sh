@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Docker Compose Deployment Script for David's Wood Furniture
+# Docker Compose Deployment Script for Éclore
 # This script handles deployment using docker-compose on EC2
 
 set -e
@@ -70,7 +70,7 @@ create_env_file() {
 # Generated on $(date)
 
 # Application
-APP_NAME="David's Wood Furniture"
+APP_NAME="Éclore"
 APP_ENV=production
 APP_DEBUG=false
 APP_KEY=
@@ -81,7 +81,7 @@ DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=davids_wood
-DB_USERNAME=davidswood_user
+DB_USERNAME=eclore_user
 DB_PASSWORD=$DB_PASSWORD
 
 # MySQL Root
@@ -119,7 +119,7 @@ BROADCAST_DRIVER=log
 FILESYSTEM_DISK=local
 
 # Vite
-VITE_APP_NAME="David's Wood Furniture"
+VITE_APP_NAME="Éclore"
 
 # ECR Configuration
 ECR_REGISTRY=$ECR_REGISTRY
@@ -197,7 +197,7 @@ wait_for_health() {
     print_status "Waiting for MySQL to be ready..."
     timeout=60
     counter=0
-    until docker-compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" exec -T mysql mysqladmin ping -h localhost -u davidswood_user -p"$DB_PASSWORD" 2>/dev/null; do
+    until docker-compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" exec -T mysql mysqladmin ping -h localhost -u eclore_user -p"$DB_PASSWORD" 2>/dev/null; do
         echo "MySQL is unavailable - sleeping ($counter/$timeout)"
         sleep 2
         counter=$((counter + 2))
@@ -294,7 +294,7 @@ cleanup() {
 
 # Main deployment function
 main() {
-    print_status "Starting Docker Compose deployment for David's Wood Furniture"
+    print_status "Starting Docker Compose deployment for Éclore"
     print_status "Deployment started at: $(date)"
     
     # Run deployment steps

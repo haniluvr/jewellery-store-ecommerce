@@ -177,7 +177,7 @@
                         type="email"
                         id="mail_from_address"
                         name="mail_from_address"
-                        value="{{ old('mail_from_address', setting('mail_from_address', 'noreply@davidswood.com')) }}"
+                        value="{{ old('mail_from_address', setting('mail_from_address', 'noreply@eclore.com')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('mail_from_address') border-red-500 @enderror"
                     />
                     @error('mail_from_address')
@@ -211,7 +211,7 @@
                         type="email"
                         id="mail_reply_to_address"
                         name="mail_reply_to_address"
-                        value="{{ old('mail_reply_to_address', setting('mail_reply_to_address', 'support@davidswood.com')) }}"
+                        value="{{ old('mail_reply_to_address', setting('mail_reply_to_address', 'support@eclore.com')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('mail_reply_to_address') border-red-500 @enderror"
                     />
                     @error('mail_reply_to_address')

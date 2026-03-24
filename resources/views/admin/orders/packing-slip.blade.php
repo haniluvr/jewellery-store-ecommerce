@@ -326,7 +326,7 @@
             <div class="logo-section">
                 <div class="logo">DW</div>
                 <div class="company-info">
-                    <h1>David's Wood Furniture</h1>
+                    <h1>Éclore</h1>
                     <p>123 Craftsmanship Lane</p>
                     <p>Portland, OR 97201</p>
                     <p>Phone: (555) 123-4567</p>
@@ -445,8 +445,8 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>David's Wood Furniture</strong> - Handcrafted Excellence Since 2003</p>
-            <p>Questions? Contact us at orders@davidswood.com or (555) 123-4567</p>
+            <p><strong>Éclore</strong> - Handcrafted Excellence Since 2003</p>
+            <p>Questions? Contact us at orders@eclore.com or (555) 123-4567</p>
         </div>
     </div>
 </body>

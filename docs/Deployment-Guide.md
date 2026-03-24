@@ -21,7 +21,7 @@ Your code should be in a GitHub repository with the following structure:
 ```
 davids-wood-furniture/
 ├── .github/workflows/deploy.yml
-├── .apache/davidswood.conf
+├── .apache/eclore.conf
 ├── docs/
 ├── public/
 ├── resources/
@@ -46,7 +46,7 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions
 | `APP_KEY` | Laravel application key | Run `php artisan key:generate --show` locally |
 | `DB_HOST` | Database host | `127.0.0.1` |
 | `DB_DATABASE` | Database name | `davids_wood` |
-| `DB_USERNAME` | Database username | `davidswood_user` |
+| `DB_USERNAME` | Database username | `eclore_user` |
 | `DB_PASSWORD` | Database password | `your_secure_password` |
 | `APP_URL` | Application URL | `https://yourdomain.com` |
 
@@ -61,7 +61,7 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions
 | `MAIL_USERNAME` | SMTP username | `your-email@gmail.com` |
 | `MAIL_PASSWORD` | SMTP password | `your-app-password` |
 | `MAIL_FROM_ADDRESS` | From email | `noreply@yourdomain.com` |
-| `MAIL_FROM_NAME` | From name | `David's Wood Furniture` |
+| `MAIL_FROM_NAME` | From name | `Éclore` |
 
 ## Deployment Process
 
@@ -172,7 +172,7 @@ The deployment automatically creates a `.env` file on the server with values fro
 
 ```bash
 # Application
-APP_NAME="David's Wood Furniture"
+APP_NAME="Éclore"
 APP_ENV=production
 APP_DEBUG=false
 APP_KEY=your-app-key
@@ -183,7 +183,7 @@ DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=davids_wood
-DB_USERNAME=davidswood_user
+DB_USERNAME=eclore_user
 DB_PASSWORD=your-password
 
 # Mail
@@ -194,7 +194,7 @@ MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-password
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=noreply@yourdomain.com
-MAIL_FROM_NAME="David's Wood Furniture"
+MAIL_FROM_NAME="Éclore"
 ```
 
 ## Troubleshooting
@@ -222,7 +222,7 @@ sudo chmod -R 775 /var/www/html/davids-wood-furniture/bootstrap/cache
 #### 3. Database Connection Failed
 ```bash
 # Test database connection
-mysql -u davidswood_user -p -e "SELECT 1;"
+mysql -u eclore_user -p -e "SELECT 1;"
 
 # Check MySQL status
 sudo systemctl status mysql
@@ -278,7 +278,7 @@ The deployment includes automatic health checks:
 If health checks fail, check:
 - Apache is running: `sudo systemctl status apache2`
 - PHP is working: `php -v`
-- Database is accessible: `mysql -u davidswood_user -p`
+- Database is accessible: `mysql -u eclore_user -p`
 - Application logs: `tail -f storage/logs/laravel.log`
 
 ## Rollback Procedures
@@ -390,10 +390,10 @@ composer install --optimize-autoloader --no-dev
 ### 2. Database Backups
 ```bash
 # Create database backup
-mysqldump -u davidswood_user -p davids_wood > backup_$(date +%Y%m%d_%H%M%S).sql
+mysqldump -u eclore_user -p davids_wood > backup_$(date +%Y%m%d_%H%M%S).sql
 
 # Restore from backup
-mysql -u davidswood_user -p davids_wood < backup_file.sql
+mysql -u eclore_user -p davids_wood < backup_file.sql
 ```
 
 ### 3. File Backups

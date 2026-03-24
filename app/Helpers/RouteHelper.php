@@ -18,7 +18,7 @@ class RouteHelper
         // Determine the correct prefix based on environment and domain
         if ($env === 'local') {
             // For local development, check domain to determine prefix
-            if (str_contains($httpHost, 'admin.davidswood.test')) {
+            if (str_contains($httpHost, 'admin.eclore.test')) {
                 $prefix = 'admin.test.';
             } elseif (str_contains($httpHost, 'admin.localhost')) {
                 $prefix = 'admin.local.';
@@ -34,9 +34,9 @@ class RouteHelper
 
         // Fix URL scheme and port for specific environments
         if ($env === 'local') {
-            // Fix HTTPS for admin.davidswood.test:8443
-            if ($host === 'admin.davidswood.test' && $port === 8443) {
-                $url = str_replace('http://admin.davidswood.test:8080', 'https://admin.davidswood.test:8443', $url);
+            // Fix HTTPS for admin.eclore.test:8443
+            if ($host === 'admin.eclore.test' && $port === 8443) {
+                $url = str_replace('http://admin.eclore.test:8080', 'https://admin.eclore.test:8443', $url);
             }
 
             // Fix localhost port issues
@@ -45,7 +45,7 @@ class RouteHelper
             }
         } elseif ($env === 'production') {
             // Ensure production URLs always use HTTPS
-            if ($scheme === 'http' && (str_contains($host, 'davidswood.shop'))) {
+            if ($scheme === 'http' && (str_contains($host, 'eclore.shop'))) {
                 $url = str_replace('http://', 'https://', $url);
             }
             // Remove port from HTTPS URLs in production (standard HTTPS port 443)

@@ -92,7 +92,7 @@
                             Update Message
                         </button>
                         
-                        <a href="mailto:{{ $contactMessage->email }}?subject=Re: Your message to David's Wood" 
+                        <a href="mailto:{{ $contactMessage->email }}?subject=Re: Your message to Éclore" 
                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
                             Reply via Email
                         </a>

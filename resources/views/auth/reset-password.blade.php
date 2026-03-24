@@ -1,92 +1,113 @@
 @extends('layouts.app')
 
-@section('title', 'Reset Password | David\'s Wood Furniture')
+@section('title', 'Reset Password | Éclore')
 
 @push('styles')
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f3efe7;
-        min-height: 100vh;
-    }
-    
-    .reset-container {
-        min-height: 100vh;
+    .verification-page {
+        width: 100%;
+        min-height: calc(100vh - 104px);
+        background-image: url('{{ asset("frontend/assets/category-rings.webp") }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem;
         position: relative;
+        padding: 4rem 1rem;
     }
-    
-    .reset-content {
-        max-width: 800px;
+
+    .verification-page::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1;
+    }
+
+    .glass-card {
         width: 100%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        align-items: center;
+        grid-template-columns: 1fr 1.2fr;
+        position: relative;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    
-    .reset-info {
-        padding-right: 2rem;
+
+    .card-left {
+        padding: 5rem 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.2);
     }
-    
-    .reset-title {
-        font-size: 3rem;
-        font-weight: 500;
-        color: #1a1a1a;
-        margin-bottom: 1.5rem;
-        line-height: 3rem;
+
+    .card-right {
+        padding: 5rem 4rem;
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    
-    .reset-description {
-        font-size: 1.1rem;
-        color: #4a4a4a;
-        line-height: 1.6;
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #fff;
         margin-bottom: 2rem;
     }
-    
-    .reset-form {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
+
+    .hero-description {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        line-height: 2.2;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
     }
-    
+
     .form-group {
         margin-bottom: 2rem;
     }
-    
+
     .form-label {
-        display: block;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.5);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        display: block;
     }
-    
-    .form-input {
+
+    .form-input-premium {
         width: 100%;
-        padding: 0.75rem 0;
-        border: none;
-        border-bottom: 2px solid #8B7355;
         background: transparent;
-        font-size: 1rem;
-        color: #1a1a1a;
-        transition: border-color 0.3s ease;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 0;
+        color: #fff;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
     }
-    
-    .form-input:focus {
+
+    .form-input-premium:focus {
         outline: none;
-        border-bottom-color: #6b5b47;
+        border-bottom-color: #B6965D;
     }
-    
-    .form-input::placeholder {
-        color: #999;
-    }
-    
+
     .password-container {
         position: relative;
     }
@@ -99,64 +120,16 @@
         background: none;
         border: none;
         cursor: pointer;
-        color: #8B7355;
+        color: rgba(255, 255, 255, 0.5);
         padding: 0.5rem;
+        transition: color 0.3s ease;
     }
     
     .password-toggle:hover {
-        color: #6b5b47;
+        color: #B6965D;
     }
-    
-    .btn-primary {
-        background: white;
-        color: #1a1a1a;
-        border: 2px solid #8B7355;
-        padding: 1rem 2rem;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-    
-    .btn-primary:hover {
-        background: #8B7355;
-        color: white;
-    }
-    
-    .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    
-    .status-message {
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-    }
-    
-    .status-message.success {
-        background: #f0f9f0;
-        color: #065f46;
-        border: 1px solid #10b981;
-    }
-    
-    .status-message.error {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #ef4444;
-    }
-    
-    .status-message i {
-        margin-right: 0.5rem;
-    }
-    
+
+    /* Password Strength Display */
     .password-strength {
         margin-top: 0.5rem;
     }
@@ -164,7 +137,7 @@
     .strength-bar {
         width: 100%;
         height: 2px;
-        background: #e5e7eb;
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 1px;
         overflow: hidden;
         margin-bottom: 0.5rem;
@@ -174,112 +147,128 @@
         height: 100%;
         transition: all 0.3s ease;
         border-radius: 1px;
+        width: 0;
     }
     
-    .strength-weak .strength-fill {
-        background: #ef4444;
-        width: 25%;
-    }
-    
-    .strength-fair .strength-fill {
-        background: #f59e0b;
-        width: 50%;
-    }
-    
-    .strength-good .strength-fill {
-        background: #10b981;
-        width: 75%;
-    }
-    
-    .strength-strong .strength-fill {
-        background: #059669;
-        width: 100%;
-    }
+    .strength-weak .strength-fill { background: #ef4444; width: 25%; }
+    .strength-fair .strength-fill { background: #f59e0b; width: 50%; }
+    .strength-good .strength-fill { background: #10b981; width: 75%; }
+    .strength-strong .strength-fill { background: #059669; width: 100%; }
     
     .strength-text {
-        font-size: 0.8rem;
-        font-weight: 500;
+        font-size: 0.6rem;
+        font-family: 'Azeret Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
     }
     
-    .strength-weak .strength-text {
+    .strength-weak .strength-text { color: #ef4444; }
+    .strength-fair .strength-text { color: #f59e0b; }
+    .strength-good .strength-text { color: #10b981; }
+    .strength-strong .strength-text { color: #059669; }
+
+    .btn-gold {
+        width: 100%;
+        background: #B6965D;
+        color: #fff;
+        padding: 1.25rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-gold:hover {
+        background: #D4AF37;
+        transform: translateY(-2px);
+    }
+    
+    .btn-gold:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .status-message {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        padding: 1.25rem;
+        margin-bottom: 2rem;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    .status-message.success {
+        background: rgba(182, 150, 93, 0.1);
+        border-color: rgba(182, 150, 93, 0.3);
+        color: #B6965D;
+    }
+
+    .status-message.error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
         color: #ef4444;
     }
-    
-    .strength-fair .strength-text {
-        color: #f59e0b;
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .strength-good .strength-text {
-        color: #10b981;
-    }
-    
-    .strength-strong .strength-text {
-        color: #059669;
-    }
-    
-    .brown-accent {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 4px;
-        height: 100%;
-        background: #8B7355;
-    }
-    
+
     @media (max-width: 768px) {
-        .reset-content {
+        .glass-card {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            margin: 0 1rem;
         }
-        
-        .reset-info {
-            padding-right: 0;
-            text-align: center;
+        .card-left {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem;
         }
-        
-        .reset-title {
-            font-size: 2rem;
-        }
-        
-        .brown-accent {
-            display: none;
+        .card-right {
+            padding: 4rem 2rem;
         }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="reset-container">
-    <div class="brown-accent"></div>
-    
-    <div class="reset-content">
-        <!-- Left Section - Information -->
-        <div class="reset-info">
-            <h1 class="reset-title">Reset Password</h1>
-            <p class="reset-description">
-                Enter your new password below. Make sure it's secure and easy for you to remember.
+<div class="verification-page">
+    <div class="glass-card" data-aos="zoom-in">
+        <!-- Sidebar Content -->
+        <div class="card-left" data-aos="fade-right" data-aos-delay="200">
+            <h1 class="hero-title">Reset Password</h1>
+            <p class="hero-description">
+                Restore your access to the Éclore sanctuary.
+                <br><br>
+                Please enter your new signature passphrase below to continue your journey.
             </p>
         </div>
-        
-        <!-- Right Section - Form -->
-        <div class="reset-form">
-            <!-- Status Messages -->
+
+        <!-- Action Form -->
+        <div class="card-right" data-aos="fade-left" data-aos-delay="400">
             <div id="status-messages"></div>
-            
+
             <form id="reset-password-form">
                 @csrf
                 <input type="hidden" id="token" name="token" value="{{ $token }}">
                 
                 <!-- New Password -->
                 <div class="form-group">
-                    <label for="password" class="form-label">New Password</label>
+                    <label for="password" class="form-label">NEW PASSPHRASE</label>
                     <div class="password-container">
                         <input 
                             type="password" 
                             id="password" 
                             name="password" 
-                            class="form-input" 
-                            placeholder="Enter your new password"
+                            class="form-input-premium" 
+                            placeholder="••••••••••••"
                             required
                             minlength="8"
                         >
@@ -297,14 +286,14 @@
                 
                 <!-- Confirm Password -->
                 <div class="form-group">
-                    <label for="password_confirmation" class="form-label">Confirm New Password</label>
+                    <label for="password_confirmation" class="form-label">CONFIRM PASSPHRASE</label>
                     <div class="password-container">
                         <input 
                             type="password" 
                             id="password_confirmation" 
                             name="password_confirmation" 
-                            class="form-input" 
-                            placeholder="Confirm your new password"
+                            class="form-input-premium" 
+                            placeholder="••••••••••••"
                             required
                         >
                         <button type="button" class="password-toggle" id="toggle-password-confirmation">
@@ -312,15 +301,16 @@
                         </button>
                     </div>
                 </div>
-                
-                <!-- Submit Button -->
-                <button type="submit" class="btn-primary" id="reset-submit">
-                    <span id="reset-text">Reset Password</span>
-                    <span id="reset-loading" style="display: none;">
-                        <i data-lucide="loader-2" class="w-4 h-4 inline-block animate-spin mr-2"></i>
-                        Resetting...
-                    </span>
-                </button>
+
+                <div class="mt-8">
+                    <button type="submit" class="btn-gold" id="reset-submit">
+                        <span id="reset-text">RESTORE ACCESS</span>
+                        <span id="reset-loading" style="display: none;">
+                            <i data-lucide="loader-2" class="w-4 h-4 inline-block animate-spin mr-2"></i>
+                            PROCESSING...
+                        </span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -418,16 +408,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    showMessage('success', 'Password reset successfully! You can now sign in with your new password.');
+                    showMessage('success', 'Access restored successfully! You will be redirected to the sanctuary.');
                     setTimeout(() => {
                         window.location.href = '/';
                     }, 2000);
                 } else {
-                    showMessage('error', result.message || 'Failed to reset password. Please try again.');
+                    showMessage('error', result.message || 'Verification failed. Please try again.');
                 }
             } catch (error) {
                 console.error('Error resetting password:', error);
-                showMessage('error', 'Error resetting password. Please try again.');
+                showMessage('error', 'A connection error occurred. Please try again.');
             } finally {
                 // Reset button state
                 submitBtn.disabled = false;
@@ -439,7 +429,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function checkPasswordStrength(password) {
         const strengthContainer = document.getElementById('password-strength');
-        const strengthBar = strengthContainer.querySelector('.strength-fill');
         const strengthText = strengthContainer.querySelector('.strength-text');
         
         if (password.length === 0) {
@@ -452,17 +441,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let score = 0;
         let feedback = '';
         
-        // Length check
         if (password.length >= 8) score++;
         if (password.length >= 12) score++;
-        
-        // Character variety checks
         if (/[a-z]/.test(password)) score++;
         if (/[A-Z]/.test(password)) score++;
         if (/[0-9]/.test(password)) score++;
         if (/[^A-Za-z0-9]/.test(password)) score++;
         
-        // Remove all strength classes
         strengthContainer.className = 'password-strength';
         
         if (score < 3) {
@@ -488,12 +473,10 @@ document.addEventListener('DOMContentLoaded', function() {
         messageDiv.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4"></i> ${message}`;
         statusMessages.appendChild(messageDiv);
         
-        // Re-initialize Lucide icons
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
         
-        // Auto-hide success messages after 5 seconds
         if (type === 'success') {
             setTimeout(() => {
                 messageDiv.remove();

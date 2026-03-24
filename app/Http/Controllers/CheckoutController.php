@@ -45,7 +45,7 @@ class CheckoutController extends Controller
         $selectedProductIds = $this->getSelectedCartItems();
 
         if (empty($selectedProductIds)) {
-            return redirect()->route('products')->with('error', 'No items selected for checkout.');
+            return redirect()->route('catalogue')->with('error', 'No items selected for checkout.');
         }
 
         $cartItems = CartItem::forUser($user->id)
@@ -54,7 +54,7 @@ class CheckoutController extends Controller
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('products')->with('error', 'Your cart is empty.');
+            return redirect()->route('catalogue')->with('error', 'Your cart is empty.');
         }
 
         $subtotal = $cartItems->sum('total_price');
@@ -435,7 +435,7 @@ class CheckoutController extends Controller
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('products')->with('error', 'Your cart is empty.');
+            return redirect()->route('catalogue')->with('error', 'Your cart is empty.');
         }
 
         $shippingInfo = Session::get('checkout.shipping');

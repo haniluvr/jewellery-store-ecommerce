@@ -57,7 +57,7 @@ php artisan key:generate --show
 
 ### 7. DB_USERNAME
 **Description**: Database username
-**Example**: `davidswood_user`
+**Example**: `eclore_user`
 **Note**: Must match the user you created on EC2
 
 ### 8. DB_PASSWORD
@@ -109,8 +109,8 @@ php artisan key:generate --show
 
 ### 17. MAIL_FROM_NAME
 **Description**: From name
-**Example**: `David's Wood Furniture`
-**Default**: `David's Wood Furniture` (if not set)
+**Example**: `Éclore`
+**Default**: `Éclore` (if not set)
 
 ## Step-by-Step Setup
 
@@ -138,8 +138,8 @@ sudo mysql -u root -p
 
 # Create database and user
 CREATE DATABASE davids_wood;
-CREATE USER 'davidswood_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON davids_wood.* TO 'davidswood_user'@'localhost';
+CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+GRANT ALL PRIVILEGES ON davids_wood.* TO 'eclore_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -155,7 +155,7 @@ Add each secret one by one:
 4. **APP_KEY**: Generated key from step 2
 5. **DB_HOST**: `127.0.0.1`
 6. **DB_DATABASE**: `davids_wood`
-7. **DB_USERNAME**: `davidswood_user`
+7. **DB_USERNAME**: `eclore_user`
 8. **DB_PASSWORD**: The password you set in step 3
 9. **APP_URL**: `http://your-ec2-ip` (or `https://yourdomain.com`)
 
@@ -201,7 +201,7 @@ ssh -i your-key.pem ubuntu@your-ec2-ip
 ```bash
 # SSH to EC2 and test database
 ssh -i your-key.pem ubuntu@your-ec2-ip
-mysql -u davidswood_user -p -e "SELECT 1;"
+mysql -u eclore_user -p -e "SELECT 1;"
 ```
 
 #### Test APP_KEY

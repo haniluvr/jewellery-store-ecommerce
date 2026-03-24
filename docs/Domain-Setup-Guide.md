@@ -1,10 +1,10 @@
-# Domain Setup Guide for David's Wood Furniture
+# Domain Setup Guide for Éclore
 
 ## Option 1: Free Domain with Freenom (Recommended)
 
 ### Step 1: Get a Free Domain
 1. Go to [Freenom.com](https://www.freenom.com)
-2. Search for available domains (e.g., `davidswood.tk`, `davidswood.ml`, `davidswood.ga`)
+2. Search for available domains (e.g., `eclore.tk`, `eclore.ml`, `eclore.ga`)
 3. Register the domain (free for 12 months)
 
 ### Step 2: Point Domain to Your EC2 Instance
@@ -39,13 +39,13 @@ If you have a domain already:
 
 ### Using No-IP (Free)
 1. Go to [noip.com](https://www.noip.com)
-2. Create account and get free subdomain (e.g., `davidswood.ddns.net`)
+2. Create account and get free subdomain (e.g., `eclore.ddns.net`)
 3. Install No-IP client on your EC2 instance
 4. Update your application to use the subdomain
 
 ### Using DuckDNS (Free)
 1. Go to [duckdns.org](https://www.duckdns.org)
-2. Create account and get subdomain (e.g., `davidswood.duckdns.org`)
+2. Create account and get subdomain (e.g., `eclore.duckdns.org`)
 3. Update DNS records to point to your EC2 IP
 
 ## Security Group Configuration

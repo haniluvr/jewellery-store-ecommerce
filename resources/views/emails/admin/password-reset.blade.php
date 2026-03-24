@@ -2,35 +2,34 @@
 
 @section('content')
 <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #8B7355; margin: 0;">Reset Your Admin Password</h1>
-    <p style="color: #666; margin: 10px 0 0 0; font-style: italic;">David's Wood Furniture Admin Panel</p>
+    <h1 style="color: #1A1A1A; margin: 0; font-family: 'Playfair Display', serif;">Admin Authentication Reset</h1>
 </div>
 
-<div style="background: #F8F8F8; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 0.75px solid #8B7355;">
-    <h2 style="color: #8B7355; margin: 0 0 20px 0;">Hello {{ $admin->first_name }},</h2>
+<div style="background: #FAFAFA; padding: 30px; border-radius: 0; margin-bottom: 30px; border: 1px solid #eeeeee; border-top: 2px solid #1A1A1A;">
+    <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Dear {{ $admin->first_name }},</h2>
     
-    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0;">
-        You requested to reset your password for your admin account ({{ $admin->email }}). Click the button below to reset your password.
+    <p style="color: #555; line-height: 1.6; margin: 0 0 20px 0; font-weight: 300;">
+        You requested to reset your administration credentials ({{ $admin->email }}). Proceed via the secure link below.
     </p>
     
-    <div style="background: #FFF3CD; border: 1px solid #8B7355; padding: 20px; border-radius: 6px; margin: 20px 0;">
-        <h3 style="color: #8B7355; margin: 0 0 15px 0;">🔐 Reset Your Password</h3>
-        <p style="color: #555; margin: 0 0 15px 0;">Click the button below to reset your password. This link will expire in 1 hour for security reasons.</p>
+    <div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0; border-top: 1px solid #1A1A1A;">
+        <h3 style="color: #1A1A1A; margin: 0 0 15px 0; font-family: 'Playfair Display', serif; font-size: 16px;">Reset Authentication</h3>
+        <p style="color: #555; margin: 0 0 15px 0; font-weight: 300;">Click the secure link below to reset your password. This link will expire shortly.</p>
         <div style="text-align: center; margin: 20px 0;">
-            <a href="{{ $resetUrl }}" style="background: linear-gradient(135deg, #8B7355 0%, #A68B5B 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 16px;">Reset Password</a>
+            <a href="{{ $resetUrl }}" class="button">RESET CREDENTIALS</a>
         </div>
-        <p style="margin: 0; color: #8B7355; font-weight: 600; font-size: 14px;">This link expires in 1 hour.</p>
-        <p style="margin: 10px 0 0 0; color: #666; font-size: 12px;">If the button doesn't work, copy and paste this link into your browser:</p>
-        <p style="margin: 5px 0 0 0; color: #8B7355; font-size: 12px; word-break: break-all;">{{ $resetUrl }}</p>
+        <p style="margin: 0; color: #B6965D; font-family: 'Azeret Mono', monospace; font-size: 10px; text-transform: uppercase;">Valid for 1 Hour</p>
+        <p style="margin: 10px 0 0 0; color: #555; font-size: 12px; font-weight: 300;">If the button does not work, copy and paste this link into your browser:</p>
+        <p style="margin: 5px 0 0 0; color: #1A1A1A; font-family: 'Azeret Mono', monospace; font-size: 10px; word-break: break-all;">{{ $resetUrl }}</p>
     </div>
 </div>
 
-<div style="background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 20px; margin: 20px 0;">
-    <h3 style="color: #92400E; margin: 0 0 10px 0;">⚠️ Security Notice</h3>
-    <p style="color: #92400E; margin: 0;">If you didn't request this password reset, please ignore this email. Your password will remain unchanged.</p>
+<div style="background: #FAFAFA; border: 1px solid #eeeeee; padding: 25px; margin: 20px 0;">
+    <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 16px;">Security Notice</h3>
+    <p style="color: #555; margin: 0; font-weight: 300;">If you did not request this password reset, please ignore this email. Your authentication will retain its current integrity.</p>
 </div>
 
-<p style="color: #555; margin: 20px 0;">Thank you,<br>
-The David's Wood Furniture Admin Team</p>
+<p style="color: #555; margin: 20px 0; font-weight: 300;">Thank you,<br>
+The Éclore Admin operations</p>
 @endsection
 

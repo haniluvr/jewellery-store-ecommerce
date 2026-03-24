@@ -401,7 +401,7 @@
         </div>
         <h3 class="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
         <p class="text-gray-600 mb-4">Start shopping to see your orders here</p>
-        <a href="{{ route('products') }}" class="bg-[#8b7355] text-white px-6 py-2 rounded-lg hover:bg-[#6b5b47] transition-colors">
+        <a href="{{ route('catalogue') }}" class="bg-[#8b7355] text-white px-6 py-2 rounded-lg hover:bg-[#6b5b47] transition-colors">
             Browse Products
         </a>
     </div>

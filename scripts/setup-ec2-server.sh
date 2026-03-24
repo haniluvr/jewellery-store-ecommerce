@@ -383,7 +383,7 @@ header('Content-Type: application/json');
 
 // Check MySQL connection
 try {
-    \$pdo = new PDO('mysql:host=localhost;dbname=davidswood_furniture', 'root', '');
+    \$pdo = new PDO('mysql:host=localhost;dbname=eclore_furniture', 'root', '');
     \$health['services']['mysql'] = 'connected';
 } catch (PDOException \$e) {
     \$health['services']['mysql'] = 'disconnected';

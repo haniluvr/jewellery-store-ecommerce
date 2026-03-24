@@ -1,6 +1,6 @@
 # SYSTEM TESTING DOCUMENTATION
 
-## David's Wood E-Commerce Platform
+## Éclore E-Commerce Platform
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### 1.1 Purpose
 
-This document outlines the system testing approach for the David's Wood E-Commerce Platform to ensure functionality, reliability, security, and performance meet the specified requirements.
+This document outlines the system testing approach for the Éclore E-Commerce Platform to ensure functionality, reliability, security, and performance meet the specified requirements.
 
 ### 1.2 Scope
 
@@ -58,8 +58,8 @@ The testing scope includes:
 
 | Component | Configuration |
 |-----------|--------------|
-| **Application URL** | `https://davidswood.shop` (Customer) |
-| **Admin URL** | `https://admin.davidswood.shop` (Admin) |
+| **Application URL** | `https://eclore.shop` (Customer) |
+| **Admin URL** | `https://admin.eclore.shop` (Admin) |
 | **Database** | MySQL (Test Database: `davids_wood_test`) |
 | **PHP Version** | PHP 8.2+ |
 | **Framework** | Laravel 12 |
@@ -72,9 +72,9 @@ The testing scope includes:
 **Test Users:**
 
 - Customer Test Account: `customer@test.com` / `password123`
-- Admin Test Account: `admin@davidswood.com` / `password123`
-- Manager Test Account: `manager@davidswood.com` / `password123`
-- Staff Test Account: `staff@davidswood.com` / `password123`
+- Admin Test Account: `admin@eclore.com` / `password123`
+- Manager Test Account: `manager@eclore.com` / `password123`
+- Staff Test Account: `staff@eclore.com` / `password123`
 
 **Test Products:**
 
@@ -107,7 +107,7 @@ php artisan db:seed --class=RealisticDataSeeder
 
 | Test Case ID | Test Case Description | Test Steps | Expected Result | Status |
 |--------------|----------------------|------------|-----------------|--------|
-| TC-CUST-001 | Homepage Load | 1. Navigate to `https://davidswood.shop`<br>2. Verify page loads successfully | Homepage displays with featured products, navigation, and footer | ⬜ |
+| TC-CUST-001 | Homepage Load | 1. Navigate to `https://eclore.shop`<br>2. Verify page loads successfully | Homepage displays with featured products, navigation, and footer | ⬜ |
 | TC-CUST-002 | Featured Products Display | 1. Open homepage<br>2. Check featured products section | 8 featured products displayed with images, names, and prices | ⬜ |
 | TC-CUST-003 | Product Search | 1. Click search icon<br>2. Enter product name<br>3. Click search | Search results show matching products | ⬜ |
 | TC-CUST-004 | Category Navigation | 1. Click on category from navigation<br>2. Verify products filtered | Products filtered by selected category | ⬜ |
@@ -234,7 +234,7 @@ php artisan db:seed --class=RealisticDataSeeder
 
 | Test Case ID | Test Case Description | Test Steps | Expected Result | Status |
 |--------------|----------------------|------------|-----------------|--------|
-| TC-ADMIN-001 | Admin Login | 1. Navigate to `admin.davidswood.shop`<br>2. Enter admin credentials<br>3. Login | Admin logged in, 2FA email sent | ⬜ |
+| TC-ADMIN-001 | Admin Login | 1. Navigate to `admin.eclore.shop`<br>2. Enter admin credentials<br>3. Login | Admin logged in, 2FA email sent | ⬜ |
 | TC-ADMIN-002 | Admin 2FA Verification | 1. Complete admin login<br>2. Check email for magic link<br>3. Click magic link | 2FA verified, admin logged in successfully | ⬜ |
 | TC-ADMIN-003 | Admin Login with Invalid Credentials | 1. Enter incorrect credentials<br>2. Submit | Error message displayed, login failed | ⬜ |
 | TC-ADMIN-004 | Admin Password Reset | 1. Click "Forgot Password"<br>2. Enter admin email<br>3. Submit | Password reset email sent | ⬜ |
@@ -650,7 +650,7 @@ php artisan db:seed --class=RealisticDataSeeder
 
 **Test User Accounts:**
 - Created via seeders: `AdminSeeder`, `RealisticDataSeeder`
-- Default admin credentials: `admin@davidswood.com` / `password123`
+- Default admin credentials: `admin@eclore.com` / `password123`
 
 **Test Products:**
 - Sample product data from `ProductSeeder`
@@ -711,7 +711,7 @@ php artisan db:seed --class=RealisticDataSeeder
 **Test Summary Report:**
 
 ```
-Project: David's Wood E-Commerce Platform
+Project: Éclore E-Commerce Platform
 Test Period: [Start Date] to [End Date]
 Test Environment: [Environment Details]
 

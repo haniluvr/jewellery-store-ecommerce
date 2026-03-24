@@ -1,251 +1,259 @@
 @extends('layouts.app')
 
-@section('title', 'Verify Your Email | David\'s Wood Furniture')
+@section('title', 'Verify Your Email | Éclore')
 
 @push('styles')
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f3efe7;
-        min-height: 100vh;
-    }
-    
-    .verification-container {
-        min-height: 100vh;
+    .verification-page {
+        width: 100%;
+        min-height: calc(100vh - 104px);
+        background-image: url('{{ asset("frontend/assets/category-earrings.webp") }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem;
         position: relative;
+        padding: 4rem 1rem;
     }
-    
-    .verification-content {
-        max-width: 800px;
+
+    .verification-page::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1;
+    }
+
+    .glass-card {
         width: 100%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        align-items: center;
+        grid-template-columns: 1fr 1.2fr;
+        position: relative;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    
-    .verification-info {
-        padding-right: 2rem;
+
+    .card-left {
+        padding: 5rem 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.2);
     }
-    
-    .verification-title {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 1.5rem;
-        line-height: 3rem;
+
+    .card-right {
+        padding: 5rem 4rem;
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    
-    .verification-description {
-        font-size: 1.1rem;
-        color: #4a4a4a;
-        line-height: 1.6;
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #fff;
         margin-bottom: 2rem;
     }
-    
-    .verification-form {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
+
+    .hero-description {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        line-height: 2.2;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
     }
-    
-    .form-group {
-        margin-bottom: 2rem;
-    }
-    
+
     .form-label {
-        display: block;
-        font-weight: 600;
-        color: #1a1a1a;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
         margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        display: block;
     }
-    
-    .form-input {
+
+    .form-input-premium {
         width: 100%;
-        padding: 0.75rem 0;
+        background: transparent;
         border: none;
-        border-bottom: 2px solid #8B7355;
-        background: transparent;
-        font-size: 1rem;
-        color: #1a1a1a;
-        transition: border-color 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 0;
+        color: #fff;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
     }
-    
-    .form-input:focus {
+
+    .form-input-premium:focus {
         outline: none;
-        border-bottom-color: #6b5b47;
+        border-bottom-color: #B6965D;
     }
-    
-    .form-input::placeholder {
-        color: #999;
-    }
-    
-    .btn-primary {
-        background: white;
-        color: #1a1a1a;
-        border: 2px solid #8B7355;
-        padding: 1rem 2rem;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+
+    .btn-gold {
         width: 100%;
-    }
-    
-    .btn-primary:hover {
-        background: #8B7355;
-        color: white;
-    }
-    
-    .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    
-    .btn-secondary {
-        background: transparent;
-        color: #1a1a1a;
-        border: 2px solid #8B7355;
-        padding: 1rem 2rem;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 0.9rem;
+        background: #B6965D;
+        color: #fff;
+        padding: 1.25rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: none;
+        margin-top: 1rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+    }
+
+    .btn-gold:hover {
+        background: #D4AF37;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        width: 100%;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 1.25rem;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         text-decoration: none;
-        display: inline-block;
+        display: block;
         text-align: center;
         margin-top: 1rem;
-        width: 100%;
     }
-    
-    .btn-secondary:hover {
-        background: #8B7355;
-        color: white;
+
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 1);
     }
-    
+
     .status-message {
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-weight: 500;
+        font-family: 'Azeret Mono', monospace;
+        font-size: 0.7rem;
+        padding: 1.25rem;
+        margin-bottom: 2rem;
+        border: 1px solid transparent;
         display: flex;
         align-items: center;
+        gap: 0.75rem;
+        animation: fadeIn 0.4s ease-out;
     }
-    
+
     .status-message.success {
-        background: #f0f9f0;
-        color: #065f46;
-        border: 1px solid #10b981;
+        background: rgba(182, 150, 93, 0.1);
+        border-color: rgba(182, 150, 93, 0.3);
+        color: #B6965D;
     }
-    
+
     .status-message.error {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #ef4444;
     }
-    
-    .status-message i {
-        margin-right: 0.5rem;
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .brown-accent {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 4px;
-        height: 100%;
-        background: #8B7355;
-    }
-    
+
     @media (max-width: 768px) {
-        .verification-content {
+        .glass-card {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            margin: 0 1rem;
         }
-        
-        .verification-info {
-            padding-right: 0;
-            text-align: center;
+        .card-left {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem;
         }
-        
-        .verification-title {
-            font-size: 2rem;
-        }
-        
-        .brown-accent {
-            display: none;
+        .card-right {
+            padding: 4rem 2rem;
         }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="verification-container">
-    <div class="brown-accent"></div>
-    
-    <div class="verification-content">
-        <!-- Left Section - Information -->
-        <div class="verification-info">
-            <h1 class="verification-title">Verify Your Email</h1>
-            <p class="verification-description">
-                We've sent a verification link to your email address. Please check your inbox and click the link to complete your registration.
+<div class="verification-page">
+    <div class="glass-card" data-aos="zoom-in">
+        <!-- Sidebar Content -->
+        <div class="card-left" data-aos="fade-right" data-aos-delay="200">
+            <h1 class="hero-title">Verify Your Email</h1>
+            <p class="hero-description">
+                Welcome to the Éclore sanctuary. We have dispatched a verification link to your electronic address. 
+                <br><br>
+                Please follow the link to confirm your identity and unlock the full experience of our curated collections.
             </p>
         </div>
-        
-        <!-- Right Section - Form -->
-        <div class="verification-form">
-            <!-- Status Messages -->
+
+        <!-- Action Form -->
+        <div class="card-right" data-aos="fade-left" data-aos-delay="400">
             <div id="status-messages"></div>
-            
-            <form id="resend-verification-form">
+
+            <form id="resend-verification-form" class="space-y-8">
                 @csrf
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
+                <div class="form-group mb-10">
+                    <label for="email" class="form-label">AUTHENTICATION EMAIL</label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
-                        class="form-input" 
-                        placeholder="Enter your email address"
+                        class="form-input-premium" 
+                        placeholder="your@email.com"
                         value="{{ old('email', session('verification_email')) }}"
                         required
                     >
-        </div>
-        
-                <button type="submit" class="btn-primary" id="resend-btn">
-                    <span id="resend-text">Resend Verification Email</span>
-                    <span id="resend-loading" style="display: none;">
-                        <i data-lucide="loader-2" class="w-4 h-4 inline-block animate-spin mr-2"></i>
-                        Sending...
-                    </span>
-                </button>
-                
-            </form>
-            
-            <!-- Action Buttons -->
-            <a href="{{ route('login') }}" class="btn-secondary">
-                Sign In Instead
-            </a>
-            <a href="{{ route('home') }}" class="btn-secondary">
-                Back to Home
-            </a>
                 </div>
-            </div>
+
+                <div class="flex flex-col gap-4">
+                    <button type="submit" class="btn-gold" id="resend-btn">
+                        <span id="resend-text">RESEND VERIFICATION</span>
+                        <span id="resend-loading" style="display: none;">
+                            <i data-lucide="loader-2" class="w-4 h-4 inline-block animate-spin mr-2"></i>
+                            PROCESSING...
+                        </span>
+                    </button>
+                    
+                    <div class="relative py-4">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/10"></div>
+                        </div>
+                        <div class="relative flex justify-center text-[8px] uppercase tracking-[0.3em] text-white/30">
+                            <span class="bg-transparent px-4">OR</span>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('login') }}" class="btn-outline">
+                        SIGN IN INSTEAD
+                    </a>
+                    <a href="{{ route('home') }}" class="btn-outline">
+                        RETURN TO HOME
+                    </a>
+                </div>
+            </form>
         </div>
-        
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Lucide icons
@@ -264,7 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.removeItem('verification_email');
     }
     
-    
     // Handle resend verification form
     const resendForm = document.getElementById('resend-verification-form');
     const resendBtn = document.getElementById('resend-btn');
@@ -282,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show loading state
             resendBtn.disabled = true;
             resendText.style.display = 'none';
-            resendLoading.style.display = 'inline';
+            resendLoading.style.display = 'inline-flex';
             
             // Clear previous messages
             statusMessages.innerHTML = '';

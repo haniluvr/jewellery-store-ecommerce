@@ -7,139 +7,122 @@
 @endphp
 
 @section('content')
-<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="bg-white p-10 border border-gray-100">
     @if(($payment_status ?? 'pending') === 'failed')
         <!-- Payment Failed -->
-        <div class="text-center mb-8">
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
-                <i data-lucide="x-circle" class="h-8 w-8 text-red-600"></i>
+        <div class="text-center mb-16 mt-8 animate-fade-in">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 bg-[#FAFAFA] border border-red-50 mb-8 rounded-full">
+                <i data-lucide="x" class="h-6 w-6 text-red-300"></i>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment Failed</h1>
-            <p class="text-lg text-gray-600 mb-4">{{ $errorMessage ?? 'Your payment could not be processed. Please try again.' }}</p>
-            <p class="text-sm text-gray-500">
-                Common reasons for payment failure include:
-            </p>
-            <ul class="text-sm text-gray-500 mt-2 text-left max-w-md mx-auto">
-                <li>• Card declined or insufficient funds</li>
-                <li>• Invalid payment method or expired card</li>
-                <li>• Payment timeout or network error</li>
-                <li>• Invoice expired (payment links expire after the due date)</li>
-            </ul>
+            <h1 class="text-3xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">Transaction Unfulfilled</h1>
+            <p class="text-gray-400 mb-10 font-light leading-relaxed max-w-md mx-auto">{{ $errorMessage ?? 'Our treasury was unable to finalize your acquisition at this moment. We invite you to attempt a different method.' }}</p>
+            
+            <div class="max-w-md mx-auto bg-[#FAFAFA] border border-gray-50 p-8 text-left">
+                <p class="text-[9px] mono tracking-[0.25em] text-gray-400 uppercase mb-6 font-medium text-center">ANALYTICS & RESOLUTION</p>
+                <ul class="text-[11px] text-gray-400 space-y-4 mono uppercase tracking-wider">
+                    <li class="flex items-center"><span class="w-1.5 h-1.5 bg-red-200 rounded-full mr-4"></span> INSUFFICIENT TREASURY</li>
+                    <li class="flex items-center"><span class="w-1.5 h-1.5 bg-red-200 rounded-full mr-4"></span> EXPIRED CREDENTIALS</li>
+                    <li class="flex items-center"><span class="w-1.5 h-1.5 bg-red-200 rounded-full mr-4"></span> GATEWAY TIMEOUT</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Error Details -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-2">Order #{{ $order->order_number }}</h2>
-                <p class="text-gray-600">Total Amount: <span class="font-semibold">₱{{ number_format($order->total_amount, 2) }}</span></p>
+        <div class="border-t border-gray-50 pt-12 mb-12 text-center">
+            <div class="mb-12">
+                <p class="text-[9px] mono tracking-[0.25em] text-gray-300 uppercase mb-3">ORDER MANDATE</p>
+                <p class="text-2xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">#{{ $order->order_number }}</p>
+                <p class="text-[11px] text-gray-400 mono uppercase tracking-[0.2em]">Acquisition Value: <span class="text-[#1A1A1A] font-medium">€{{ number_format($order->total_amount, 2) }}</span></p>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4">
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
                 <a href="{{ route('payments.xendit.pay', ['order' => $order->id]) }}" 
-                   class="bg-[#8b7355] text-white px-6 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold text-center">
-                    Retry Payment
+                   class="btn-gold w-full sm:w-auto">
+                    REATTEMPT ACQUISITION
                 </a>
                 <a href="{{ route('checkout.payment') }}" 
-                   class="border border-[#8b7355] text-[#8b7355] px-6 py-3 rounded-lg hover:bg-[#8b7355] hover:text-white transition-colors font-semibold text-center">
-                    Change Payment Method
-                </a>
-                <a href="{{ route('account.orders') }}" 
-                   class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold text-center">
-                    View My Orders
+                   class="px-10 py-4 text-[10px] mono tracking-[0.3em] uppercase transition-all duration-300 border border-gray-100 text-gray-400 hover:text-[#1A1A1A] hover:border-[#1A1A1A] text-center w-full sm:w-auto">
+                    AMEND METHOD
                 </a>
             </div>
         </div>
     @elseif(($payment_status ?? 'pending') === 'paid')
         <!-- Payment Successful -->
-        <div class="text-center mb-8">
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-                <i data-lucide="check-circle" class="h-8 w-8 text-green-600"></i>
+        <div class="text-center mb-16 mt-8 animate-fade-in">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 bg-[#FAFAFA] border border-gray-50 mb-8 rounded-full">
+                <i data-lucide="check" class="h-6 w-6 text-[#B6965D]"></i>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
-            <p class="text-lg text-gray-600">{{ $successMessage ?? 'Your payment has been processed successfully.' }}</p>
+            <h1 class="text-4xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">Payment Verified</h1>
+            <p class="text-sm text-gray-400 font-light tracking-wide uppercase mono">{{ $successMessage ?? 'Your acquisition has been elegantly authenticated.' }}</p>
         </div>
 
         <!-- Order Summary -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">Order #{{ $order->order_number }}</h2>
-                <div class="text-right">
-                    <p class="text-sm text-gray-600">Total Amount</p>
-                    <p class="text-lg font-bold text-[#8b7355]">₱{{ number_format($order->total_amount, 2) }}</p>
-                </div>
+        <div class="border-t border-b border-gray-50 py-16 mb-12 flex flex-col items-center">
+            <div class="text-center mb-12">
+                <p class="text-[9px] mono tracking-[0.25em] text-gray-300 uppercase mb-3">ORDER MANDATE</p>
+                <p class="text-2xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">#{{ $order->order_number }}</p>
+                <p class="text-[11px] text-gray-400 mono uppercase tracking-[0.2em]">Final Value: <span class="text-[#1A1A1A] font-medium">€{{ number_format($order->total_amount, 2) }}</span></p>
             </div>
 
             <!-- Payment Info -->
-            <div class="border-t pt-4">
-                <p class="text-sm text-gray-600 mb-4">
-                    <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
-                    Your order has been confirmed and is being processed.
+            <div class="text-center max-w-md mx-auto">
+                <p class="text-sm text-gray-400 mb-12 leading-relaxed font-light">
+                    Your exquisite selection is now being prepared in our atelier. You will receive an email confirmation with tracking details once dispatched.
                 </p>
-                <div class="flex justify-end">
-                    <a href="{{ route('checkout.summary', ['order' => $order->order_number]) }}" 
-                       class="bg-[#8b7355] text-white px-8 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold">
-                        Read Summary
-                    </a>
-                </div>
+                <a href="{{ route('checkout.summary', ['order' => $order->order_number]) }}" 
+                   class="btn-gold inline-block">
+                    VIEW DIGITAL RECEIPT
+                </a>
             </div>
         </div>
     @else
         <!-- Loading / Redirecting State -->
-        <div class="text-center mb-8">
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full mb-4">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b7355]"></div>
+        <div class="text-center mb-16 mt-8 animate-fade-in">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 mb-8 overflow-hidden rounded-full bg-[#FAFAFA]">
+                <div class="animate-spin h-6 w-6 border-b border-[#1A1A1A]"></div>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Redirecting to Payment Gateway</h1>
-            <p class="text-lg text-gray-600">Please wait while we redirect you to complete your payment...</p>
+            <h1 class="text-3xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">Securing Protocol</h1>
+            <p class="text-sm text-gray-400 font-light tracking-wide uppercase mono">Establishing a fortified connection to our treasury portal...</p>
         </div>
 
         <!-- Order Summary -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">Order #{{ $order->order_number }}</h2>
-                <div class="text-right">
-                    <p class="text-sm text-gray-600">Total Amount</p>
-                    <p class="text-lg font-bold text-[#8b7355]">₱{{ number_format($order->total_amount, 2) }}</p>
-                </div>
+        <div class="border-t border-b border-gray-50 py-16 mb-12 flex flex-col items-center">
+            <div class="text-center mb-12">
+                <p class="text-[9px] mono tracking-[0.25em] text-gray-300 uppercase mb-3">ORDER MANDATE</p>
+                <p class="text-2xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">#{{ $order->order_number }}</p>
+                <p class="text-[11px] text-gray-400 mono uppercase tracking-[0.2em]">Mandate Value: <span class="text-[#1A1A1A] font-medium">€{{ number_format($order->total_amount, 2) }}</span></p>
             </div>
 
             <!-- Payment Info -->
-            <div class="border-t pt-4">
-                <p class="text-sm text-gray-600 mb-4">
-                    <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
-                    You will be redirected to Xendit's secure payment page to complete your payment.
+            <div class="text-center max-w-md mx-auto">
+                <p class="text-sm text-gray-400 mb-10 leading-relaxed font-light">
+                    You are being transferred to Xendit's encrypted environment to finalize your transaction with the utmost security.
                 </p>
-                <p class="text-sm text-gray-600 mb-4">
-                    Click the button below to open the payment gateway in a new window.
-                </p>
-                <div id="popup-blocked-message" style="display: none;" class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                    <p class="text-sm text-orange-800 mb-2">
-                        <i data-lucide="alert-triangle" class="w-4 h-4 inline mr-1"></i>
-                        <strong>Pop-up blocked:</strong> Please allow pop-ups for this site or click the button below.
+                <div id="popup-blocked-message" style="display: none;" class="mb-10 p-8 border border-gray-50 text-left bg-[#FAFAFA]">
+                    <p class="text-[9px] mono tracking-[0.2em] text-[#1A1A1A] mb-4 font-medium uppercase">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 inline mr-2 text-[#B6965D]"></i>
+                        Gateway Restricted
                     </p>
-                    <p class="text-xs text-orange-700">
-                        To allow pop-ups: Click the pop-up icon in your browser's address bar → Enable "Pop-ups and redirects" → Refresh this page.
+                    <p class="text-xs text-gray-400 leading-relaxed font-light">
+                        Pop-up access has been restricted by your browser. Please permit access or use the portal entry below to proceed.
                     </p>
                 </div>
-                <div class="flex justify-end">
-                    <button 
-                       type="button"
-                       id="manual-payment-link"
-                       onclick="openPaymentGatewayManual('{{ route('payments.xendit.pay', ['order' => $order->id]) }}', 'XenditPayment_{{ $order->order_number }}');"
-                       class="bg-[#8b7355] text-white px-8 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold">
-                        Open Payment Gateway
-                    </button>
-                </div>
+                <button 
+                   type="button"
+                   id="manual-payment-link"
+                   onclick="openPaymentGatewayManual('{{ route('payments.xendit.pay', ['order' => $order->id]) }}', 'XenditPayment_{{ $order->order_number }}');"
+                   class="btn-gold inline-block">
+                    ENTER SECURE PORTAL
+                </button>
             </div>
         </div>
     @endif
 
     <!-- Support -->
-    <div class="bg-blue-50 rounded-lg p-6 text-center">
-        <p class="text-sm text-blue-800">
-            <i data-lucide="help-circle" class="w-4 h-4 inline mr-1"></i>
-            Need help? <a href="tel:+1234567890" class="font-medium underline">Contact our support team</a>
+    <div class="text-center mt-16 mb-4">
+        <p class="text-[9px] mono tracking-[0.25em] text-gray-300 uppercase">
+            REQUIRING ASSISTANCE? <a href="#" class="text-[#1A1A1A] hover:text-[#B6965D] transition-colors pb-1 border-b border-gray-100 hover:border-[#1A1A1A] ml-2">CONCIERGE REACH</a>
         </p>
     </div>
 </div>

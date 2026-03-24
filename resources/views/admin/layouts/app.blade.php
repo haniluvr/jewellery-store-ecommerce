@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('title', 'Dashboard') - David's Wood Admin</title>
+    <title>@yield('title', 'Dashboard') - Éclore Admin</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/favicon.png') }}">

@@ -38,8 +38,8 @@ class OrderStatusChangedMail extends Mailable
     {
         return new Envelope(
             subject: 'Order Status Update - #'.$this->order->order_number.' - David\'s Wood Furniture',
-            from: config('mail.from.address', 'noreply@davidswood.shop'),
-            replyTo: 'hello@davidswood.shop',
+            from: config('mail.from.address', 'noreply@eclore.shop'),
+            replyTo: 'hello@eclore.shop',
         );
     }
 

@@ -100,7 +100,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <h1 class="text-2xl font-bold mb-1">RECEIPT</h1>
-                        <p class="text-base opacity-90">David's Wood Furniture</p>
+                        <p class="text-base opacity-90">Éclore</p>
                         <p class="text-xs opacity-75">Handcrafted Furniture with Timeless Design</p>
                     </div>
                     <div class="text-right">
@@ -252,7 +252,7 @@
                 <div class="text-center">
                     <p class="text-xs text-gray-600 mb-1">Thank you for your purchase!</p>
                     <p class="text-xs text-gray-500">This is an official receipt for your order. For any questions or concerns, please contact our customer service.</p>
-                    <p class="text-xs text-gray-500 mt-1">David's Wood Furniture | Phone: (123) 456-7890 | Email: info@davidswood.com</p>
+                    <p class="text-xs text-gray-500 mt-1">Éclore | Phone: (123) 456-7890 | Email: info@eclore.com</p>
                 </div>
             </div>
         </div>

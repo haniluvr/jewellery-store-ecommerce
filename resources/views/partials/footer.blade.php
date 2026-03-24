@@ -1,286 +1,104 @@
 <!-- footer -->
-<footer class="footer" id="contact">
-    <div class="w-full px-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-14">
-            <!-- Column 1: Brand Info -->
-            <div class="w-full">
-                <div class="relative flex items-center gap-3">
-                    <div class="relative">
-                      <img 
-                        src="{{ asset('frontend/assets/favicon.png') }}" 
-                        alt="David's Wood" 
-                        class="w-10 h-10 drop-shadow-md"
-                        draggable="false"
-                      >
-                      <!-- Glossy highlight -->
-                      <div class="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent pointer-events-none"></div>
-                    </div>
-                    <h2 class="logo font-semibold leading-none text-lg text-gray-700">DAVID'S WOOD <br>FURNITURES</h2>
-                  </div>
-                <p class="brand-desc mt-2">
-                    Handcrafteded furniture with timeless design. Natural materials, thoughtful details, built to last.
-                </p>
-                <div class="contact-info">
-                    <div class="info-item flex items-center">
-                        <i data-lucide="phone-call" class="icon"></i>
-                        <span>+63 (917) 123-4567</span>
-                    </div>
-                    <div class="info-item flex items-center">
-                        <i data-lucide="contact" class="icon"></i>
-                        <span>hello@davidswood.shop</span>
-                    </div>
-                    <div class="info-item flex flex-col">
-                        <div class="flex items-center">
-                            <i data-lucide="map-pin" class="icon"></i>
-                            <span>
-                                <strong>Showroom & Workshop</strong><br>
-                            </span>
-                        </div>
-                        <span class="text-span">
-                            123 Santa Rosa - Tagaytay Rd,<br>
-                            Silang, 4118 Cavite
-                        </span>
-                    </div>
-                    <div class="info-item flex flex-col">
-                        <div class="flex items-center">
-                            <i data-lucide="clock" class="icon"></i>
-                            <span>
-                                <strong>Hours</strong><br>
-                            </span>
-                        </div>
-                        <span class="text-span">
-                            Mon-Fri: 9am - 6pm<br>
-                            Sat: 10am - 4pm
-                        </span>
-                    </div>
+<footer class="relative bg-[#fcfcfc] pt-20 pb-10 overflow-hidden" id="footer">
+    <!-- Background Watermark -->
+    <div class="absolute bottom-0 w-full pl-40 text-left pointer-events-none z-0 opacity-[0.03] select-none">
+        <h2 class="font-playfair text-[20vw] leading-none tracking-tight">Éclore</h2>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Brand Partners Bar -->
+        <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 mb-20">
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">HERMES</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">CHANEL</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">GUCCI</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">BOTTEGA VENETA</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">PORSCHE</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">APPLE</span>
+            <span class="text-lg text-gray-300">●</span>
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-light">GIVENCHY</span>
+        </div>
+
+        <!-- Newsletter Subscription -->
+        <div class="max-w-xl mx-auto mb-32">
+            <form action="#" method="POST" class="relative">
+                <div class="flex items-center border-b border-gray-900 pb-2">
+                    <input type="email" placeholder="EMAIL ADDRESS" class="bg-transparent w-full text-[10px] tracking-[0.2em] font-azeret focus:outline-none placeholder:text-gray-400 uppercase">
+                    <button type="submit" class="bg-black text-white px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3">
+                        <span class="text-xs">●</span> SUBSCRIBE
+                    </button>
                 </div>
-                <div class="social-links">
-                    <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" class="icon"></i></a>
-                    <a href="#" aria-label="Instagram"><i data-lucide="instagram" class="icon"></i></a>
-                    <a href="#" aria-label="Facebook"><i data-lucide="facebook" class="icon"></i></a>
-                    <a href="#" aria-label="Twitter"><i data-lucide="twitter" class="icon"></i></a>
-                </div>
-            </div>
-            <!-- Column 2: Contact Form -->
-            <div class="w-full">
-                <h3 class="text-lg font-semibold mb-2">Contact us</h3>
-                <p class="form-desc">We'll respond within 1–2 business days.</p>
-                <form id="contact-form" action="{{ route('contact.store') }}" method="POST">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="w-full flex flex-col">
-                            <label for="contact-name">Name</label>
-                            <input type="text" id="contact-name" name="name" placeholder="Jane Doe" required value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}">
-                        </div>
-                        <div class="w-full flex flex-col">
-                            <label for="contact-email">Email</label>
-                            <input type="email" id="contact-email" name="email" placeholder="jane@example.com" required value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}">
-                        </div>
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="message" placeholder="Tell us about your project..." rows="4" required>{{ old('message') }}</textarea>
-                    </div>
-                    <div id="contact-form-message" class="mt-2 text-sm" style="display: none;"></div>
-                    <div class="form-footer">
-                        <span class="disclaimer">By sending, you agree to our policies below.</span>
-                        <button type="submit" class="btn-send flex items-center">
-                          <i data-lucide="send" class="icon mr-2"></i> 
-                          <span class="text-sm">Send message</span>
-                        </button>
-                      </div>
-                </form>
-            </div>
-            <!-- Column 3: Newsletter & Customer Care -->
-            <div class="w-full">
-                <h3 class="text-lg font-semibold mb-2">Newsletter</h3>
-                <p class="form-desc">Be first to see new pieces, wood stories, and events.</p>
-                <div class="newsletter-form">
-                    <input type="email" placeholder="you@example.com" required>
-                    <button type="submit" class="text-sm btn-subscribe">Subscribe</button>
-                </div>
-                <hr class="divider">
-                <div class="customer-care text-sm">
-                    <h3 class="text-lg font-semibold mb-2">Customer care</h3>
-                    <ul>
-                        @php
-                            $customerCareLinks = [
-                                'Shipping information' => 'shipping-information',
-                                'Returns & exchanges' => 'returns-exchanges',
-                                'Care & maintenance' => 'care-maintenance',
-                                'Custom orders' => 'custom-orders',
-                            ];
-                            
-                            $customerCarePages = \App\Models\CmsPage::whereIn('slug', array_values($customerCareLinks))
-                                ->where('is_active', true)
-                                ->get()
-                                ->keyBy('slug');
-                        @endphp
-                        @foreach($customerCareLinks as $label => $slug)
-                            @php
-                                $page = $customerCarePages->get($slug);
-                            @endphp
-                            <li>
-                                <a href="{{ $page ? frontend_route('cms.show', $page->slug) : '#' }}">
-                                    {{ $label }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            <!-- Column 4: Company & Policies -->
-            <div class="w-full col-links text-sm">
-                <h3 class="text-lg font-semibold mb-2">Company</h3>
-                <ul>
-                    @php
-                        $companyLinks = [
-                            'About David\'s Wood' => 'about-davids-wood',
-                            'Journal' => 'journal',
-                            'Careers' => 'careers',
-                            'Contact' => 'contact',
-                        ];
-                        
-                        $companyPages = \App\Models\CmsPage::whereIn('slug', array_values($companyLinks))
-                            ->where('is_active', true)
-                            ->get()
-                            ->keyBy('slug');
-                    @endphp
-                    @foreach($companyLinks as $label => $slug)
-                        @php
-                            $page = $companyPages->get($slug);
-                        @endphp
-                        <li>
-                            <a href="{{ $page ? frontend_route('cms.show', $page->slug) : '#' }}">
-                                {{ $label }}
-                            </a>
-                        </li>
-                    @endforeach
+            </form>
+        </div>
+
+        <!-- Footer Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+            <!-- Customer -->
+            <div>
+                <h3 class="font-playfair text-2xl mb-8 text-gray-900">Customer</h3>
+                <ul class="space-y-4 text-[10px] tracking-[0.2em] font-azeret text-gray-600 uppercase">
+                    <li><a href="{{ route('contact') }}" class="hover:text-gray-900 transition-colors">CONTACT US</a></li>
+                    <li><a href="{{ route('track-order') }}" class="hover:text-gray-900 transition-colors">TRACK YOUR ORDER</a></li>
+                    <li><a href="{{ route('orders-payments') }}" class="hover:text-gray-900 transition-colors">ORDERS & PAYMENT</a></li>
+                    <li><a href="{{ route('accessibility') }}" class="hover:text-gray-900 transition-colors">ACCESSIBILITY</a></li>
+                    <li><a href="{{ route('help') }}" class="hover:text-gray-900 transition-colors">HELP</a></li>
                 </ul>
-                <hr class="divider">
-                <h3 class="text-lg font-semibold mb-2">Policies</h3>
-                <ul>
-                    @php
-                        $policyLinks = [
-                            'Privacy policy' => 'privacy-policy',
-                            'Terms of service' => 'terms-of-service',
-                            'Warranty' => 'warranty',
-                        ];
-                        
-                        // Fetch all policy pages that are active
-                        $policyPages = \App\Models\CmsPage::whereIn('slug', array_values($policyLinks))
-                            ->where('is_active', true)
-                            ->get()
-                            ->keyBy('slug');
-                    @endphp
-                    @foreach($policyLinks as $label => $slug)
-                        @php
-                            $page = $policyPages->get($slug);
-                        @endphp
-                        <li>
-                            @if($page)
-                                {{-- Use CMS page if it exists and is active --}}
-                                <a href="{{ frontend_route('cms.show', $page->slug) }}">{{ $label }}</a>
-                            @elseif($slug === 'privacy-policy')
-                                {{-- Fall back to dedicated route if CMS page doesn't exist --}}
-                                <a href="{{ frontend_route('privacy-policy') }}">{{ $label }}</a>
-                            @elseif($slug === 'terms-of-service')
-                                {{-- Fall back to dedicated route if CMS page doesn't exist --}}
-                                <a href="{{ frontend_route('terms-of-service') }}">{{ $label }}</a>
-                            @else
-                                {{-- No link if page doesn't exist or is inactive --}}
-                                <a href="#" onclick="return false;" style="cursor: default; opacity: 0.6;">{{ $label }}</a>
-                            @endif
-                        </li>
-                    @endforeach
+            </div>
+
+            <!-- Our Company -->
+            <div>
+                <h3 class="font-playfair text-2xl mb-8 text-gray-900">Our Company</h3>
+                <ul class="space-y-4 text-[10px] tracking-[0.2em] font-azeret text-gray-600 uppercase">
+                    <li><a href="#" class="hover:text-gray-900 transition-colors">FIND A BOUTIQUE</a></li>
+                    <li><a href="{{ route('vip-club') }}" class="hover:text-gray-900 transition-colors">VIP CLUB</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-gray-900 transition-colors">ABOUT ÉCLORE</a></li>
+                    <li><a href="{{ route('corporate-responsibility') }}" class="hover:text-gray-900 transition-colors">CORPORATE RESPONSIBILITY</a></li>
                 </ul>
+            </div>
+
+            <!-- Legal and Privacy -->
+            <div>
+                <h3 class="font-playfair text-2xl mb-8 text-gray-900">Legal And Privacy</h3>
+                <ul class="space-y-4 text-[10px] tracking-[0.2em] font-azeret text-gray-600 uppercase">
+                    <li><a href="{{ route('terms-of-service') }}" class="hover:text-gray-900 transition-colors">TERMS OF SERVICE</a></li>
+                    <li><a href="{{ route('conditions-of-sale') }}" class="hover:text-gray-900 transition-colors">CONDITIONS OF SALE</a></li>
+                    <li><a href="{{ route('privacy-policy') }}" class="hover:text-gray-900 transition-colors">PRIVACY POLICY</a></li>
+                    <li><a href="{{ route('cookie-policy') }}" class="hover:text-gray-900 transition-colors">COOKIE POLICY</a></li>
+                    <li><a href="{{ route('cookie-center') }}" class="hover:text-gray-900 transition-colors">COOKIE CENTER</a></li>
+                </ul>
+            </div>
+
+            <!-- Follow Us -->
+            <div>
+                <h3 class="font-playfair text-2xl mb-8 text-gray-900">Follow Us</h3>
+                <div class="flex gap-4">
+                    <a href="#" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-all">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-all">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-all">
+                        <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-all">
+                        <i data-lucide="twitter" class="w-4 h-4"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <p class="copyright">© 2025 David's Wood. All rights reserved.</p>
-            <div class="bottom-links">
-            <span class="sustainability">
-                <i data-lucide="circle" class="icon green"></i>
-                Crafted with sustainable materials
-            </span>
-            <a href="#" class="call-us">
-                <i data-lucide="phone-call" class="icon"></i> Call us
-            </a>
+
+        <!-- Copyright -->
+        <div class="pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] tracking-[0.2em] font-azeret text-gray-400 uppercase">
+            <p>© 2026 ÉCLORE. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-8">
+                <span>ETHICALLY SOURCED</span>
+                <span>RJC CERTIFIED</span>
+            </div>
         </div>
     </div>
 </footer>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contact-form');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const messageDiv = document.getElementById('contact-form-message');
-            const originalBtnText = submitBtn.innerHTML;
-            
-            // Disable submit button and show loading state
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i data-lucide="loader" class="icon mr-2 animate-spin"></i> <span class="text-sm">Sending...</span>';
-            
-            // Reinitialize icons for spinner
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-            
-            // Send AJAX request
-            fetch('{{ route('contact.store') }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    messageDiv.textContent = data.message;
-                    messageDiv.className = 'mt-2 text-sm text-green-600';
-                    messageDiv.style.display = 'block';
-                    
-                    // Reset form
-                    contactForm.reset();
-                    
-                    // Hide message after 5 seconds
-                    setTimeout(() => {
-                        messageDiv.style.display = 'none';
-                    }, 5000);
-                } else {
-                    // Show error message
-                    messageDiv.textContent = data.message || 'An error occurred. Please try again.';
-                    messageDiv.className = 'mt-2 text-sm text-red-600';
-                    messageDiv.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                messageDiv.textContent = 'An error occurred. Please try again later.';
-                messageDiv.className = 'mt-2 text-sm text-red-600';
-                messageDiv.style.display = 'block';
-            })
-            .finally(() => {
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-                
-                // Reinitialize icons
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            });
-        });
-    }
-});
-</script>

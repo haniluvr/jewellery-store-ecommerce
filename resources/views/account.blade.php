@@ -1,1254 +1,1040 @@
 @extends('layouts.app')
 
-@section('title', 'My Account | David\'s Wood Furniture - Handcrafteded furniture with timeless design.')
+@section('title', 'My Account | Éclore - Sustainable Luxury Jewellery')
 
 @push('styles')
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
     body {
         font-family: 'Inter', sans-serif;
-        background-color: #f3efe7;
+        background-color: #fafafa;
+        color: #1a1a1a;
     }
     
-    /* Account Page Select All Button Styles */
-    .account-select-all-btn {
-        background: transparent;
-        border: 1px solid #8b7355;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        color: #8b7355;
-        font-size: 0.875rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        white-space: nowrap;
-        min-width: fit-content;
+    .font-playfair {
+        font-family: 'Playfair Display', serif;
     }
 
-    .account-select-all-btn:hover {
-        background-color: #8b7355;
-        color: white;
-        transform: translateY(-1px);
+    /* Luxury Gold Accent */
+    :root {
+        --eclore-gold: #B6965D;
+        --eclore-gold-light: #d4bc8d;
+        --eclore-black: #1a1a1a;
     }
 
-    .account-select-all-btn:active {
-        transform: translateY(0);
+    .text-gold { color: var(--eclore-gold); }
+    .bg-gold { background-color: var(--eclore-gold); }
+    .border-gold { border-color: var(--eclore-gold); }
+
+    /* Account Page Layout */
+    .account-sidebar {
+        border-right: 1px solid #eee;
     }
 
-    /* Account Page Item Selection Checkbox Styles */
-    .account-item-selection {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .account-item-checkbox {
-        width: 1rem;
-        height: 1rem;
-        cursor: pointer;
-        border: 2px solid #8b7355;
-        border-radius: 4px;
-        background-color: white;
+    .sidebar-link {
         position: relative;
-        transition: all 0.2s ease;
+        padding: 0.75rem 0;
+        transition: all 0.3s ease;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-size: 0.85rem;
     }
 
-    .account-item-checkbox:hover {
-        border-color: #6b5b47;
-        box-shadow: 0 0 0 2px rgba(139, 115, 85, 0.1);
+    .sidebar-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: var(--eclore-gold);
+        transition: width 0.3s ease;
+    }
+
+    .sidebar-link:hover {
+        color: var(--eclore-gold);
+    }
+
+    .sidebar-link.active {
+        color: var(--eclore-gold);
+        font-weight: 500;
+    }
+
+    .sidebar-link.active::after {
+        width: 2rem;
+    }
+
+    /* Section Styling */
+    .content-section {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .section-subtitle {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    /* Form Elements */
+    .form-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.75rem 0;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        background: transparent;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+        border-radius: 0;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-bottom-color: var(--eclore-gold);
+    }
+
+    .form-input:disabled {
+        color: #999;
+        border-bottom-style: dashed;
+    }
+
+    .save-button {
+        background-color: var(--eclore-black);
+        color: white;
+        padding: 1rem 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.75rem;
+        transition: all 0.3s ease;
+        border: 1px solid var(--eclore-black);
+    }
+
+    .save-button:hover {
+        background-color: transparent;
+        color: var(--eclore-black);
+    }
+
+    /* Custom Toggle */
+    .custom-toggle {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    .custom-toggle input { opacity: 0; width: 0; height: 0; }
+    
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #eee;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 14px; width: 14px;
+        left: 3px; bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider { background-color: var(--eclore-gold); }
+    input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+    /* Cards */
+    .luxury-card {
+        background: white;
+        padding: 2rem;
+        border: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+    }
+
+    .luxury-card:hover {
+        border-color: var(--eclore-gold-light);
+    }
+
+    /* Orders Filter */
+    .order-filter-tab {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.5rem 0;
+        color: #999;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .order-filter-tab.active {
+        color: var(--eclore-black);
+        font-weight: 600;
+    }
+
+    .order-filter-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--eclore-gold);
+    }
+
+    /* Checkbox */
+    .account-item-checkbox {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
     }
 
     .account-item-checkbox:checked {
-        background-color: #8b7355;
-        border-color: #8b7355;
+        background-color: var(--eclore-gold);
+        border-color: var(--eclore-gold);
     }
 
     .account-item-checkbox:checked::after {
         content: '✓';
         position: absolute;
+        color: white;
+        font-size: 10px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: white;
-        font-size: 0.75rem;
-        font-weight: bold;
     }
-    .account-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    .account-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    }
-    .account-section {
-        padding: 24px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .account-section:last-child {
-        border-bottom: none;
-    }
-    .section-icon {
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(135deg, #f4f1eb 0%, #e8e0d3 100%);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 16px;
-    }
-    .section-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #2c2c2c;
-        margin-bottom: 8px;
-    }
-    .section-description {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 16px;
-    }
-    .section-action {
-        color: #8b7355;
-        font-weight: 500;
-        text-decoration: none;
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .section-action:hover {
-        color: #6b5b47;
-    }
-    .account-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 24px;
-        margin-top: 32px;
-    }
-    .account-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    .account-title {
-        font-size: 32px;
-        font-weight: 700;
-        color: #2c2c2c;
-        margin-bottom: 8px;
-    }
-    .account-subtitle {
-        font-size: 16px;
-        color: #666;
-    }
-    .sidebar-link.active {
-        color: #8b7355;
-        font-weight: 600;
-    }
-    .form-input {
-        border: 1px solid #CED4DA;
-        border-radius: 6px;
-        padding: 12px 16px;
-        font-size: 14px;
-        transition: all 0.2s ease;
-        background-color: white;
-    }
-    .form-input:focus {
-        outline: none;
-        border-color: #8b7355;
-        box-shadow: 0 0 0 2px rgba(139, 115, 85, 0.1);
-    }
-    .form-input:disabled {
-        background-color: #f5f5f5;
-        color: #999;
-        cursor: not-allowed;
-    }
-    select.form-input {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        padding-right: 40px;
-    }
-    .form-label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #333333;
+
+    /* Select All Button */
+    .account-select-all-btn {
+        font-size: 0.7rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
+        letter-spacing: 0.1em;
+        color: var(--eclore-gold);
+        border-bottom: 1px solid var(--eclore-gold);
+        padding-bottom: 2px;
+        transition: all 0.3s ease;
     }
-    .save-button {
-        background-color: #8b7355;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 12px 24px;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
+
+    .account-select-all-btn:hover {
+        color: var(--eclore-black);
+        border-bottom-color: var(--eclore-black);
     }
-    .save-button:hover {
-        background-color: #6b5b47;
-    }
-    
-    /* Order Filter Tabs */
-    .order-filter-tab {
-        color: #6b7280;
-        border-bottom-color: transparent;
-    }
-    .order-filter-tab:hover {
-        color: #374151;
-        border-bottom-color: #e5e7eb;
-    }
-    .order-filter-tab.active {
-        color: #8b7355;
-        border-bottom-color: #8b7355;
-        font-weight: 600;
-    }
-    
-    /* Custom Toggle Switch - Override any conflicts */
-    .custom-toggle {
-        position: relative;
-        display: inline-block;
-        width: 44px;
-        height: 24px;
-        flex-shrink: 0;
-    }
-    
-    .custom-toggle input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    
-    .toggle-slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #e5e7eb;
-        transition: 0.3s;
-        border-radius: 24px;
-        overflow: hidden;
-    }
-    
-    .toggle-slider:before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 20px;
-        left: 2px;
-        top: 2px;
-        background-color: white;
-        transition: 0.3s;
-        border-radius: 50%;
-    }
-    
-    .custom-toggle input:checked + .toggle-slider {
-        background-color: #8b7355;
-    }
-    
-    .custom-toggle input:checked + .toggle-slider:before {
-        transform: translateX(20px);
-    }
-    
-    .custom-toggle input:focus + .toggle-slider {
-        box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.2);
-    }
+
 </style>
 @endpush
 
 @section('content')
 <!-- Main Content -->
-<div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row gap-8 mt-5 pt-16">
+<div class="container mx-auto px-4 py-20 pt-32">
+    <div class="flex flex-col md:flex-row gap-16">
         <!-- Sidebar -->
-        <div class="w-full md:w-1/4 sticky top-24 self-start z-10">
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 account-card">
-                <div class="flex items-center mb-6">
-                    <div class="bg-[#f4f1eb] rounded-full w-16 h-16 flex items-center justify-center mr-4">
-                        <i data-lucide="user" class="text-[#8b7355] w-8 h-8"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $user->name }}</h2>
-                        <p class="text-gray-600">{{ $user->email }}</p>
-                    </div>
-                </div>
-                <ul class="space-y-3">
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="my-details-section">
-                            <i data-lucide="user" class="mr-3 w-5 h-5"></i> My Details
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="address-book-section">
-                            <i data-lucide="map-pin" class="mr-3 w-5 h-5"></i> My Address Book
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="my-orders-section">
-                            <i data-lucide="package" class="mr-3 w-5 h-5"></i> My Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="my-wishlist-section">
-                            <i data-lucide="heart" class="mr-3 w-5 h-5"></i> My Wishlist
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="my-cart-section">
-                            <i data-lucide="shopping-cart" class="mr-3 w-5 h-5"></i> My Cart
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="payment-methods-section">
-                            <i data-lucide="credit-card" class="mr-3 w-5 h-5"></i> Payment Methods
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="newsletter-section">
-                            <i data-lucide="mail" class="mr-3 w-5 h-5"></i> Newsletter Preferences
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center text-gray-700 hover:text-[#8b7355] font-medium sidebar-link" data-target="account-settings-section">
-                            <i data-lucide="settings" class="mr-3 w-5 h-5"></i> Account Settings
-                        </a>
-                    </li>
-                </ul>
+        <div class="w-full md:w-1/4 account-sidebar md:pr-12">
+            <div class="mb-16" data-aos="fade-up">
+                <h1 class="font-playfair text-4xl mb-2">{{ $user->name }}</h1>
+                <p class="text-[10px] text-gray-400 tracking-[0.3em] uppercase">{{ $user->email }}</p>
+            </div>
+            
+            <nav class="flex flex-col space-y-6" data-aos="fade-up" data-aos-delay="100">
+                <a href="#" class="sidebar-link active" data-target="my-details-section">My Details</a>
+                <a href="#" class="sidebar-link" data-target="address-book-section">Address Book</a>
+                <a href="#" class="sidebar-link" data-target="my-orders-section">My Orders</a>
+                <a href="#" class="sidebar-link" data-target="my-wishlist-section">Wishlist</a>
+                <a href="#" class="sidebar-link" data-target="my-cart-section">My Cart</a>
+                <a href="#" class="sidebar-link" data-target="payment-methods-section">Payment Methods</a>
+                <a href="#" class="sidebar-link" data-target="newsletter-section">Newsletter</a>
+                <a href="#" class="sidebar-link" data-target="account-settings-section">Settings</a>
+            </nav>
+
+            <div class="mt-20 pt-10 border-t border-gray-100" data-aos="fade-up" data-aos-delay="200">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-[10px] text-gray-400 tracking-[0.3em] uppercase hover:text-red-500 transition-colors">
+                        Sign Out
+                    </button>
+                </form>
             </div>
         </div>
 
         <!-- Main Content Area -->
         <div class="w-full md:w-3/4">
             <!-- My Details Section -->
-            <div id="my-details-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section">
+            <div id="my-details-section" class="content-section" data-aos="fade-up">
+                <h2 class="section-title">My Details</h2>
                 
-                <!-- Personal Information Section -->
-                <div class="border-gray-200 pb-8 mb-8">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">Personal Information</h3>
-                    <form id="personal-info-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600 mb-6">Update your personal details and contact information.</p>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label block">FIRST NAME</label>
-                                <input type="text" name="first_name" value="{{ $user->first_name }}" class="w-full form-input" required>
-                            </div>
-                            <div>
-                                <label class="form-label block">USERNAME</label>
-                                <input type="text" name="username" value="{{ $user->username }}" class="w-full form-input" required>
-                                <p id="username-error" class="text-sm text-red-600 mt-1 hidden">Username is already taken or invalid.</p>
-                                <p class="text-sm text-gray-500 mt-1">Choose a unique username for your account.</p>
-                            </div>
-                            <button type="submit" class="save-button">
-                                SAVE
-                            </button>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label block">LAST NAME</label>
-                                <input type="text" name="last_name" value="{{ $user->last_name }}" class="w-full form-input" required>
-                            </div>
-                            <div>
-                                <label class="form-label block">PHONE NUMBER</label>
-                                <input type="tel" name="phone" id="phone-input" value="{{ $user->phone ?? '' }}" class="w-full form-input" data-original-phone="{{ $user->phone ?? '' }}" placeholder="09xxxxxxxxx" maxlength="11">
-                                <p id="phone-error" class="text-sm text-red-600 mt-1 hidden">Phone number cannot be removed once added. You can only update it.</p>
-                                <p id="phone-format-error" class="text-sm text-red-600 mt-1 hidden">Please enter a valid phone number.</p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- E-mail Address Section -->
-                <div class="border-gray-200 pb-8 mb-8">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">E-mail address</h3>
-                    <form id="email-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600 mb-6">Update your email address and manage your account settings.</p>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label block">E-MAIL ADDRESS</label>
-                                <input type="email" name="email" value="{{ $user->email }}" class="w-full form-input" required>
-                            </div>
-                            <div>
-                                <label class="form-label block">PASSWORD (REQUIRED TO CHANGE EMAIL)</label>
-                                <input type="password" name="password" id="email-password" class="w-full form-input" required>
-                                <p class="text-sm text-gray-500 mt-1">Enter your current password to confirm email change.</p>
-                                <p id="email-password-error" class="text-sm text-red-600 mt-1 hidden">Current password is incorrect.</p>
-                            </div>
-                            <button type="submit" class="save-button">
-                                SAVE
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Password Section -->
-                <div>
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">
-                        @if($user->hasPassword())
-                            Password
-                        @else
-                            Add Password
-                        @endif
-                    </h3>
-                    <form id="password-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            @if($user->hasPassword())
-                                <p class="text-gray-600 mb-6">Change your account password for better security.</p>
-                            @else
-                                <p class="text-gray-600 mb-6">Add a password to your account for additional security and easier login.</p>
-                            @endif
-                        </div>
-                        <div class="space-y-4">
-                            @if($user->hasPassword())
+                <div class="space-y-16">
+                    <!-- Personal Information -->
+                    <div class="luxury-card">
+                        <h3 class="section-subtitle">Personal Information</h3>
+                        <p class="text-sm text-gray-400 mb-10">Manage your identity and contact details.</p>
+                        
+                        <form id="personal-info-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-12">
                                 <div>
-                                    <label class="form-label block">CURRENT PASSWORD</label>
-                                    <input type="password" name="current_password" id="current-password" class="w-full form-input" required>
-                                    <p id="current-password-error" class="text-sm text-red-600 mt-1 hidden">Current password is incorrect.</p>
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" name="first_name" value="{{ $user->first_name }}" class="form-input" required>
                                 </div>
+                                <div>
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" name="last_name" value="{{ $user->last_name }}" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Username</label>
+                                    <input type="text" name="username" value="{{ $user->username }}" class="form-input" required>
+                                    <p id="username-error" class="text-[10px] text-red-500 mt-2 hidden"></p>
+                                </div>
+                                <div>
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" name="phone" id="phone-input" value="{{ $user->phone ?? '' }}" class="form-input" data-original-phone="{{ $user->phone ?? '' }}" placeholder="09xxxxxxxxx" maxlength="11">
+                                    <p id="phone-error" class="text-[10px] text-red-500 mt-2 hidden">Phone number cannot be removed.</p>
+                                    <p id="phone-format-error" class="text-[10px] text-red-500 mt-2 hidden">Invalid phone number format.</p>
+                                </div>
+                            </div>
+                            <button type="submit" class="save-button">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <!-- E-mail Address -->
+                    <div class="luxury-card">
+                        <h3 class="section-subtitle">E-mail Address</h3>
+                        <p class="text-sm text-gray-400 mb-10">Keep your primary contact information up to date.</p>
+                        
+                        <form id="email-form">
+                            <div class="max-w-xl space-y-10 mb-12">
+                                <div>
+                                    <label class="form-label">Electronic Mail</label>
+                                    <input type="email" name="email" value="{{ $user->email }}" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Confirm with Password</label>
+                                    <input type="password" name="password" id="email-password" class="form-input" required placeholder="••••••••">
+                                    <p id="email-password-error" class="text-[10px] text-red-500 mt-2 hidden">Incorrect password provided.</p>
+                                </div>
+                            </div>
+                            <button type="submit" class="save-button">Update Email</button>
+                        </form>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="luxury-card">
+                        <h3 class="section-subtitle">
+                            @if($user->hasPassword())
+                                Security Setting
+                            @else
+                                Secure Your Account
                             @endif
-                            <div>
-                                <label class="form-label block">
-                                    @if($user->hasPassword())
-                                        NEW PASSWORD
-                                    @else
-                                        PASSWORD
-                                    @endif
-                                </label>
-                                <div class="relative">
-                                    <input type="password" name="new_password" id="new-password" class="w-full form-input pr-12" required>
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <i data-lucide="eye" class="text-gray-400 w-5 h-5 cursor-pointer hover:text-gray-600 transition-colors"></i>
+                        </h3>
+                        <p class="text-sm text-gray-400 mb-10">
+                            @if($user->hasPassword())
+                                Update your password to ensure continued account security.
+                            @else
+                                Add a personal password for exclusive access to your collections.
+                            @endif
+                        </p>
+                        
+                        <form id="password-form">
+                            <div class="max-w-xl space-y-10 mb-12">
+                                @if($user->hasPassword())
+                                    <div>
+                                        <label class="form-label">Current Password</label>
+                                        <input type="password" name="current_password" id="current-password" class="form-input" required placeholder="••••••••">
+                                        <p id="current-password-error" class="text-[10px] text-red-500 mt-2 hidden">Invalid current password.</p>
+                                    </div>
+                                @endif
+                                <div>
+                                    <label class="form-label">
+                                        {{ $user->hasPassword() ? 'New Password' : 'Create Password' }}
+                                    </label>
+                                    <div class="relative">
+                                        <input type="password" name="new_password" id="new-password" class="form-input" required placeholder="••••••••">
+                                        <button type="button" class="absolute right-0 bottom-2 text-gray-400 hover:text-gold transition-colors">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div id="password-requirements" class="mt-4 space-y-2 hidden">
+                                        <p id="req-length" class="text-[9px] tracking-widest uppercase flex items-center gap-3">
+                                            <i data-lucide="circle" class="req-icon w-2 h-2"></i> 8+ Characters
+                                        </p>
+                                        <p id="req-lowercase" class="text-[9px] tracking-widest uppercase flex items-center gap-3">
+                                            <i data-lucide="circle" class="req-icon w-2 h-2"></i> Lowercase Letter
+                                        </p>
+                                        <p id="req-uppercase" class="text-[9px] tracking-widest uppercase flex items-center gap-3">
+                                            <i data-lucide="circle" class="req-icon w-2 h-2"></i> Uppercase Letter
+                                        </p>
+                                        <p id="req-number" class="text-[9px] tracking-widest uppercase flex items-center gap-3">
+                                            <i data-lucide="circle" class="req-icon w-2 h-2"></i> Numeric Digit
+                                        </p>
+                                        <p id="req-special" class="text-[9px] tracking-widest uppercase flex items-center gap-3">
+                                            <i data-lucide="circle" class="req-icon w-2 h-2"></i> Special Symbol
+                                        </p>
                                     </div>
                                 </div>
-                                <div id="password-requirements" class="mt-2 space-y-1 hidden">
-                                    <p id="req-length" class="text-sm text-gray-400 flex items-center gap-2">
-                                        <i data-lucide="x" class="req-icon w-4 h-4"></i> At least 8 characters
-                                    </p>
-                                    <p id="req-lowercase" class="text-sm text-gray-400 flex items-center gap-2">
-                                        <i data-lucide="x" class="req-icon w-4 h-4"></i> One lowercase letter
-                                    </p>
-                                    <p id="req-uppercase" class="text-sm text-gray-400 flex items-center gap-2">
-                                        <i data-lucide="x" class="req-icon w-4 h-4"></i> One uppercase letter
-                                    </p>
-                                    <p id="req-number" class="text-sm text-gray-400 flex items-center gap-2">
-                                        <i data-lucide="x" class="req-icon w-4 h-4"></i> One number
-                                    </p>
-                                    <p id="req-special" class="text-sm text-gray-400 flex items-center gap-2">
-                                        <i data-lucide="x" class="req-icon w-4 h-4"></i> One special character
-                                    </p>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="form-label block">CONFIRM PASSWORD</label>
-                                <div class="relative">
-                                    <input type="password" name="new_password_confirmation" id="confirm-password" class="w-full form-input pr-12" required>
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <i data-lucide="eye" class="text-gray-400 w-5 h-5 cursor-pointer hover:text-gray-600 transition-colors"></i>
+                                <div>
+                                    <label class="form-label">Recapitulate Password</label>
+                                    <div class="relative">
+                                        <input type="password" name="new_password_confirmation" id="confirm-password" class="form-input" required placeholder="••••••••">
+                                        <button type="button" class="absolute right-0 bottom-2 text-gray-400 hover:text-gold transition-colors">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </button>
                                     </div>
+                                    <p id="confirm-password-error" class="text-[10px] text-red-500 mt-2 hidden">Passwords do not align.</p>
                                 </div>
-                                <p id="confirm-password-error" class="text-sm text-red-600 mt-1 hidden">Passwords do not match.</p>
                             </div>
-                            <button type="submit" class="save-button" id="password-submit-btn">
-                                SAVE
-                            </button>
-                        </div>
-                    </form>
+                            <button type="submit" class="save-button" id="password-submit-btn">Update Security</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
             <!-- Address Book Section -->
-            <div id="address-book-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section" style="display: none;">
+            <div id="address-book-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Address Book</h2>
                 
-                <!-- Saved Addresses Display -->
-                <div class="border-gray-200">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">My Address Book</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600 mb-6">Manage your delivery addresses and contact information.</p>
-                        </div>
-                        <div class="lg:col-span-2">
-                            <div class="space-y-4">
-                                <!-- Default Address Display -->
-                                <div class="border border-gray-200 rounded-lg p-4">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h4 class="font-medium text-gray-900 mb-2">Default Address</h4>
-                                            @if($user->street || $user->city || $user->province)
-                                                <p class="text-gray-600">{{ $user->street ?? '' }}</p>
-                                                <p class="text-gray-600">{{ $user->barangay ?? '' }}{{ $user->barangay ? ', ' : '' }}{{ $user->city ?? '' }}</p>
-                                                <p class="text-gray-600">
-                                                    @if($user->province)
-                                                        {{ $user->province }}{{ $user->region ? ', ' : '' }}
-                                                    @endif
-                                                    {{ $user->region ?? '' }}
-                                                </p>
-                                                <p class="text-gray-600">{{ $user->zip_code ?? '' }}</p>
-                                            @else
-                                                <p class="text-gray-500 italic">No address provided</p>
-                                            @endif
-                                        </div>
-                                        <button class="text-[#8b7355] hover:text-[#6b5b47] font-medium" onclick="showEditAddressForm()">
-                                            @if($user->street || $user->city || $user->province)
-                                                Edit
-                                            @else
-                                                Add
-                                            @endif
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Add New Address Button -->
-                                <button class="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-600 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors" onclick="showAddAddressForm()">
-                                    + Add New Address
+                <div class="space-y-16">
+                    <!-- Current Addresses -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <!-- Shipping Address -->
+                        <div class="luxury-card flex flex-col h-full">
+                            <div class="flex justify-between items-start mb-8">
+                                <h3 class="section-subtitle mb-0">Shipping Address</h3>
+                                <span class="text-[9px] tracking-[0.3em] uppercase text-gold font-semibold">Primary</span>
+                            </div>
+                            
+                            <div class="flex-grow space-y-2 text-sm text-gray-500 mb-10">
+                                <p class="text-black font-medium">{{ $user->first_name }} {{ $user->last_name }}</p>
+                                @if($user->street || $user->city || $user->province || $user->address)
+                                    <p>{{ $user->address ?? $user->street }}</p>
+                                    <p>{{ $user->barangay ? $user->barangay . ',' : '' }} {{ $user->city_municipality ?? $user->city ?? '' }}</p>
+                                    <p>{{ $user->province ?? '' }} {{ $user->zip_code ?? '' }}</p>
+                                    <p>{{ $user->region ?? '' }}</p>
+                                @else
+                                    <p class="italic text-gray-400">No primary destination specified.</p>
+                                @endif
+                            </div>
+                            
+                            <div class="pt-6 border-t border-gray-100">
+                                <button onclick="showEditAddressForm()" class="text-[10px] tracking-[0.2em] uppercase text-black hover:text-gold transition-colors flex items-center gap-3">
+                                    <i data-lucide="edit-3" class="w-3 h-3"></i> {{ ($user->street || $user->city || $user->province || $user->address) ? 'Modify Details' : 'Add Details' }}
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- Add New Address Placeholder -->
+                        <div class="border border-dashed border-gray-200 p-12 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-gold transition-colors" onclick="showAddAddressForm()">
+                            <div class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center mb-6 group-hover:border-gold group-hover:bg-gold/5 transition-all">
+                                <i data-lucide="plus" class="w-5 h-5 text-gray-400 group-hover:text-gold"></i>
+                            </div>
+                            <h4 class="font-playfair text-lg mb-2">New Destination</h4>
+                            <p class="text-xs text-gray-400 tracking-widest uppercase">Add a shipping location</p>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Edit Address Form (Hidden by default) -->
-                <div id="edit-address-form" class="border-gray-200 pb-8 mb-8" style="display: none;">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">
-                        @if($user->street || $user->city || $user->province)
-                            Edit Address
-                        @else
-                            Add Address
-                        @endif
-                    </h3>
-                    <form id="update-address-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600 mb-6">
-                                @if($user->street || $user->city || $user->province)
-                                    Update your default delivery address.
-                                @else
-                                    Add your default delivery address.
-                                @endif
-                            </p>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label block">STREET ADDRESS</label>
-                                <input type="text" name="street" value="{{ $user->street ?? '' }}" class="w-full form-input" required>
+
+                    <!-- Edit Address Form (Hidden by default) -->
+                    <div id="edit-address-form" class="luxury-card bg-white" style="display: none;">
+                        <h3 class="section-subtitle mb-8">{{ ($user->street || $user->city || $user->province || $user->address) ? 'Modify Primary Address' : 'Set Primary Address' }}</h3>
+                        <form id="update-address-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-12">
+                                <div>
+                                    <label class="form-label">Regional District</label>
+                                    <select name="region" id="region-select" class="form-input" required>
+                                        <option value="">Select Region</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Province / State</label>
+                                    <select name="province" id="province-select" class="form-input" required {{ !$user->province ? 'disabled' : '' }}>
+                                        <option value="">Select Province</option>
+                                        @if($user->province)
+                                            <option value="{{ $user->province }}" selected>{{ $user->province }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">City / Municipality</label>
+                                    <select name="city" id="city-select" class="form-input" required {{ !$user->city && !$user->city_municipality ? 'disabled' : '' }}>
+                                        <option value="">Select City</option>
+                                        @php $currentCity = $user->city_municipality ?? $user->city; @endphp
+                                        @if($currentCity)
+                                            <option value="{{ $currentCity }}" selected>{{ $currentCity }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Barangay / Neighborhood</label>
+                                    <select name="barangay" id="barangay-select" class="form-input" required {{ !$user->barangay ? 'disabled' : '' }}>
+                                        <option value="">Select Barangay</option>
+                                        @if($user->barangay)
+                                            <option value="{{ $user->barangay }}" selected>{{ $user->barangay }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="form-label">Detailed Address</label>
+                                    <input type="text" name="street" value="{{ $user->address ?? $user->street }}" class="form-input" required placeholder="House No., Street Name, Phase/Subdivision">
+                                </div>
+                                <div>
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" name="zip_code" value="{{ $user->zip_code }}" class="form-input" required maxlength="4">
+                                </div>
                             </div>
-                            <div>
-                                <label class="form-label block">CITY/MUNICIPALITY</label>
-                                <select name="city" id="city-select" class="w-full form-input" required disabled>
-                                    <option value="">Select City/Municipality</option>
-                                </select>
+                            
+                            <div class="flex items-center gap-8">
+                                <button type="submit" class="save-button">Confirm Address</button>
+                                <button type="button" onclick="hideEditAddressForm()" class="text-[10px] tracking-[0.2em] uppercase text-gray-400 hover:text-black transition-colors">Discard</button>
                             </div>
-                            <div>
-                                <label class="form-label block">PROVINCE</label>
-                                <select name="province" id="province-select" class="w-full form-input" disabled>
-                                    <option value="">Select Province</option>
-                                </select>
-                            </div>
-                            <div class="flex gap-3">
-                                <button type="submit" class="save-button">
-                                    SAVE
-                                </button>
-                                <button type="button" onclick="hideEditAddressForm()" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors font-semibold text-sm">
-                                    CANCEL
-                                </button>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label block">BARANGAY</label>
-                                <select name="barangay" id="barangay-select" class="w-full form-input" required disabled>
-                                    <option value="">Select Barangay</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="form-label block">ZIP CODE</label>
-                                <input type="text" name="zip_code" value="{{ $user->zip_code ?? '' }}" class="w-full form-input" maxlength="4" placeholder="Enter ZIP code" required>
-                            </div>
-                            <div>
-                                <label class="form-label block">REGION</label>
-                                <select name="region" id="region-select" class="w-full form-input" required>
-                                    <option value="">Select Region</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
 
             <!-- My Orders Section -->
-            <div id="my-orders-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section" style="display: none;">
+            <div id="my-orders-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">My Orders</h2>
                 
-                <!-- My Orders -->
-                <div class="border-gray-200">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">My Orders</h3>
-                    
-                    <!-- Order Status Filter Tabs -->
-                    <div class="mb-6 border-b border-gray-200">
-                        <nav class="flex gap-6 overflow-x-auto" id="order-filter-tabs">
-                            <button onclick="filterOrders('all')" class="order-filter-tab active pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="all">
-                                All Orders
-                            </button>
-                            <button onclick="filterOrders('pending')" class="order-filter-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="pending">
-                                Pending
-                            </button>
-                            <button onclick="filterOrders('processing')" class="order-filter-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="processing">
-                                Processing
-                            </button>
-                            <button onclick="filterOrders('shipped')" class="order-filter-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="shipped">
-                                Shipped
-                            </button>
-                            <button onclick="filterOrders('delivered')" class="order-filter-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="delivered">
-                                Delivered
-                            </button>
-                            <button onclick="filterOrders('cancelled')" class="order-filter-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap" data-status="cancelled">
-                                Cancelled
-                            </button>
+                <div class="luxury-card">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                        <p class="text-sm text-gray-400">Track your current and previous acquisitions.</p>
+                        
+                        <!-- Order Status Filter Tabs -->
+                        <nav class="flex gap-8 border-b border-gray-100 w-full md:w-auto overflow-x-auto" id="order-filter-tabs">
+                            <button onclick="filterOrders('all')" class="order-filter-tab active" data-status="all">All</button>
+                            <button onclick="filterOrders('pending')" class="order-filter-tab" data-status="pending">Pending</button>
+                            <button onclick="filterOrders('processing')" class="order-filter-tab" data-status="processing">Processing</button>
+                            <button onclick="filterOrders('shipped')" class="order-filter-tab" data-status="shipped">Shipped</button>
+                            <button onclick="filterOrders('delivered')" class="order-filter-tab" data-status="delivered">Delivered</button>
+                            <button onclick="filterOrders('cancelled')" class="order-filter-tab" data-status="cancelled">Cancelled</button>
                         </nav>
                     </div>
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
-                        <div class="lg:col-span-2" id="orders-container">
-                            @include('partials.orders-list', ['orders' => $orders])
-                        </div>
+                    <div id="orders-container">
+                        @include('partials.orders-list', ['orders' => $orders])
                     </div>
                 </div>
             </div>
 
             <!-- My Wishlist Section -->
-            <div id="my-wishlist-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 account-card content-section" style="display: none;">
-                <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">My Wishlist</h3>
-                @if($wishlistItems->count() > 0)
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        @foreach($wishlistItems as $item)
-                        <div class="border border-gray-200 rounded-lg p-4">
-                            <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity" 
-                                 onclick="openQuickView({{ $item->product->id ?? 'null' }}, '{{ $item->product->slug ?? '' }}')">
-                                @if($item->product && $item->product->image)
-                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover rounded-lg">
-                                @else
-                                    <i data-lucide="heart" class="text-gray-400 w-8 h-8"></i>
-                                @endif
+            <div id="my-wishlist-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Wishlist</h2>
+                
+                <div class="luxury-card">
+                    <p class="text-sm text-gray-400 mb-12">Your curated selection of Éclore masterpieces.</p>
+                    
+                    @if($wishlistItems->count() > 0)
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+                            @foreach($wishlistItems as $item)
+                            <div class="group">
+                                <div class="aspect-[4/5] bg-[#f9f9f9] mb-6 relative overflow-hidden flex items-center justify-center cursor-pointer" 
+                                     onclick="openQuickView({{ $item->product->id ?? 'null' }}, '{{ $item->product->slug ?? '' }}')">
+                                    @if($item->product && $item->product->image)
+                                        <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    @else
+                                        <i data-lucide="package" class="text-gray-200 w-12 h-12"></i>
+                                    @endif
+                                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                </div>
+                                <h3 class="font-playfair text-base mb-2 cursor-pointer hover:text-gold transition-colors" 
+                                    onclick="openQuickView({{ $item->product->id ?? 'null' }}, '{{ $item->product->slug ?? '' }}')">
+                                    {{ $item->product->name ?? 'Product' }}
+                                </h3>
+                                <p class="text-[11px] tracking-widest uppercase text-gray-400">₱{{ number_format($item->product->price ?? 0, 2) }}</p>
+                            </div>
+                            @endforeach
                         </div>
-                            <h3 class="font-medium text-gray-900 cursor-pointer hover:text-[#8b7355] transition-colors" 
-                                data-product-id="{{ $item->product->id ?? '' }}" 
-                                data-product-slug="{{ $item->product->slug ?? '' }}"
-                                onclick="openQuickView({{ $item->product->id ?? 'null' }}, '{{ $item->product->slug ?? '' }}')">
-                                {{ $item->product->name ?? 'Product' }}
-                            </h3>
-                            <p class="text-gray-600">₱{{ number_format($item->product->price ?? 0, 2) }}</p>
+                    @else
+                        <div class="text-center py-20">
+                            <i data-lucide="heart" class="text-gray-100 w-16 h-16 mx-auto mb-6"></i>
+                            <h3 class="font-playfair text-xl mb-4">Your collection is empty</h3>
+                            <a href="{{ route('catalogue') }}" class="text-[10px] tracking-[0.3em] uppercase text-gold hover:text-black transition-colors font-semibold">Examine Products</a>
                         </div>
-                        @endforeach
-                        </div>
-                @else
-                    <div class="text-center py-8">
-                        <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="heart" class="text-gray-400 w-8 h-8"></i>
-                    </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Your wishlist is empty</h3>
-                        <p class="text-gray-600 mb-4">Start adding items you love to your wishlist</p>
-                        <a href="{{ route('products') }}" class="bg-[#8b7355] text-white px-6 py-2 rounded-lg hover:bg-[#6b5b47] transition-colors">
-                            Browse Products
-                        </a>
+                    @endif
                 </div>
-                @endif
             </div>
 
             <!-- My Cart Section -->
-            <div id="my-cart-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 account-card content-section" style="display: none;">
-                <div class="flex items-center justify-between border-b pb-3 mb-8">
-                    <h3 class="text-xl font-bold text-gray-900">My Cart</h3>
-                    <button type="button" class="account-select-all-btn" id="account-select-all-cart-items">
-                        Select All
-                    </button>
-                </div>
-                @if($cartItems->count() > 0)
-                    <div class="space-y-3">
-                        @foreach($cartItems as $item)
-                        <div class="cart-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-[#8b7355] transition-colors" data-product-id="{{ $item->product_id }}">
-                            <!-- Selection Checkbox -->
-                            <div class="account-item-selection">
-                                <input type="checkbox" 
-                                       class="account-item-checkbox w-4 h-4 text-[#8b7355] border-gray-300 rounded focus:ring-[#8b7355]" 
-                                       data-product-id="{{ $item->product_id }}"
-                                       data-item-total="{{ $item->total_price }}"
-                                       checked>
+            <div id="my-cart-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Shopping Cart</h2>
+                
+                <div class="luxury-card">
+                    <div class="flex items-center justify-between mb-12">
+                        <p class="text-sm text-gray-400">Items selected for acquisition.</p>
+                        @if($cartItems->count() > 0)
+                            <button type="button" class="account-select-all-btn" id="account-select-all-cart-items">Select All</button>
+                        @endif
+                    </div>
+
+                    @if($cartItems->count() > 0)
+                        <div class="space-y-12">
+                            <div class="divide-y divide-gray-100">
+                                @foreach($cartItems as $item)
+                                <div class="cart-item flex flex-col md:flex-row items-center gap-10 py-10 first:pt-0" data-product-id="{{ $item->product_id }}">
+                                    <!-- Selection -->
+                                    <div class="account-item-selection">
+                                        <input type="checkbox" 
+                                               class="account-item-checkbox" 
+                                               data-product-id="{{ $item->product_id }}"
+                                               data-item-total="{{ $item->total_price }}"
+                                               checked>
+                                    </div>
+                                    
+                                    <!-- Visual -->
+                                    <div class="w-32 h-32 bg-[#f9f9f9] flex-shrink-0 flex items-center justify-center">
+                                        @if($item->product && $item->product->image)
+                                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
+                                        @else
+                                            <i data-lucide="package" class="text-gray-200 w-10 h-10"></i>
+                                        @endif
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div class="flex-grow">
+                                        <h3 class="font-playfair text-xl mb-2">{{ $item->product->name ?? 'Product' }}</h3>
+                                        <p class="text-[10px] text-gray-400 tracking-widest uppercase mb-4">Unit: ₱{{ number_format($item->product->price ?? 0, 2) }}</p>
+                                        <p class="text-lg font-medium text-black item-total-price">₱{{ number_format($item->total_price ?? 0, 2) }}</p>
+                                    </div>
+                                    
+                                    <!-- Controls -->
+                                    <div class="flex items-center gap-12">
+                                        <div class="flex items-center border border-gray-100 py-2 px-4 gap-6">
+                                            <button class="decrease-qty hover:text-gold transition-colors" data-product-id="{{ $item->product_id }}">
+                                                <i data-lucide="minus" class="w-3 h-3"></i>
+                                            </button>
+                                            <span class="text-xs font-semibold min-w-[20px] text-center">{{ $item->quantity }}</span>
+                                            <button class="increase-qty hover:text-gold transition-colors" data-product-id="{{ $item->product_id }}">
+                                                <i data-lucide="plus" class="w-3 h-3"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <button class="remove-cart-item text-gray-300 hover:text-red-400 transition-colors" data-product-id="{{ $item->product_id }}">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
-                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                @if($item->product && $item->product->image)
-                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover rounded-lg">
-                                @else
-                                    <i data-lucide="package" class="text-gray-400 w-6 h-6"></i>
-                                @endif
-                            </div>
-                            <div class="flex-grow">
-                                <h3 class="font-semibold text-gray-900 text-sm mb-1">{{ $item->product->name ?? 'Product' }}</h3>
-                                <p class="text-xs text-gray-500 mb-1">₱{{ number_format($item->product->price ?? 0, 2) }} each</p>
-                                <p class="text-base font-semibold text-[#8b7355] item-total-price">₱{{ number_format($item->total_price ?? 0, 2) }}</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <!-- Quantity Controls -->
-                                <div class="flex items-center border border-gray-300 rounded">
-                                    <button class="decrease-qty px-2 py-1 hover:bg-gray-100 transition-colors" data-product-id="{{ $item->product_id }}">
-                                        <i data-lucide="minus" class="w-4 h-4"></i>
+                            
+                            <!-- Cart Summary -->
+                            <div class="mt-12 pt-12 border-t border-gray-100 flex flex-col items-end">
+                                <div class="text-right mb-10">
+                                    <p class="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">Estimated Acquisition</p>
+                                    <div class="flex items-baseline gap-4 justify-end">
+                                        <span class="text-sm text-gray-500">Subtotal (<span id="cart-total-qty">{{ $cartItems->sum('quantity') }}</span>)</span>
+                                        <span class="text-4xl font-playfair text-black" id="cart-total-price">₱{{ number_format($cartTotal ?? 0, 2) }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col md:flex-row gap-6 w-full md:w-auto">
+                                    <button onclick="window.location.href='{{ route('catalogue') }}'" class="px-12 py-4 border border-black text-[10px] tracking-[0.2em] uppercase font-semibold hover:bg-black hover:text-white transition-all">
+                                        Continue Shopping
                                     </button>
-                                    <span class="px-3 py-1 text-sm font-medium border-x border-gray-300 min-w-[40px] text-center">{{ $item->quantity }}</span>
-                                    <button class="increase-qty px-2 py-1 hover:bg-gray-100 transition-colors" data-product-id="{{ $item->product_id }}">
-                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <button onclick="window.open('{{ route('checkout.index') }}', '_blank')" class="px-12 py-4 bg-black text-white text-[10px] tracking-[0.2em] uppercase font-semibold border border-black hover:bg-transparent hover:text-black transition-all">
+                                        Proceed to Checkout
                                     </button>
                                 </div>
-                                <!-- Delete Button -->
-                                <button class="remove-cart-item text-red-600 hover:text-red-700 transition-colors p-1" data-product-id="{{ $item->product_id }}">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
                             </div>
                         </div>
-                        @endforeach
-                        
-                        <!-- Cart Summary -->
-                        <div class="border-t pt-4 mt-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-lg font-semibold text-gray-900">Subtotal (<span id="cart-total-qty">{{ $cartItems->sum('quantity') }}</span> items)</span>
-                                <span class="text-2xl font-bold text-[#8b7355]" id="cart-total-price">₱{{ number_format($cartTotal ?? 0, 2) }}</span>
-                            </div>
-                            <div class="flex gap-3">
-                                <button onclick="window.location.href='{{ route('products') }}'" class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold">
-                                    Continue Shopping
-                                </button>
-                                <button onclick="window.open('{{ route('checkout.index') }}', '_blank')" class="flex-1 bg-[#8b7355] text-white px-6 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold">
-                                    Proceed to Checkout
-                                </button>
-                            </div>
+                    @else
+                        <div class="text-center py-20">
+                            <i data-lucide="shopping-cart" class="text-gray-100 w-16 h-16 mx-auto mb-6"></i>
+                            <h3 class="font-playfair text-xl mb-4">Your cart is unoccupied</h3>
+                            <a href="{{ route('catalogue') }}" class="text-[10px] tracking-[0.3em] uppercase text-gold hover:text-black transition-colors font-semibold">Browse Catalogue</a>
                         </div>
-                    </div>
-                @else
-                    <div class="text-center py-8">
-                        <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="shopping-cart" class="text-gray-400 w-8 h-8"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Your cart is empty</h3>
-                        <p class="text-gray-600 mb-4">Add items to your cart to see them here</p>
-                        <a href="{{ route('products') }}" class="bg-[#8b7355] text-white px-6 py-2 rounded-lg hover:bg-[#6b5b47] transition-colors inline-block">
-                            Browse Products
-                        </a>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
 
             <!-- Payment Methods Section -->
-            <div id="payment-methods-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section" style="display: none;">
-                <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">Payment Methods</h3>
+            <div id="payment-methods-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Payment Methods</h2>
                 
-                <div class="space-y-6">
-                <!-- Add New Payment Method Button -->
-                <div class="flex justify-end">
-                    <button id="add-payment-method-btn" class="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-600 hover:border-[#8b7355] hover:text-[#8b7355] transition-colors" onclick="showAddPaymentMethodForm()">
-                        + Add New Payment Method
-                    </button>
-                </div>
-                    
+                <div class="luxury-card">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                        <p class="text-sm text-gray-400">Manage your preferred secure acquisition methods.</p>
+                        <button id="add-payment-method-btn" onclick="showAddPaymentMethodForm()" class="text-[10px] tracking-[0.2em] uppercase text-gold hover:text-black transition-colors font-semibold">
+                            + Add Acquisition Method
+                        </button>
+                    </div>
+
                     <!-- Payment Methods List -->
-                    <div id="payment-methods-list" class="space-y-4">
-                        <!-- Payment methods will be loaded here -->
+                    <div id="payment-methods-list" class="space-y-6">
+                        <!-- Methods will be dynamically populated -->
                     </div>
                     
                     <!-- Empty State -->
-                    <div id="payment-methods-empty" class="text-center py-8 hidden">
-                        <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="credit-card" class="text-gray-400 w-8 h-8"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">No payment methods</h3>
-                        <p class="text-gray-600 mb-4">Add a payment method to make checkout faster</p>
+                    <div id="payment-methods-empty" class="text-center py-20 hidden">
+                        <i data-lucide="credit-card" class="text-gray-100 w-16 h-16 mx-auto mb-6"></i>
+                        <h3 class="font-playfair text-xl mb-4">No methods archived</h3>
+                        <p class="text-sm text-gray-400 max-w-xs mx-auto">Archive a payment method to ensure a swifter experience during your next acquisition.</p>
                     </div>
-                </div>
-                
-                <!-- Add/Edit Payment Method Form (Hidden by default) -->
-                <div id="add-payment-method-form" class="border-gray-200 pb-8 mb-8" style="display: none;">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">Add Payment Method</h3>
-                    <form id="payment-method-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600 mb-6">Add a new payment method for faster checkout.</p>
-                        </div>
-                        <div class="lg:col-span-2 space-y-6">
-                            <!-- Payment Type Selection -->
-                            <div>
-                                <label class="form-label block mb-3">PAYMENT TYPE</label>
-                                <div class="flex space-x-8">
-                                    <label class="flex items-center">
-                                        <input type="radio" name="payment_type" value="card" class="mr-3" checked>
-                                        <span>Credit/Debit Card</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="radio" name="payment_type" value="gcash" class="mr-3">
-                                        <span>GCash</span>
-                                    </label>
-                                </div>
+
+                    <!-- Add/Edit Payment Method Form -->
+                    <div id="add-payment-method-form" class="mt-16 pt-16 border-t border-gray-100" style="display: none;">
+                        <h3 class="section-subtitle">New Acquisition Method</h3>
+                        <form id="payment-method-form" class="space-y-12">
+                            <!-- Payment Type -->
+                            <div class="flex gap-12 border-b border-gray-50 pb-8">
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="payment_type" value="card" class="account-item-checkbox rounded-full mr-4" checked>
+                                    <span class="text-[11px] tracking-widest uppercase text-gray-500 group-hover:text-black transition-colors">Credit / Debit Card</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="payment_type" value="gcash" class="account-item-checkbox rounded-full mr-4">
+                                    <span class="text-[11px] tracking-widest uppercase text-gray-500 group-hover:text-black transition-colors">GCash</span>
+                                </label>
                             </div>
                             
-                            <!-- Card Fields -->
-                            <div id="card-fields" class="space-y-6">
-                                <div>
-                                    <label class="form-label block mb-2">CARD NUMBER</label>
-                                    <input type="text" name="card_number" id="card-number" class="w-full form-input" placeholder="1234 5678 9012 3456" maxlength="19">
-                                </div>
-                                <div class="grid grid-cols-2 gap-6">
+                            <!-- Fields Container -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <!-- Card Fields -->
+                                <div id="card-fields" class="contents">
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">Card Number</label>
+                                        <input type="text" name="card_number" id="card-number" class="w-full form-input" placeholder="0000 0000 0000 0000" maxlength="19">
+                                    </div>
                                     <div>
-                                        <label class="form-label block mb-2">EXPIRY DATE</label>
+                                        <label class="form-label">Expiration (MM/YY)</label>
                                         <input type="text" name="card_expiry" id="card-expiry" class="w-full form-input" placeholder="MM/YY" maxlength="5">
                                     </div>
                                     <div>
-                                        <label class="form-label block mb-2">CVV</label>
-                                        <input type="text" name="card_cvv" id="card-cvv" class="w-full form-input" placeholder="123" maxlength="4">
+                                        <label class="form-label">Security Code (CVV)</label>
+                                        <input type="text" name="card_cvv" id="card-cvv" class="w-full form-input" placeholder="000" maxlength="4">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">Cardholder Name</label>
+                                        <input type="text" name="card_holder_name" class="w-full form-input" placeholder="As it appears on the card">
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="form-label block mb-2">CARDHOLDER NAME</label>
-                                    <input type="text" name="card_holder_name" class="w-full form-input" placeholder="John Doe">
-                                </div>
-                            </div>
-                            
-                            <!-- GCash Fields -->
-                            <div id="gcash-fields" class="space-y-6" style="display: none;">
-                                <div>
-                                    <label class="form-label block mb-2">GCASH MOBILE NUMBER</label>
-                                    <input type="text" name="gcash_number" id="gcash-number" class="w-full form-input" placeholder="09123456789" maxlength="11">
-                                </div>
-                                <div>
-                                    <label class="form-label block mb-2">ACCOUNT NAME</label>
-                                    <input type="text" name="gcash_name" class="w-full form-input" placeholder="John Doe">
+                                
+                                <!-- GCash Fields -->
+                                <div id="gcash-fields" class="contents" style="display: none;">
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">GCash Mobile Number</label>
+                                        <input type="text" name="gcash_number" id="gcash-number" class="w-full form-input" placeholder="09XXXXXXXXX" maxlength="11">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">Account Name</label>
+                                        <input type="text" name="gcash_name" class="w-full form-input" placeholder="As registered with GCash">
+                                    </div>
                                 </div>
                             </div>
                             
                             <!-- Billing Address -->
-                            <div class="space-y-4">
-                                <label class="form-label block mb-2">BILLING ADDRESS</label>
+                            <div class="space-y-10 pt-6">
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase font-bold text-gray-300">Billing Address</h4>
                                 
-                                <!-- Address Line 1 -->
-                                <div>
-                                    <label class="form-label block mb-2">Address Line 1 *</label>
-                                    <input type="text" name="billing_address_line_1" class="w-full form-input" placeholder="Street address, P.O. box, company name, c/o">
-                                </div>
-                                
-                                <!-- Address Line 2 -->
-                                <div>
-                                    <label class="form-label block mb-2">Address Line 2</label>
-                                    <input type="text" name="billing_address_line_2" class="w-full form-input" placeholder="Apartment, suite, unit, building, floor, etc.">
-                                </div>
-                                
-                                <!-- Region -->
-                                <div>
-                                    <label class="form-label block mb-2">Region *</label>
-                                    <select name="billing_region" id="billing-region" class="w-full form-input" required>
-                                        <option value="">Select Region</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Province -->
-                                <div>
-                                    <label class="form-label block mb-2">Province *</label>
-                                    <select name="billing_province" id="billing-province" class="w-full form-input" required disabled>
-                                        <option value="">Select Province</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- City -->
-                                <div>
-                                    <label class="form-label block mb-2">City/Municipality *</label>
-                                    <select name="billing_city" id="billing-city" class="w-full form-input" required disabled>
-                                        <option value="">Select City/Municipality</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Barangay -->
-                                <div>
-                                    <label class="form-label block mb-2">Barangay</label>
-                                    <select name="billing_barangay" id="billing-barangay" class="w-full form-input" disabled>
-                                        <option value="">Select Barangay</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- ZIP Code -->
-                                <div>
-                                    <label class="form-label block mb-2">ZIP Code *</label>
-                                    <input type="text" name="billing_zip_code" class="w-full form-input" placeholder="ZIP Code">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">Street Address</label>
+                                        <input type="text" name="billing_address_line_1" class="w-full form-input" placeholder="Number and street name">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="form-label">Apt, Suite, Unit (Optional)</label>
+                                        <input type="text" name="billing_address_line_2" class="w-full form-input" placeholder="Apartment, building, floor">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Region</label>
+                                        <select name="billing_region" id="billing-region" class="w-full form-input" required>
+                                            <option value="">Select Region</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Province</label>
+                                        <select name="billing_province" id="billing-province" class="w-full form-input" required disabled>
+                                            <option value="">Select Province</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">City / Municipality</label>
+                                        <select name="billing_city" id="billing-city" class="w-full form-input" required disabled>
+                                            <option value="">Select Municipality</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Barangay</label>
+                                        <select name="billing_barangay" id="billing-barangay" class="w-full form-input" disabled>
+                                            <option value="">Select Barangay</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">ZIP Code</label>
+                                        <input type="text" name="billing_zip_code" class="w-full form-input" placeholder="4-digit code">
+                                    </div>
                                 </div>
                             </div>
                             
-                            <!-- Set as Default -->
-                            <div>
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="is_default" class="mr-3">
-                                    <span>Set as default payment method</span>
-                                </label>
+                            <div class="flex items-center gap-4 py-4">
+                                <input type="checkbox" name="is_default" class="account-item-checkbox">
+                                <span class="text-[10px] tracking-widest uppercase text-gray-400">Establish as primary method</span>
                             </div>
                             
-                            <!-- Form Actions -->
-                            <div class="flex space-x-4 pt-6">
-                                <button type="submit" class="bg-[#8b7355] text-white px-8 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold">
-                                    Add Payment Method
-                                </button>
-                                <button type="button" onclick="hideAddPaymentMethodForm()" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-400 transition-colors font-semibold">
-                                    Cancel
-                                </button>
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <button type="submit" class="save-button flex-1">Archive Method</button>
+                                <button type="button" onclick="hideAddPaymentMethodForm()" class="px-12 py-4 border border-gray-200 text-[10px] tracking-[0.2em] uppercase font-semibold hover:border-black transition-all">Discard</button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
 
             <!-- Newsletter Section -->
-            <div id="newsletter-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section" style="display: none;">
+            <div id="newsletter-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Correspondence</h2>
                 
-                <!-- Newsletter Preferences Section -->
-                <div class="border-gray-200">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">Newsletter Preferences</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600">Manage your newsletter preferences and stay updated with the latest news.</p>
-                        </div>
-                        <div class="lg:col-span-2 space-y-4">
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                            <h3 class="font-medium text-gray-900">Product Updates</h3>
-                            <p class="text-gray-600">Get notified about new products and collections</p>
-                        </div>
-                                <label class="custom-toggle">
-                                    <input type="checkbox" {{ $user->newsletter_product_updates ? 'checked' : '' }}>
-                                    <span class="toggle-slider"></span>
-                        </label>
-                        </div>
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                    <div>
-                            <h3 class="font-medium text-gray-900">Special Offers</h3>
-                            <p class="text-gray-600">Receive exclusive discounts and promotions</p>
-                    </div>
-                                <label class="custom-toggle">
-                                    <input type="checkbox" {{ $user->newsletter_special_offers ? 'checked' : '' }}>
-                                    <span class="toggle-slider"></span>
-                        </label>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-            </div>
-
-            <!-- Account Settings Section -->
-            <div id="account-settings-section" class="bg-white rounded-xl shadow-sm p-8 mb-8 account-card content-section" style="display: none;">
-                
-                <!-- Account Settings -->
-                <div class="border-gray-200">
-                    <h3 class="border-b text-xl font-bold text-gray-900 mb-8 pb-3">Account Settings</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div>
-                            <p class="text-gray-600">Manage your account security and preferences.</p>
-                        </div>
-                        <div class="lg:col-span-2 space-y-4">
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="flex justify-between items-center">
+                <div class="luxury-card">
+                    <p class="text-sm text-gray-400 mb-12">Curate which narratives and opportunities your House receives from the House of Éclore.</p>
+                    
+                    <div class="divide-y divide-gray-50">
+                        <div class="flex items-center justify-between py-10 group first:pt-0">
                             <div>
-                                <h3 class="font-medium text-gray-900">Change Password</h3>
-                                <p class="text-gray-600">Update your account password</p>
+                                <h3 class="font-playfair text-xl mb-1 group-hover:text-gold transition-colors">Product Revelations</h3>
+                                <p class="text-xs text-gray-400">Be the first to examine our new collections and bespoke masterpieces.</p>
                             </div>
-                                    <button onclick="goToPasswordSection()" class="text-[#8b7355] hover:text-[#6b5b47] font-medium">Change</button>
+                            <label class="custom-toggle">
+                                <input type="checkbox" {{ $user->newsletter_product_updates ? 'checked' : '' }}>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                    </div>
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="flex justify-between items-center">
+                        
+                        <div class="flex items-center justify-between py-10 group">
                             <div>
-                                <h3 class="font-medium text-gray-900">Two-Factor Authentication</h3>
-                                <p class="text-gray-600">Add an extra layer of security</p>
-                                <div id="two-factor-status" class="mt-2">
-                                    <span id="two-factor-status-text" class="text-sm text-gray-500">Loading...</span>
-                                </div>
+                                <h3 class="font-playfair text-xl mb-1 group-hover:text-gold transition-colors">Privileged Offers</h3>
+                                <p class="text-xs text-gray-400">Receive exclusive invitations and private acquisition opportunities.</p>
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <button id="two-factor-toggle" class="text-[#8b7355] hover:text-[#6b5b47] font-medium" onclick="toggleTwoFactor()">Loading...</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-medium text-gray-900">Delete Account</h3>
-                                <p class="text-gray-600">Permanently delete your account</p>
-                            </div>
-                                    <button onclick="showDeleteAccountModal()" class="text-red-600 hover:text-red-700 font-medium">Delete</button>
+                            <label class="custom-toggle">
+                                <input type="checkbox" {{ $user->newsletter_special_offers ? 'checked' : '' }}>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Account Settings Section -->
+            <div id="account-settings-section" class="content-section" style="display: none;" data-aos="fade-up">
+                <h2 class="section-title">Security & Protocol</h2>
+                
+                <div class="luxury-card space-y-12">
+                    <p class="text-sm text-gray-400 mb-4">Fortify your digital sanctuary and manage your authentication protocols.</p>
+                    
+                    <div class="divide-y divide-gray-50">
+                        <!-- Password -->
+                        <div class="flex items-center justify-between py-8 first:pt-0">
+                            <div>
+                                <h3 class="font-playfair text-xl mb-1">Access Credentials</h3>
+                                <p class="text-xs text-gray-400">Rotate your security phrase for continued protection.</p>
+                            </div>
+                            <button onclick="goToPasswordSection()" class="text-[10px] tracking-[0.2em] uppercase text-gold hover:text-black transition-colors font-semibold">Initiate Change</button>
+                        </div>
+                        
+                        <!-- 2FA -->
+                        <div class="flex items-center justify-between py-8">
+                            <div>
+                                <h3 class="font-playfair text-xl mb-1">Dual-Factor Protection</h3>
+                                <p class="text-xs text-gray-400">Add a verification layer to ensure only you may access your collection.</p>
+                                <div id="two-factor-status" class="mt-2">
+                                    <span id="two-factor-status-text" class="text-[9px] uppercase tracking-[0.2em] text-gray-300">Synchronizing...</span>
+                                </div>
+                            </div>
+                            <button id="two-factor-toggle" class="text-[10px] tracking-[0.2em] uppercase text-gold hover:text-black transition-colors font-semibold" onclick="toggleTwoFactor()">Synchronizing...</button>
+                        </div>
+                        
+                        <!-- Delete Account -->
+                        <div class="flex items-center justify-between py-8">
+                            <div>
+                                <h3 class="font-playfair text-xl mb-1">Archive Dissolution</h3>
+                                <p class="text-xs text-gray-400">Permanently remove your digital presence from the House of Éclore.</p>
+                            </div>
+                            <button onclick="showDeleteAccountModal()" class="text-[10px] tracking-[0.2em] uppercase text-red-400 hover:text-red-700 transition-colors font-semibold underline underline-offset-8">Dissolve Account</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Delete Account Modal -->
-<div id="delete-account-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
-    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full mx-4">
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Delete Account</h3>
-            <p class="text-gray-600">Are you sure you want to delete your account? This action cannot be undone.</p>
+<!-- Modals -->
+
+<!-- Delete Account -->
+<div id="delete-account-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
+    <div class="bg-white p-12 max-w-lg w-full border border-gray-100 shadow-2xl relative" data-aos="zoom-in">
+        <div class="text-center mb-10">
+            <h3 class="font-playfair text-3xl mb-4">Account Dissolution</h3>
+            <p class="text-sm text-gray-400 font-light max-w-xs mx-auto">Confirming this protocol will permanently remove your account and history. This is irreversible.</p>
         </div>
         
-        <form id="delete-account-form">
-            <div class="mb-4">
-                @if($user->isSsoUser() && !$user->hasPassword())
-                    <label class="form-label block">CONFIRM EMAIL</label>
-                    <input type="email" id="delete-account-confirmation" class="w-full form-input" required placeholder="Enter your email address">
-                @else
-                    <label class="form-label block">CONFIRM PASSWORD</label>
-                    <input type="password" id="delete-account-confirmation" class="w-full form-input" required placeholder="Enter your password">
-                @endif
-                <p id="delete-confirmation-error" class="text-sm text-red-600 mt-1 hidden"></p>
+        <form id="delete-account-form" class="space-y-8">
+            <div>
+                <label class="form-label">
+                    @if($user->isSsoUser() && !$user->hasPassword())
+                        Confirm Email Address
+                    @else
+                        Security Phrase Confirmation
+                    @endif
+                </label>
+                <input type="{{ $user->isSsoUser() && !$user->hasPassword() ? 'email' : 'password' }}" 
+                       id="delete-account-confirmation" 
+                       class="w-full form-input" 
+                       required 
+                       placeholder="Enter credentials to proceed">
+                <p id="delete-confirmation-error" class="text-[10px] text-red-500 mt-2 hidden uppercase tracking-widest font-bold"></p>
             </div>
             
-            <div class="mb-6">
-                <label class="form-label block">REASON (OPTIONAL)</label>
-                <textarea id="delete-account-reason" class="w-full form-input" rows="3" placeholder="Tell us why you're leaving (optional)"></textarea>
+            <div>
+                <label class="form-label">Dissolution Rationale (Optional)</label>
+                <textarea id="delete-account-reason" class="w-full form-input" rows="3" placeholder="Share your reason for departure..."></textarea>
             </div>
             
-            <div class="flex gap-3">
-                <button type="button" onclick="hideDeleteAccountModal()" class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold">
-                    Cancel
-                </button>
-                <button type="submit" class="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">
-                    Delete Account
-                </button>
+            <div class="flex flex-col gap-4 pt-6">
+                <button type="submit" class="w-full py-4 bg-red-600 text-white text-[10px] tracking-[0.2em] uppercase font-semibold hover:bg-red-700 transition-colors">Confirm Dissolution</button>
+                <button type="button" onclick="hideDeleteAccountModal()" class="w-full py-4 border border-gray-200 text-[10px] tracking-[0.2em] uppercase font-semibold hover:border-black transition-colors">Relinquish Request</button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- Review Modal -->
-<div id="reviewModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 overflow-hidden">
-        <!-- Modal Header -->
-        <div class="bg-[#8b7355] px-6 py-4 flex justify-between items-center">
-            <h3 class="text-xl font-bold text-white">Write a Review</h3>
-            <button onclick="closeReviewModal()" class="text-white hover:text-gray-200 transition-colors">
-                <i data-lucide="x" class="w-6 h-6"></i>
+<div id="reviewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
+    <div class="bg-white p-12 max-w-2xl w-full border border-gray-100 shadow-2xl overflow-y-auto max-h-[90vh]">
+        <div class="flex justify-between items-start mb-12">
+            <div>
+                <h3 class="font-playfair text-4xl mb-2">Refined Opinion</h3>
+                <p id="reviewProductName" class="text-[10px] text-gold tracking-[0.3em] font-bold uppercase"></p>
+            </div>
+            <button onclick="closeReviewModal()" class="text-gray-300 hover:text-black transition-colors">
+                <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
         
-        <!-- Modal Body -->
-        <div class="p-6">
-            <div class="mb-4">
-                <p class="text-sm text-gray-600">Product:</p>
-                <p id="reviewProductName" class="text-lg font-semibold text-gray-900"></p>
+        <form id="reviewForm" onsubmit="submitReview(event)" class="space-y-12">
+            <input type="hidden" id="reviewProductId" name="product_id">
+            <input type="hidden" id="reviewOrderId" name="order_id">
+            <input type="hidden" id="reviewRatingValue" name="rating" value="0">
+            
+            <!-- Rating -->
+            <div>
+                <label class="form-label mb-8">Masterpiece Evaluation</label>
+                <div class="flex gap-6">
+                    @for($i = 1; $i <= 5; $i++)
+                    <button type="button" onclick="setRating({{ $i }})" class="transition-transform active:scale-95">
+                        <i id="star-{{ $i }}" data-lucide="star" class="w-10 h-10 text-gray-100 hover:text-gold transition-colors"></i>
+                    </button>
+                    @endfor
+                </div>
             </div>
             
-            <form id="reviewForm" onsubmit="submitReview(event)">
-                <input type="hidden" id="reviewProductId" name="product_id">
-                <input type="hidden" id="reviewOrderId" name="order_id">
-                <input type="hidden" id="reviewRatingValue" name="rating" value="0">
-                
-                <!-- Star Rating -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Rating *</label>
-                    <div class="flex gap-2">
-                        <button type="button" onclick="setRating(1)" class="hover:scale-110 transition-transform">
-                            <i id="star-1" data-lucide="star" class="w-8 h-8 text-gray-300 fill-current"></i>
-                        </button>
-                        <button type="button" onclick="setRating(2)" class="hover:scale-110 transition-transform">
-                            <i id="star-2" data-lucide="star" class="w-8 h-8 text-gray-300 fill-current"></i>
-                        </button>
-                        <button type="button" onclick="setRating(3)" class="hover:scale-110 transition-transform">
-                            <i id="star-3" data-lucide="star" class="w-8 h-8 text-gray-300 fill-current"></i>
-                        </button>
-                        <button type="button" onclick="setRating(4)" class="hover:scale-110 transition-transform">
-                            <i id="star-4" data-lucide="star" class="w-8 h-8 text-gray-300 fill-current"></i>
-                        </button>
-                        <button type="button" onclick="setRating(5)" class="hover:scale-110 transition-transform">
-                            <i id="star-5" data-lucide="star" class="w-8 h-8 text-gray-300 fill-current"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Review Title -->
-                <div class="mb-6">
-                    <label for="reviewTitle" class="block text-sm font-medium text-gray-700 mb-2">Review Title (Optional)</label>
-                    <input 
-                        type="text" 
-                        id="reviewTitle" 
-                        name="title" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8b7355] focus:border-transparent"
-                        placeholder="e.g., Great quality furniture!"
-                        maxlength="255"
-                    >
-                </div>
-                
-                <!-- Review Text -->
-                <div class="mb-6">
-                    <label for="reviewText" class="block text-sm font-medium text-gray-700 mb-2">Your Review *</label>
-                    <textarea 
-                        id="reviewText" 
-                        name="review" 
-                        rows="5" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8b7355] focus:border-transparent"
-                        placeholder="Share your thoughts about this product... (minimum 10 characters)"
-                        required
-                        minlength="10"
-                        maxlength="1000"
-                    ></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Minimum 10 characters, maximum 1000 characters</p>
-                </div>
-                
-                <!-- Submit Buttons -->
-                <div class="flex gap-3">
-                    <button 
-                        type="button" 
-                        onclick="closeReviewModal()" 
-                        class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
-                    >
-                        Cancel
-                    </button>
-                    <button 
-                        type="submit" 
-                        class="flex-1 bg-[#8b7355] text-white px-6 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold"
-                    >
-                        Submit Review
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div>
+                <label class="form-label">Subject Rationale (Optional)</label>
+                <input type="text" id="reviewTitle" name="title" class="w-full form-input" placeholder="Capturing the essence of your review">
+            </div>
+            
+            <div>
+                <label class="form-label">Articulation of Experience</label>
+                <textarea id="reviewText" name="review" rows="5" class="w-full form-input" required minlength="10" placeholder="Kindly share your detailed testimony regarding this masterpiece..."></textarea>
+                <p class="text-[10px] text-gray-300 mt-2 uppercase tracking-[0.2em]">Minimal 10 characters required</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 pt-4">
+                <button type="submit" class="save-button flex-1">Submit Testimony</button>
+                <button type="button" onclick="closeReviewModal()" class="px-12 py-4 border border-gray-200 text-[10px] tracking-[0.2em] uppercase font-semibold hover:border-black transition-all">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
 <!-- Refund Request Modal -->
-<div id="refundModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto">
-        <!-- Modal Header -->
-        <div class="bg-[#8b7355] px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-            <h3 class="text-xl font-bold text-white">Request a Refund</h3>
-            <button onclick="closeRefundModal()" class="text-white hover:text-gray-200 transition-colors">
-                <i data-lucide="x" class="w-6 h-6"></i>
+<div id="refundModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
+    <div class="bg-white p-12 max-w-2xl w-full border border-gray-100 shadow-2xl overflow-y-auto max-h-[90vh]">
+        <div class="flex justify-between items-start mb-12">
+            <div>
+                <h3 class="font-playfair text-4xl mb-2">Acquisition Reversal</h3>
+                <p id="refundProductName" class="text-[10px] text-gold tracking-[0.3em] font-bold uppercase"></p>
+            </div>
+            <button onclick="closeRefundModal()" class="text-gray-300 hover:text-black transition-colors">
+                <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
         
-        <!-- Modal Body -->
-        <div class="p-6">
-            <div class="mb-4">
-                <p class="text-sm text-gray-600">Product:</p>
-                <p id="refundProductName" class="text-lg font-semibold text-gray-900"></p>
+        <form id="refundForm" onsubmit="submitRefundRequest(event)" class="space-y-12">
+            <input type="hidden" id="refundProductId" name="product_id">
+            <input type="hidden" id="refundOrderId" name="order_id">
+            <input type="hidden" id="refundOrderItemId" name="order_item_id">
+            
+            <div>
+                <label class="form-label">Nature of the Reversal</label>
+                <select id="refundReason" name="reason" required class="w-full form-input bg-transparent cursor-pointer">
+                    <option value="">Select a rationale...</option>
+                    <option value="defective">Defective Masterpiece</option>
+                    <option value="item_not_as_described">Variance from Description</option>
+                    <option value="item_does_not_fit">Dimensions Incorrect</option>
+                    <option value="quality_issues">Composition Concerns</option>
+                    <option value="customer_dissatisfaction">Expectation Not Met</option>
+                    <option value="wrong_item">Incorrect Piece Received</option>
+                    <option value="other">Alternative Rationale</option>
+                </select>
             </div>
             
-            <form id="refundForm" onsubmit="submitRefundRequest(event)">
-                <input type="hidden" id="refundProductId" name="product_id">
-                <input type="hidden" id="refundOrderId" name="order_id">
-                <input type="hidden" id="refundOrderItemId" name="order_item_id">
-                
-                <!-- Reason -->
-                <div class="mb-6">
-                    <label for="refundReason" class="block text-sm font-medium text-gray-700 mb-2">Reason for Refund *</label>
-                    <select id="refundReason" name="reason" required class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-[#8b7355] focus:outline-none focus:ring-2 focus:ring-[#8b7355]">
-                        <option value="">Select a reason...</option>
-                        <option value="defective">Defective Item</option>
-                        <option value="item_not_as_described">Item Not as Described</option>
-                        <option value="item_does_not_fit">Item Does Not Fit</option>
-                        <option value="quality_issues">Quality Issues</option>
-                        <option value="customer_dissatisfaction">Customer Dissatisfaction</option>
-                        <option value="wrong_item">Wrong Item Received</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <p class="mt-1 text-xs text-gray-500">Please select the primary reason for your refund request</p>
+            <div>
+                <label class="form-label">Detailed Rationale</label>
+                <textarea id="refundDescription" name="description" required minlength="10" rows="4" class="w-full form-input" placeholder="Elaborate on the necessity for this protocol..."></textarea>
+                <p class="text-[10px] text-gray-300 mt-2 uppercase tracking-widest"><span id="refundDescriptionCount">0</span> / 1000 characters archived</p>
+            </div>
+            
+            <div>
+                <label class="form-label">Evidentiary Imagery (Optional)</label>
+                <p class="text-[9px] text-gray-400 mb-4 tracking-widest uppercase leading-relaxed">Provide up to 5 visual documentations to expedite the reversal (max 2MB each)</p>
+                <input type="file" id="refundPhotos" name="photos[]" multiple accept="image/*" class="w-full form-input text-[10px]">
+                <div id="refundPhotoPreview" class="mt-8 grid grid-cols-5 gap-4 hidden"></div>
+            </div>
+            
+            <div id="refundErrorMessage" class="hidden">
+                <div class="p-6 border border-red-50 text-red-600 bg-red-50 text-[10px] uppercase tracking-widest leading-relaxed">
+                    <p id="refundErrorText"></p>
                 </div>
-                
-                <!-- Description -->
-                <div class="mb-6">
-                    <label for="refundDescription" class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
-                    <textarea 
-                        id="refundDescription" 
-                        name="description" 
-                        required 
-                        minlength="10"
-                        maxlength="1000"
-                        rows="4"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-[#8b7355] focus:outline-none focus:ring-2 focus:ring-[#8b7355] resize-none"
-                        placeholder="Please provide a detailed description of why you're requesting a refund (minimum 10 characters)..."
-                    ></textarea>
-                    <p class="mt-1 text-xs text-gray-500">
-                        <span id="refundDescriptionCount">0</span>/1000 characters
-                    </p>
+            </div>
+            
+            <div id="refundSuccessMessage" class="hidden">
+                <div class="p-6 border border-green-50 text-green-700 bg-green-50 text-[10px] uppercase tracking-widest leading-relaxed">
+                    <p id="refundSuccessText"></p>
                 </div>
-                
-                <!-- Customer Notes -->
-                <div class="mb-6">
-                    <label for="refundCustomerNotes" class="block text-sm font-medium text-gray-700 mb-2">Additional Notes (Optional)</label>
-                    <textarea 
-                        id="refundCustomerNotes" 
-                        name="customer_notes" 
-                        maxlength="1000"
-                        rows="3"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-[#8b7355] focus:outline-none focus:ring-2 focus:ring-[#8b7355] resize-none"
-                        placeholder="Any additional information that might help us process your request..."
-                    ></textarea>
-                    <p class="mt-1 text-xs text-gray-500">
-                        <span id="refundNotesCount">0</span>/1000 characters
-                    </p>
-                </div>
-                
-                <!-- Photos -->
-                <div class="mb-6">
-                    <label for="refundPhotos" class="block text-sm font-medium text-gray-700 mb-2">Photos (Optional)</label>
-                    <p class="text-xs text-gray-500 mb-2">Upload up to 5 photos to support your refund request (max 2MB each)</p>
-                    <input 
-                        type="file" 
-                        id="refundPhotos" 
-                        name="photos[]" 
-                        multiple 
-                        accept="image/jpeg,image/png,image/gif,image/webp,image/avif"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-[#8b7355] focus:outline-none focus:ring-2 focus:ring-[#8b7355]"
-                    >
-                    <div id="refundPhotoPreview" class="mt-3 grid grid-cols-5 gap-2 hidden"></div>
-                </div>
-                
-                <!-- Error Message -->
-                <div id="refundErrorMessage" class="mb-4 hidden">
-                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                        <p id="refundErrorText"></p>
-                    </div>
-                </div>
-                
-                <!-- Success Message -->
-                <div id="refundSuccessMessage" class="mb-4 hidden">
-                    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
-                        <p id="refundSuccessText"></p>
-                    </div>
-                </div>
-                
-                <!-- Submit Buttons -->
-                <div class="flex gap-3">
-                    <button 
-                        type="button" 
-                        onclick="closeRefundModal()" 
-                        class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
-                    >
-                        Cancel
-                    </button>
-                    <button 
-                        type="submit" 
-                        id="refundSubmitBtn"
-                        class="flex-1 bg-[#8b7355] text-white px-6 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        <span id="refundSubmitText">Submit Request</span>
-                        <span id="refundSubmitLoading" class="hidden">Submitting...</span>
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 pt-6">
+                <button type="submit" id="refundSubmitBtn" class="save-button flex-1">
+                    <span id="refundSubmitText">Initiate Reversal</span>
+                    <span id="refundSubmitLoading" class="hidden">Processing Protocol...</span>
+                </button>
+                <button type="button" onclick="closeRefundModal()" class="px-12 py-4 border border-gray-200 text-[10px] tracking-[0.2em] uppercase font-semibold hover:border-black transition-all">Cancel Protocol</button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

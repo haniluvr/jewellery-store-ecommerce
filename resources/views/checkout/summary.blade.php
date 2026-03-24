@@ -5,216 +5,207 @@
 
 @section('title', 'Order Summary')
 
-@section('content')
     <!-- Main Content -->
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto py-12 px-4">
         <!-- Success Message -->
-        <div class="text-center mb-8">
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-                <i data-lucide="check-circle" class="h-8 w-8 text-green-600"></i>
+        <div class="text-center mb-20 animate-fade-in">
+            <div class="inline-block p-4 mb-8 bg-[#FAFAFA] border border-gray-50 rounded-full">
+                <i data-lucide="check" class="w-8 h-8 text-[#B6965D]"></i>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
-            <p class="text-lg text-gray-600">Thank you for your order. A confirmation email has been sent to your email address.</p>
+            <h1 class="text-4xl text-[#1A1A1A] mb-4 font-playfair tracking-tight">Acquisition Confirmed</h1>
+            <p class="text-sm text-gray-400 font-light tracking-wide uppercase mono">Your selection is being prepared for transit.</p>
         </div>
 
         <!-- Order Details -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">Order Details</h2>
+        <div class="bg-white p-10 border border-gray-100 mb-12">
+            <div class="flex items-center justify-between mb-12 pb-6 border-b border-gray-50">
+                <h2 class="text-2xl text-[#1A1A1A] font-playfair">Summary of Selection</h2>
                 <div class="text-right">
-                    <p class="text-sm text-gray-600">Order Number</p>
-                    <p class="text-lg font-bold text-[#8b7355]">#{{ $order->order_number }}</p>
+                    <p class="text-[9px] mono tracking-[0.2em] text-gray-300 uppercase mb-2">REFERENCE</p>
+                    <p class="text-sm border border-gray-100 px-4 py-1 inline-block mono text-[#1A1A1A]">#{{ $order->order_number }}</p>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Shipping Address</h3>
-                    <div class="text-sm text-gray-600">
-                        <p class="font-medium text-gray-900">{{ $order->shipping_address['first_name'] ?? '' }} {{ $order->shipping_address['last_name'] ?? '' }}</p>
+                    <h3 class="text-[9px] mono tracking-[0.25em] text-[#B6965D] uppercase mb-6 font-medium">DELIVERY DISPATCH</h3>
+                    <div class="text-sm text-gray-400 leading-relaxed font-light">
+                        <p class="text-[#1A1A1A] mb-3 uppercase tracking-wider text-[10px] font-medium">{{ $order->shipping_address['first_name'] ?? '' }} {{ $order->shipping_address['last_name'] ?? '' }}</p>
                         <p>{{ $order->shipping_address['address_line_1'] ?? '' }}</p>
                         @if($order->shipping_address['address_line_2'] ?? null)
                             <p>{{ $order->shipping_address['address_line_2'] }}</p>
                         @endif
                         <p>{{ $order->shipping_address['city'] ?? '' }}, {{ $order->shipping_address['province'] ?? '' }} {{ $order->shipping_address['zip_code'] ?? '' }}</p>
                         <p>{{ $order->shipping_address['region'] ?? '' }}</p>
-                        <p class="mt-2">{{ $order->shipping_address['phone'] ?? '' }}</p>
+                        <p class="mt-4 text-[#1A1A1A] mono text-xs">{{ $order->shipping_address['phone'] ?? '' }}</p>
                     </div>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Payment & Shipping</h3>
-                    <div class="text-sm text-gray-600 space-y-2">
-                        <div>
-                            <span class="font-medium text-gray-900">Payment Method:</span>
-                            <span class="ml-2">{{ $order->payment_method ?? 'N/A' }}</span>
+                    <h3 class="text-[9px] mono tracking-[0.25em] text-[#B6965D] uppercase mb-6 font-medium">LOGISTICS & SETTLEMENT</h3>
+                    <div class="text-sm text-gray-400 space-y-4 font-light">
+                        <div class="flex justify-between items-center border-b border-gray-50 pb-2">
+                            <span class="text-[9px] mono uppercase tracking-wider">Method</span>
+                            <span class="text-[#1A1A1A] uppercase tracking-widest text-[10px]">{{ $order->payment_method ?? 'N/A' }}</span>
                         </div>
-                        <div>
-                            <span class="font-medium text-gray-900">Payment Status:</span>
-                            <span class="ml-2">
+                        <div class="flex justify-between items-center border-b border-gray-50 pb-2">
+                            <span class="text-[9px] mono uppercase tracking-wider">Authentication</span>
+                            <span>
                                 @if($order->payment_status === 'paid')
-                                    <span class="text-green-600 font-medium">Paid</span>
+                                    <span class="text-[#B6965D] tracking-[0.2em] uppercase text-[9px] mono">VERIFIED</span>
                                 @elseif($order->payment_status === 'pending')
-                                    <span class="text-orange-600 font-medium">Pending</span>
+                                    <span class="text-orange-400 tracking-[0.2em] uppercase text-[9px] mono">AWAITING</span>
                                 @else
-                                    <span class="text-gray-600">{{ ucfirst($order->payment_status) }}</span>
+                                    <span class="text-gray-400 tracking-[0.2em] uppercase text-[9px] mono">{{ strtoupper($order->payment_status) }}</span>
                                 @endif
                             </span>
                         </div>
-                        <div>
-                            <span class="font-medium text-gray-900">Shipping Method:</span>
-                            <span class="ml-2">{{ $order->shipping_method ?? 'Standard' }}</span>
+                        <div class="flex justify-between items-center border-b border-gray-50 pb-2">
+                            <span class="text-[9px] mono uppercase tracking-wider">Delivery Mode</span>
+                            <span class="text-[#1A1A1A] uppercase tracking-widest text-[10px]">{{ $order->shipping_method ?? 'White-Glove' }}</span>
                         </div>
-                        <div>
-                            <span class="font-medium text-gray-900">Estimated Delivery:</span>
-                            <span class="ml-2 text-[#8b7355] font-medium">{{ $estimatedDeliveryDate }}</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[9px] mono uppercase tracking-wider">Est. Arrival</span>
+                            <span class="text-[#1A1A1A] font-medium text-[10px] uppercase tracking-widest">{{ $estimatedDeliveryDate }}</span>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Order Items -->
-            <div class="border-t pt-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Items</h3>
-                <div class="space-y-4">
+            <div class="border-t border-gray-50 pt-12 mt-12">
+                <h3 class="text-[9px] mono tracking-[0.25em] text-[#B6965D] uppercase mb-8 font-medium">CURATED SELECTION</h3>
+                <div class="divide-y divide-gray-50">
                     @foreach($order->orderItems as $item)
-                    <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div class="flex items-center py-8 gap-8">
+                        <div class="w-20 h-24 bg-gray-50 flex items-center justify-center flex-shrink-0 overflow-hidden border border-gray-100">
                             @if($item->product && $item->product->images)
                                 @php
                                     $images = is_string($item->product->images) ? json_decode($item->product->images, true) : $item->product->images;
                                     $firstImage = is_array($images) && count($images) > 0 ? $images[0] : null;
                                 @endphp
                                 @if($firstImage)
-                                    <img src="{{ Storage::url($firstImage) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover rounded-lg">
+                                    <img src="{{ Storage::url($firstImage) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover">
                                 @else
-                                    <i data-lucide="package" class="w-8 h-8 text-gray-400"></i>
+                                    <i data-lucide="image" class="w-6 h-6 text-gray-200"></i>
                                 @endif
                             @else
-                                <i data-lucide="package" class="w-8 h-8 text-gray-400"></i>
+                                <i data-lucide="image" class="w-6 h-6 text-gray-200"></i>
                             @endif
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-lg font-medium text-gray-900">{{ $item->product_name }}</h4>
-                            <p class="text-sm text-gray-600">SKU: {{ $item->product_sku }}</p>
-                            <p class="text-sm text-gray-600">Quantity: {{ $item->quantity }}</p>
+                            <h4 class="text-[10px] text-[#1A1A1A] uppercase tracking-[0.2em] mb-2 font-medium">{{ $item->product_name }}</h4>
+                            <p class="text-[9px] text-gray-400 mono mb-1 uppercase tracking-wider">SKU: {{ $item->product_sku }}</p>
+                            <p class="text-[9px] text-gray-400 mono uppercase tracking-wider">Quantity: {{ $item->quantity }}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-lg font-semibold text-gray-900">₱{{ number_format($item->total_price, 2) }}</p>
-                            <p class="text-sm text-gray-600">₱{{ number_format($item->unit_price, 2) }} each</p>
+                            <p class="text-sm text-[#1A1A1A] font-light">€{{ number_format($item->total_price, 2) }}</p>
+                            @if($item->quantity > 1)
+                            <p class="text-[9px] text-gray-400 mono mt-2 uppercase tracking-wider">€{{ number_format($item->unit_price, 2) }} unit</p>
+                            @endif
                         </div>
                     </div>
                     @endforeach
                 </div>
             </div>
             
-            <!-- Order Summary -->
-            <div class="border-t pt-6 mt-6">
+            <!-- Order Summary totals -->
+            <div class="border-t border-gray-50 pt-10 mt-4">
                 <div class="flex justify-end">
                     <div class="w-full max-w-sm">
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Subtotal</span>
-                                <span class="text-gray-900">₱{{ number_format($order->subtotal, 2) }}</span>
+                        <div class="space-y-4 font-light text-sm text-gray-400">
+                            <div class="flex justify-between items-center text-[11px] mono uppercase tracking-wider">
+                                <span>Subtotal</span>
+                                <span class="text-[#1A1A1A]">€{{ number_format($order->subtotal, 2) }}</span>
                             </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Shipping</span>
-                                <span class="text-gray-900">
+                            <div class="flex justify-between items-center text-[11px] mono uppercase tracking-wider">
+                                <span>Shipping</span>
+                                <span>
                                     @if($order->shipping_cost == 0)
-                                        <span class="text-green-600">Free</span>
+                                        <span class="text-[#B6965D] uppercase tracking-widest">Complimentary</span>
                                     @else
-                                        ₱{{ number_format($order->shipping_cost, 2) }}
+                                        <span class="text-[#1A1A1A]">€{{ number_format($order->shipping_cost, 2) }}</span>
                                     @endif
                                 </span>
                             </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">VAT (12%)</span>
-                                <span class="text-gray-900">₱{{ number_format($order->tax_amount, 2) }}</span>
+                            <div class="flex justify-between items-center border-t border-gray-50 pt-4 mt-2 text-[11px] mono uppercase tracking-wider">
+                                <span>Tax Incl. (12%)</span>
+                                <span class="text-[#1A1A1A]">€{{ number_format($order->tax_amount, 2) }}</span>
                             </div>
-                            <div class="flex justify-between text-lg font-semibold border-t pt-2">
-                                <span class="text-gray-900">Total</span>
-                                <span class="text-[#8b7355]">₱{{ number_format($order->total_amount, 2) }}</span>
+                            <div class="flex justify-between items-end pt-2">
+                                <span class="text-[11px] text-[#1A1A1A] uppercase tracking-[0.3em] font-medium">TOTAL</span>
+                                <span class="text-2xl text-[#1A1A1A] font-playfair font-normal">€{{ number_format($order->total_amount, 2) }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- Order Status Timeline -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Status</h3>
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-[#8b7355] text-white">
-                        <i data-lucide="check" class="w-4 h-4"></i>
+        <div class="bg-white p-10 border border-gray-100 mb-12 mt-16">
+            <h3 class="text-[9px] mono tracking-[0.25em] text-gray-300 uppercase mb-12 text-center">CURRENT TRAJECTORY</h3>
+            <div class="max-w-2xl mx-auto flex items-center justify-between relative px-4">
+                <div class="absolute left-10 right-10 top-1/2 -translate-y-1/2 h-px bg-gray-50 z-0"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="flex items-center justify-center w-6 h-6 rounded-full bg-[#1A1A1A] text-white">
+                        <i data-lucide="check" class="w-2 h-2"></i>
                     </div>
-                    <span class="ml-2 text-sm font-medium text-gray-900">Order Placed</span>
+                    <span class="mt-4 text-[8px] mono tracking-[0.2em] uppercase text-[#1A1A1A]">Confirmed</span>
                 </div>
-                <div class="flex-1 h-px bg-gray-300"></div>
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $order->status === 'processing' || $order->status === 'shipped' || $order->status === 'delivered' ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                        <i data-lucide="package" class="w-4 h-4"></i>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="flex items-center justify-center w-6 h-6 rounded-full {{ in_array($order->status, ['processing', 'shipped', 'delivered']) ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-100 text-gray-200' }}">
+                        @if(in_array($order->status, ['processing', 'shipped', 'delivered']))
+                             <i data-lucide="check" class="w-2 h-2"></i>
+                        @else
+                            <div class="w-1 h-1 bg-gray-100 rounded-full"></div>
+                        @endif
                     </div>
-                    <span class="ml-2 text-sm font-medium {{ $order->status === 'processing' || $order->status === 'shipped' || $order->status === 'delivered' ? 'text-gray-900' : 'text-gray-500' }}">Processing</span>
+                    <span class="mt-4 text-[8px] mono tracking-[0.2em] uppercase {{ in_array($order->status, ['processing', 'shipped', 'delivered']) ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Atelier</span>
                 </div>
-                <div class="flex-1 h-px bg-gray-300"></div>
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $order->status === 'shipped' || $order->status === 'delivered' ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                        <i data-lucide="truck" class="w-4 h-4"></i>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="flex items-center justify-center w-6 h-6 rounded-full {{ in_array($order->status, ['shipped', 'delivered']) ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-100 text-gray-200' }}">
+                        @if(in_array($order->status, ['shipped', 'delivered']))
+                             <i data-lucide="check" class="w-2 h-2"></i>
+                        @else
+                            <div class="w-1 h-1 bg-gray-100 rounded-full"></div>
+                        @endif
                     </div>
-                    <span class="ml-2 text-sm font-medium {{ $order->status === 'shipped' || $order->status === 'delivered' ? 'text-gray-900' : 'text-gray-500' }}">Shipped</span>
+                    <span class="mt-4 text-[8px] mono tracking-[0.2em] uppercase {{ in_array($order->status, ['shipped', 'delivered']) ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Transit</span>
                 </div>
-                <div class="flex-1 h-px bg-gray-300"></div>
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full {{ $order->status === 'delivered' ? 'bg-[#8b7355] text-white' : 'bg-gray-200 text-gray-500' }}">
-                        <i data-lucide="home" class="w-4 h-4"></i>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="flex items-center justify-center w-6 h-6 rounded-full {{ $order->status === 'delivered' ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-100 text-gray-200' }}">
+                        @if($order->status === 'delivered')
+                             <i data-lucide="check" class="w-2 h-2"></i>
+                        @else
+                            <div class="w-1 h-1 bg-gray-100 rounded-full"></div>
+                        @endif
                     </div>
-                    <span class="ml-2 text-sm font-medium {{ $order->status === 'delivered' ? 'text-gray-900' : 'text-gray-500' }}">Delivered</span>
+                    <span class="mt-4 text-[8px] mono tracking-[0.2em] uppercase {{ $order->status === 'delivered' ? 'text-[#1A1A1A]' : 'text-gray-300' }}">Arrival</span>
                 </div>
             </div>
         </div>
 
-        <!-- Next Steps -->
-        <div class="bg-blue-50 rounded-lg p-6 mb-8">
-            <h3 class="text-lg font-semibold text-blue-900 mb-3">What's Next?</h3>
-            <ul class="space-y-2 text-sm text-blue-800">
-                <li class="flex items-start">
-                    <i data-lucide="mail" class="w-4 h-4 mt-0.5 mr-2 flex-shrink-0"></i>
-                    <span>Order confirmation email has been sent to <strong>{{ $order->user->email }}</strong></span>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="clock" class="w-4 h-4 mt-0.5 mr-2 flex-shrink-0"></i>
-                    <span>We'll process your order within 1-2 business days</span>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="calendar" class="w-4 h-4 mt-0.5 mr-2 flex-shrink-0"></i>
-                    <span>Estimated delivery: <strong>{{ $estimatedDeliveryDate }}</strong></span>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="truck" class="w-4 h-4 mt-0.5 mr-2 flex-shrink-0"></i>
-                    <span>You'll receive tracking information once your order ships</span>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="phone" class="w-4 h-4 mt-0.5 mr-2 flex-shrink-0"></i>
-                    <span>Contact us if you have any questions about your order</span>
-                </li>
-            </ul>
-        </div>
+        <!-- Next Steps block removed for cleaner aesthetic, integrated minimally below if needed -->
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('account.receipt', $order->order_number) }}" 
-               class="bg-[#8b7355] text-white px-6 py-3 rounded-lg hover:bg-[#6b5b47] transition-colors font-semibold text-center">
-                View Receipt
+        <div class="flex flex-col sm:flex-row gap-6 justify-center mt-20 mb-12 border-t border-gray-50 pt-16">
+            <a href="{{ route('catalogue') }}" 
+               class="btn-gold w-full sm:w-auto text-center order-1 sm:order-2">
+                CONTINUE EXPLORATION
             </a>
-            <a href="{{ route('products') }}" 
-               class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold text-center">
-                Continue Shopping
+            <a href="{{ route('account.receipt', $order->order_number) }}" 
+               class="px-10 py-4 text-[10px] mono tracking-[0.3em] uppercase transition-all duration-300 border border-gray-100 text-gray-400 hover:text-[#1A1A1A] hover:border-[#1A1A1A] text-center w-full sm:w-auto order-3 sm:order-1">
+                VIEW RECEIPT
             </a>
             <a href="{{ route('account') }}" 
-               class="border border-[#8b7355] text-[#8b7355] px-6 py-3 rounded-lg hover:bg-[#8b7355] hover:text-white transition-colors font-semibold text-center">
-                My Orders
+               class="px-10 py-4 text-[10px] mono tracking-[0.3em] uppercase transition-all duration-300 border border-gray-100 text-gray-400 hover:text-[#1A1A1A] hover:border-[#1A1A1A] text-center w-full sm:w-auto order-2 sm:order-3">
+                MY ATELIER
             </a>
         </div>
     </div>

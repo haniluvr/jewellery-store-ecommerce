@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Verify OTP Code | David's Wood Admin</title>
+    <title>Verify OTP Code | Éclore Admin</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/favicon.png') }}">

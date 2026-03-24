@@ -1,553 +1,355 @@
 @extends('layouts.app')
 
-@section('title', 'Terms of Service - David\'s Wood Furniture')
+@section('title', 'Éclore Journal - Terms of Service')
 
-@section('styles')
+@push('styles')
 <style>
-    .sidebar-link {
+    /* Section specific styles */
+    .legal-content {
+        background-color: #FAFAFA;
+        color: #1A1A1A;
+    }
+    
+    .legal-header {
+        background: linear-gradient(to bottom, #1A1A1A 0%, #2A2A2A 100%);
+        color: #FFFFFF;
         position: relative;
-        padding-left: 1.5rem;
-        transition: all 0.2s ease;
-        color: #4a5568;
+        overflow: hidden;
     }
-    a.sidebar-link.active {
-        color: #1a202c !important;
-        font-weight: 900 !important;
-        border-left: 3px solid #655e4e !important;
-        padding-left: calc(1.5rem - 3px) !important;
+
+    .legal-header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(182, 150, 93, 0.15) 0%, transparent 70%);
+        pointer-events: none;
     }
+
+    .sidebar-link {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #999999;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border-right: 1px solid transparent;
+        padding-right: 2rem;
+    }
+
+    .sidebar-link.active {
+        color: #1A1A1A;
+        border-right: 2px solid #B6965D;
+    }
+
     .sidebar-link:hover {
-        color: #655e4e;
+        color: #B6965D;
     }
+
+    .legal-section h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 300;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+    }
+
+    .legal-section h3 {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: #B6965D;
+        margin-top: 4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .legal-text {
+        font-size: 15px;
+        line-height: 1.8;
+        color: #4A4A4A;
+    }
+
+    .accent-card {
+        background: white;
+        border: 1px solid #EEEEEE;
+        padding: 3rem;
+        position: relative;
+    }
+
+    .accent-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #B6965D;
+    }
+
     #content-area section {
-        scroll-margin-top: 120px;
+        scroll-margin-top: 100px;
     }
-    .content-link {
-        color: #059669;
-        text-decoration: underline;
+
+    .dot-separator {
+        width: 4px;
+        height: 4px;
+        background: #B6965D;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 1rem;
+        vertical-align: middle;
     }
-    .content-link:hover {
-        color: #047857;
+
+    .term-number {
+        font-family: 'Azeret Mono', monospace;
+        font-size: 10px;
+        color: #B6965D;
+        margin-right: 1rem;
     }
 </style>
-@endsection
+@endpush
 
 @section('content')
-<div class="min-h-screen">
-    <!-- Top Banner with Light Green Background -->
-    <div class="py-40 sm:px-6" style="background-color: #b3aa99;">
-        <div class="max-w-7xl mx-auto text-center">
-            <h1 class="text-5xl font-bold text-gray-900 mb-5">Terms of Service</h1>
-            <p class="text-2xl text-gray-700 mb-5 font-normal">Terms and conditions for using David's Wood</p>
-            <p class="text-gray-600 text-base">Updated October 22, 2025</p>
+<div class="legal-content min-h-screen">
+    <!-- Editorial Header -->
+    <header class="legal-header py-40 px-6">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="font-azeret text-[10px] tracking-[0.5em] uppercase text-[#B6965D] mb-8 block" data-aos="fade-up">Statutory Agreement</span>
+            <h1 class="font-playfair text-6xl md:text-8xl font-light mb-8 text-white" data-aos="fade-up" data-aos-delay="100">
+                Terms of Service
+            </h1>
+            <div class="flex items-center justify-center font-azeret text-[11px] tracking-[0.2em] text-white/50 uppercase" data-aos="fade-up" data-aos-delay="200">
+                <span>Éclore Journal</span>
+                <span class="dot-separator"></span>
+                <span>Version 2.4 — October 2025</span>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Main Content Layout -->
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
-        <!-- Left Sidebar Navigation -->
-        <aside class="w-full lg:w-80 lg:sticky lg:top-20 lg:self-start border-l border-gray-300 my-20">
-            <nav class="space-y-1">
-                <a href="#introduction" class="sidebar-link block py-2.5 px-8">Introduction</a>
-                <a href="#user-accounts" class="sidebar-link block py-2.5 px-8">User Accounts</a>
-                <a href="#prohibited-use" class="sidebar-link block py-2.5 px-8">Prohibited Use</a>
-                <a href="#intellectual-property" class="sidebar-link block py-2.5 px-8">Intellectual Property</a>
-                <a href="#payment-pricing" class="sidebar-link block py-2.5 px-8">Payment and Pricing</a>
-                <a href="#refund-cancellation" class="sidebar-link block py-2.5 px-8">Refund and Cancellation</a>
-                <a href="#shipping-delivery" class="sidebar-link block py-2.5 px-8">Shipping and Delivery</a>
-                <a href="#limitation-liability" class="sidebar-link block py-2.5 px-8">Limitation of Liability</a>
-                <a href="#warranty-disclaimer" class="sidebar-link block py-2.5 px-8">Warranty Disclaimer</a>
-                <a href="#dispute-resolution" class="sidebar-link block py-2.5 px-8">Dispute Resolution</a>
-                <a href="#governing-law" class="sidebar-link block py-2.5 px-8">Governing Law</a>
-                <a href="#changes-terms" class="sidebar-link block py-2.5 px-8">Changes to Terms</a>
-                <a href="#contact" class="sidebar-link block py-2.5 px-8">Contact Information</a>
-                <a href="#privacy-policy" class="sidebar-link block py-2.5 px-8">Privacy Policy Link</a>
-            </nav>
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row px-6 md:px-12">
+        <!-- Minimalist Sticky Navigation -->
+        <aside class="w-full lg:w-72 lg:sticky lg:top-32 lg:self-start my-20 lg:pr-12">
+            <div class="border-l border-gray-100 py-4">
+                <nav class="space-y-4 flex flex-col text-right">
+                    <a href="#introduction" class="sidebar-link active">Mandate</a>
+                    <a href="#user-accounts" class="sidebar-link">Accounts</a>
+                    <a href="#prohibited-use" class="sidebar-link">Conduct</a>
+                    <a href="#intellectual-property" class="sidebar-link">Ownership</a>
+                    <a href="#payment-pricing" class="sidebar-link">Treasury</a>
+                    <a href="#refund-cancellation" class="sidebar-link">Restitution</a>
+                    <a href="#shipping-delivery" class="sidebar-link">Logistics</a>
+                    <a href="#limitation-liability" class="sidebar-link">Liability</a>
+                    <a href="#warranty-disclaimer" class="sidebar-link">Warranties</a>
+                    <a href="#dispute-resolution" class="sidebar-link">Resolution</a>
+                    <a href="#governing-law" class="sidebar-link">Jurisdiction</a>
+                    <a href="#contact" class="sidebar-link">Concierge</a>
+                </nav>
+            </div>
         </aside>
 
-        <!-- Right Content Area -->
-        <main id="content-area" class="flex-1 ps-20">
+        <!-- Refined Content Area -->
+        <main id="content-area" class="flex-1 lg:pl-20 border-l border-gray-50 my-20">
             <!-- Introduction -->
-            <section id="introduction" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Introduction</h2>
-                <div class="space-y-6 text-gray-700 leading-relaxed text-base">
-                    <p>
-                        <strong>Welcome to David's Wood.</strong> These <strong>Terms of Service</strong> constitute a <strong>legally binding agreement</strong> governing your access to and use of David's Wood's e-commerce platform, website, and services.
+            <section id="introduction" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">1.0 — The Mandate</h2>
+                <div class="legal-text space-y-8">
+                    <p class="first-letter:text-6xl first-letter:font-playfair first-letter:mr-3 first-letter:float-left first-letter:text-[#B6965D]">
+                        Welcome to Éclore. These Terms of Service constitute a legally binding agreement governing your access to and use of Éclore's boutique e-commerce platform, website, and bespoke services.
                     </p>
                     <p>
-                        By accessing or using our website, creating an account, or making a purchase, you agree to be bound by these Terms. If you do not agree with any part of these Terms, you must not use our services.
+                        By traversing our digital domain, initializing an account, or acquiring a masterpiece from our collections, you commit to these Terms. Should you find any provision inconsistent with your intent, we respectfully request that you cease use of our services.
                     </p>
-                    
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">About David's Wood</h3>
-                    <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                        David's Wood is a Filipino e-commerce platform specializing in handcrafted wooden furniture. We connect customers with locally crafted, high-quality furniture pieces while supporting Filipino artisans and promoting traditional woodcraft.
-                    </p>
-                    <div class="p-6 rounded-lg mb-6" style="background-color:rgba(255, 255, 255, 0.4);">
-                        <p class="text-gray-700 mb-3 text-base"><strong>Business Information:</strong></p>
-                        <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4 text-base">
-                            <li><strong>Company Name:</strong> David's Wood</li>
-                            <li><strong>Business Type:</strong> E-commerce Platform for Handcrafted Furniture</li>
-                            <li><strong>Location:</strong> 123 Santa Rosa - Tagaytay Rd, Silang, 4118 Cavite, Philippines</li>
-                            <li><strong>Contact:</strong> hello@davidswood.shop, +63 (917) 123-4567</li>
+                    <div class="accent-card mt-12">
+                        <h3 class="!mt-0">The House of Éclore</h3>
+                        <p>Éclore is a premier Filipino e-commerce platform dedicated to the curation of high-end, artisanal jewellery. We bridge the gap between discerning collectors and master jewelers, preserving traditional metalwork and lapidary arts through a modern luxury lens.</p>
+                        <ul class="mt-8 space-y-2 font-azeret text-[10px] tracking-widest uppercase text-gray-400">
+                            <li><span class="text-[#B6965D]">Locus</span> Silang, Cavite, Philippines</li>
+                            <li><span class="text-[#B6965D]">Registry</span> hello@eclorejewellery.shop</li>
+                            <li><span class="text-[#B6965D]">Direct</span> +63 (917) 123-4567</li>
                         </ul>
                     </div>
-
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-5">Product Catalog</h3>
-                    <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                        Our platform offers a curated selection of handcrafted Filipino wooden furniture, including but not limited to living room furniture (sofas, tables, cabinets), bedroom furniture (beds, wardrobes, nightstands), dining furniture (dining tables, chairs, buffets), and home decor and accessories.
-                    </p>
-
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-5">Product Descriptions</h3>
-                    <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                        We strive to provide accurate product descriptions, images, specifications, and pricing. However, colors may vary slightly due to screen settings and natural wood variations. Dimensions are approximate and may vary slightly due to handcrafted nature. Product availability is subject to change without notice. We reserve the right to correct errors in descriptions or pricing.
-                    </p>
-
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-5">Entire Agreement</h3>
-                    <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                        These Terms, together with our Privacy Policy and any other policies referenced herein, constitute the entire agreement between you and David's Wood regarding your use of our services and supersede all prior agreements and understandings.
-                    </p>
                 </div>
             </section>
 
             <!-- User Accounts -->
-            <section id="user-accounts" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">User Accounts</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Eligibility</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    To use our services, you must:
-                </p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Be at least 18 years of age</li>
-                    <li>Have the legal capacity to enter into binding contracts</li>
-                    <li>Provide accurate and complete registration information</li>
-                    <li>Comply with all applicable laws and regulations</li>
-                </ul>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    If you are using our services on behalf of an organization, you represent that you have the authority to bind that organization to these Terms.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Account Creation</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    To make purchases and access certain features, you must create an account by providing full name, valid email address, contact phone number, secure password, and shipping address.
-                </p>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    <strong>Email Verification:</strong> For security purposes, all new accounts require email verification. You will receive a verification link via email after registration. Until your email is verified, access to certain features (such as placing orders) may be restricted.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You may also choose to sign in using <strong>Google OAuth</strong>, which is subject to Google's terms and privacy policy.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Account Security</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    You are responsible for maintaining the confidentiality of your account credentials, all activities that occur under your account, and notifying us immediately of any unauthorized access or security breach.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We reserve the right to suspend or terminate accounts that violate these Terms or engage in fraudulent activity.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Account Accuracy</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    You must provide accurate, current, and complete information. You agree to update your information promptly if it changes. We are not liable for any losses or damages resulting from inaccurate information.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Account Termination</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You may close your account at any time by contacting customer service. We reserve the right to suspend or terminate your account immediately, without prior notice, if you violate these Terms or engage in fraudulent, illegal, or harmful activities.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Assignment</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You may not assign or transfer your rights or obligations under these Terms without our prior written consent. We may assign or transfer our rights and obligations at any time without restriction.
-                </p>
+            <section id="user-accounts" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">2.0 — Account Stewardship</h2>
+                <div class="legal-text space-y-8">
+                    <p>To engage with the Éclore ecosystem, members must maintain the highest standards of eligibility and security.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="!mt-0">Eligibility</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-4">
+                                    <span class="term-number">[2.1]</span>
+                                    <span>Legal age of majority (18 years or older).</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <span class="term-number">[2.2]</span>
+                                    <span>Authentic identity verification via Secure Email.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="!mt-0">Security</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-4">
+                                    <span class="term-number">[2.3]</span>
+                                    <span>Confidentiality of cryptographic access tokens.</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <span class="term-number">[2.4]</span>
+                                    <span>Responsibility for all activity under the account.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Prohibited Use -->
-            <section id="prohibited-use" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Prohibited Use</h2>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    By using our platform, you agree not to:
+            <section id="prohibited-use" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">3.0 — Code of Conduct</h2>
+                <p class="legal-text mb-12">
+                    In preservation of the Éclore aesthetic and community, members agree to refrain from:
                 </p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Violate any applicable laws or regulations</li>
-                    <li>Infringe on intellectual property rights of David's Wood or third parties</li>
-                    <li>Provide false, misleading, or fraudulent information</li>
-                    <li>Engage in fraudulent transactions or payment disputes</li>
-                    <li>Use automated systems (bots, scrapers) to access the website</li>
-                    <li>Attempt to gain unauthorized access to our systems or accounts</li>
-                    <li>Interfere with or disrupt the operation of the website</li>
-                    <li>Upload malware, viruses, or harmful code</li>
-                    <li>Harass, abuse, or harm other users or our staff</li>
-                    <li>Use the platform for any illegal or unauthorized purpose</li>
-                    <li>Resell products for commercial purposes without authorization</li>
-                </ul>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We reserve the right to suspend or terminate your account if you violate these Terms, engage in fraudulent activity, or act in a manner harmful to our business or other users.
-                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-azeret text-[9px] tracking-[0.2em] uppercase text-gray-500">
+                    <div class="border border-gray-100 p-6">Automated Extraction & Scrapers</div>
+                    <div class="border border-gray-100 p-6">Identity Obfuscation</div>
+                    <div class="border border-gray-100 p-6">Intellectual Infringement</div>
+                    <div class="border border-gray-100 p-6">Treasury Fraud & Disputes</div>
+                    <div class="border border-gray-100 p-6">Malicious Code Injection</div>
+                    <div class="border border-gray-100 p-6">Unsanctioned Resale</div>
+                </div>
             </section>
 
             <!-- Intellectual Property -->
-            <section id="intellectual-property" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Intellectual Property</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Our Content</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    All content on the David's Wood platform, including but not limited to text, graphics, logos, images, photographs, product descriptions and specifications, website design, layout, structure, software, code, functionality, trademarks, service marks, and brand names, is the exclusive property of David's Wood or our content providers and is protected by Philippine and international intellectual property laws.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Limited License</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We grant you a limited, non-exclusive, non-transferable license to access and use our platform for personal, non-commercial purposes. You may not reproduce, distribute, or publicly display our content; modify, adapt, or create derivative works; use our content for commercial purposes without written permission; or remove copyright or proprietary notices.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">User Content</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    If you submit reviews, comments, photos, or other content to our platform (including product reviews from verified purchasers), you grant us a worldwide, royalty-free license to use, reproduce, modify, and display such content for business purposes.
-                </p>
+            <section id="intellectual-property" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">4.0 — Proprietary Ownership</h2>
+                <div class="legal-text space-y-8">
+                    <p>Every element within the Éclore platform — from the curvature of our digital interfaces to the high-resolution imagery of our pieces — is the exclusive intellectual property of Éclore.</p>
+                    <div class="pl-10 border-l border-[#B6965D] space-y-6 italic text-gray-500">
+                        <p>"The Éclore mark, our editorial content, and the structural design of our boutique are protected by Philippine and International Intellectual Property statutes."</p>
+                    </div>
+                </div>
             </section>
 
             <!-- Payment and Pricing -->
-            <section id="payment-pricing" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Payment and Pricing</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Pricing</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    All prices are listed in <strong>Philippine Peso (PHP)</strong> unless otherwise stated. Prices are subject to change without prior notice. The price at the time of order placement governs your purchase. Promotional prices are valid only during the specified period. Shipping fees are calculated separately and displayed at checkout.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We reserve the right to correct pricing errors and may cancel orders placed at incorrect prices, even after order confirmation. We will notify you and offer a refund if this occurs.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Product Availability</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Product availability is not guaranteed until your order is confirmed. If a product becomes unavailable after you place an order, we will notify you and offer a suitable alternative product, a full refund of the purchase price, or store credit for future purchases.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Placing Orders</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    By placing an order, you make an offer to purchase products subject to these Terms, agree to pay the total amount including product price, shipping fees, and applicable taxes, and confirm that all information provided is accurate.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    After placing an order, you will receive an email confirmation. Order confirmation does not constitute acceptance; we reserve the right to refuse or cancel orders. We may cancel orders due to pricing errors, product unavailability, fraud suspicion, or violation of these Terms.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Payment Methods</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    We accept the following payment methods:
-                </p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li><strong>Credit/Debit Cards:</strong> Processed securely through Xendit payment gateway</li>
-                    <li><strong>GCash:</strong> Philippine mobile wallet service via Xendit</li>
-                    <li><strong>Maya (formerly PayMaya):</strong> Digital payment platform via Xendit</li>
-                    <li><strong>Other E-Wallets:</strong> GrabPay and other supported e-wallets via Xendit</li>
-                    <li><strong>Cash on Delivery (COD):</strong> Payment upon receipt of goods (subject to location availability)</li>
-                    <li>Other payment methods as may be added from time to time</li>
-                </ul>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Payment Processing</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    Payment is processed securely through third-party payment processors (Xendit). We do not store your complete credit card or payment information. You authorize us to charge the payment method for the total order amount. Payment must be successfully processed before order fulfillment.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Taxes and fees, if applicable, will be calculated and displayed at checkout. You are responsible for all charges associated with your order.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Third-Party Payment Services</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Our platform integrates with third-party payment processors (Xendit, GCash, Maya). We are not responsible for the availability, accuracy, or content of these third-party services; the privacy practices or terms of third-party services; or any damages or losses caused by third-party services. Your use of third-party payment services is subject to their respective terms and policies.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Promotions and Discounts</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Promotional offers are subject to specific terms and conditions. Discounts cannot be combined unless explicitly stated. We reserve the right to modify or cancel promotions at any time.
-                </p>
+            <section id="payment-pricing" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">5.0 — Treasury & Acquisition</h2>
+                <div class="legal-text space-y-8">
+                    <p>All acquisitions are conducted in <strong>Philippine Peso (PHP)</strong>. Pricing is subject to the fluctuations of artisan craftsmanship and material availability.</p>
+                    
+                    <h3 class="font-azeret">Secure Payment Orchestration</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white border border-gray-100 p-4 text-center">
+                            <span class="font-azeret text-[9px] text-gray-400">Xendit Vault</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 p-4 text-center">
+                            <span class="font-azeret text-[9px] text-gray-400">GCash Direct</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 p-4 text-center">
+                            <span class="font-azeret text-[9px] text-gray-400">Maya Digital</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 p-4 text-center">
+                            <span class="font-azeret text-[9px] text-gray-400">Boutique COD</span>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Refund and Cancellation -->
-            <section id="refund-cancellation" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Refund and Cancellation</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Return Policy</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    We want you to be completely satisfied with your purchase. If you're not happy with your order, you may request a return within <strong>7 days</strong> of delivery, subject to the following conditions:
-                </p>
-                <p class="text-gray-700 mb-3 leading-relaxed text-base"><strong>Eligible for Return:</strong></p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Product is defective, damaged, or not as described</li>
-                    <li>Wrong item was delivered</li>
-                    <li>Product has manufacturing defects</li>
-                </ul>
-                <p class="text-gray-700 mb-3 leading-relaxed text-base"><strong>Not Eligible for Return:</strong></p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Change of mind or buyer's remorse</li>
-                    <li>Products used, assembled, or altered</li>
-                    <li>Custom-made or personalized items</li>
-                    <li>Sale or clearance items (unless defective)</li>
-                    <li>Products without original packaging and tags</li>
-                </ul>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Return Process (RMA)</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    To initiate a return, contact our customer service within 7 days of delivery, provide your order number and reason for return, provide photos of the product and packaging (for damage claims), receive return authorization (RMA number) and instructions, pack the item securely in original packaging, and ship the item to our designated return address (if approved).
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Return Shipping</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Return shipping costs are borne by the customer unless the product is defective or incorrect. We recommend using trackable shipping methods. We are not responsible for items lost or damaged during return transit.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Refunds</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    Refunds are processed after we receive and inspect the returned product. Approved refunds are issued to the original payment method within 7-14 business days. Shipping fees are non-refundable unless we made an error. Refund amount excludes shipping fees paid for the original delivery.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Exchanges</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    If you receive a defective or incorrect product, we will arrange an exchange at no additional cost. Contact us within 7 days to arrange an exchange.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Damaged or Defective Products</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    If you receive a damaged or defective product, contact us within 24-48 hours of delivery, provide photos of the damage or defect, and we will arrange for replacement, repair, or refund at our discretion.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Order Cancellation</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You may cancel your order before it is shipped by contacting customer service. Once an order has been shipped, standard return policies apply. We reserve the right to cancel orders due to pricing errors, product unavailability, fraud suspicion, or violation of these Terms.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Gift Cards and Store Credit</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Gift cards and store credit are non-refundable and cannot be exchanged for cash. Validity periods and terms apply as specified at the time of issuance.
-                </p>
+            <section id="refund-cancellation" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">6.0 — Restitution Mandate</h2>
+                <div class="legal-text space-y-8">
+                    <p>We provide a <strong>7-day window</strong> for the return of items that fail to meet our rigorous quality benchmarks upon delivery.</p>
+                    <div class="accent-card">
+                        <h4 class="font-playfair text-xl mb-6">Eligible for Restitution</h4>
+                        <ul class="space-y-3 font-azeret text-[10px] tracking-wide uppercase text-gray-500">
+                            <li>Structural Manufacturing Defects</li>
+                            <li>Discrepancy in Product Specification</li>
+                            <li>Damage sustained during House Logistics</li>
+                        </ul>
+                        <p class="mt-8 text-xs italic text-gray-400">Items altered by the collector or custom-made pieces are exempt from standard returns.</p>
+                    </div>
+                </div>
             </section>
 
             <!-- Shipping and Delivery -->
-            <section id="shipping-delivery" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Shipping and Delivery</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Shipping Coverage</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We currently ship to addresses within the Philippines. International shipping is not available at this time.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Shipping Fees</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Shipping fees are calculated based on delivery location, package size, and weight. Fees are displayed during checkout before payment. We may offer free shipping promotions from time to time.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Delivery Timeframes</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    Estimated delivery times are provided at checkout:
-                </p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Standard delivery: 7-14 business days (Metro Manila and major cities)</li>
-                    <li>Provincial delivery: 10-21 business days</li>
-                    <li>Custom or made-to-order items may require additional time</li>
-                </ul>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Delivery times are estimates and not guaranteed. We are not liable for delays caused by logistics partners, customs, weather, or other circumstances beyond our control.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Delivery Address</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Ensure your delivery address is accurate and complete. We are not responsible for failed deliveries due to incorrect addresses. Address changes after order placement may not be possible.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Order Tracking</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You can track your order status through your account's Order History page, email notifications with tracking information, or logistics partner tracking systems.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Inspection Upon Delivery</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    You must inspect products upon delivery. If there is visible damage to the package or product, note the damage with the delivery personnel, take photographs of the damage, and contact us within 24 hours to report the issue.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Third-Party Logistics</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    We work with third-party logistics and shipping partners to deliver your orders. We are not responsible for the availability, accuracy, or services of third-party logistics providers; or any damages or losses caused by third-party logistics services.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Your use of our shipping services is subject to the terms and policies of our logistics partners. Delays or issues with delivery are subject to the policies and limitations of our logistics partners.
-                </p>
+            <section id="shipping-delivery" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">7.0 — Global Logistics</h2>
+                <div class="legal-text space-y-8">
+                    <p>Domestic fulfillments are orchestrated through our network of luxury logistics partners. Tracking architecture is available within the Member Dashboard.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-8 border border-gray-50">
+                            <h4 class="font-playfair text-lg mb-2">Metropolitan</h4>
+                            <p class="font-azeret text-[10px] text-[#B6965D]">7–14 Business Days</p>
+                        </div>
+                        <div class="p-8 border border-gray-50">
+                            <h4 class="font-playfair text-lg mb-2">Provincial</h4>
+                            <p class="font-azeret text-[10px] text-[#B6965D]">10–21 Business Days</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Limitation of Liability -->
-            <section id="limitation-liability" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Limitation of Liability</h2>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    TO THE MAXIMUM EXTENT PERMITTED BY LAW, DAVID'S WOOD, ITS OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits or revenue, loss of data or information, loss of business opportunities, or personal injury or property damage.
-                </p>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    Our total liability for any claims arising from your use of our services shall not exceed the amount you paid for the product or service giving rise to the claim, or PHP 5,000, whichever is less.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Some jurisdictions do not allow the exclusion or limitation of certain warranties or liabilities. In such jurisdictions, our liability is limited to the fullest extent permitted by law. Nothing in these Terms excludes or limits our liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded by law.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Indemnification</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    You agree to indemnify, defend, and hold harmless David's Wood, its affiliates, officers, directors, employees, agents, and partners from and against any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising from:
-                </p>
-                <ul class="list-disc list-inside text-gray-700 mb-10 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Your violation of these Terms</li>
-                    <li>Your use or misuse of our services</li>
-                    <li>Your violation of any rights of third parties</li>
-                    <li>Your violation of applicable laws or regulations</li>
-                    <li>Any fraudulent or illegal activities associated with your account</li>
-                </ul>
+            <section id="limitation-liability" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">8.0 — Limitation of Liability</h2>
+                <div class="legal-text bg-[#1A1A1A] text-white/70 p-12 font-azeret text-[11px] tracking-wide leading-relaxed uppercase">
+                    TO THE MAXIMUM EXTENT PERMITTED BY LAW, ÉCLORE SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, OR PUNITIVE DAMAGES ARISING FROM THE USE OF OUR BOUTIQUE. OUR TOTAL LIABILITY IS LIMITED TO THE AMOUNT PAID FOR THE PRODUCT IN QUESTION.
+                </div>
             </section>
 
             <!-- Warranty Disclaimer -->
-            <section id="warranty-disclaimer" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Warranty Disclaimer</h2>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    TO THE FULLEST EXTENT PERMITTED BY LAW, DAVID'S WOOD PROVIDES THE PLATFORM AND SERVICES "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-                </p>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    We disclaim all warranties, including but not limited to implied warranties of merchantability and fitness for a particular purpose; warranties that the platform will be uninterrupted, error-free, or secure; warranties regarding the accuracy or reliability of content; and warranties that defects will be corrected.
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Your use of the platform is at your sole risk. While we strive to provide accurate information and quality products, we do not guarantee that products will meet your specific requirements, website functionality will be uninterrupted or error-free, or product descriptions or images are completely accurate due to natural variations in handcrafted items.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Product Warranties</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    David's Wood provides a limited warranty against manufacturing defects for a period of <strong>6 months</strong> from the date of delivery. This warranty covers structural defects in materials and workmanship, manufacturing flaws that affect product functionality, and premature wear under normal use conditions.
-                </p>
-                <p class="text-gray-700 mb-3 leading-relaxed text-base"><strong>Warranty Exclusions:</strong></p>
-                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Normal wear and tear</li>
-                    <li>Damage from misuse, abuse, or neglect</li>
-                    <li>Damage from accidents, fire, or natural disasters</li>
-                    <li>Modifications or alterations made by the customer</li>
-                    <li>Damage from improper assembly or installation</li>
-                    <li>Natural variations in wood grain, color, or texture</li>
-                </ul>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    To make a warranty claim, contact us with your order number and description of the issue, provide photographs of the defect, and we will assess the claim and determine the appropriate remedy (repair, replacement, or refund).
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    To maintain warranty coverage, products must be cared for according to the care instructions provided, including regular cleaning with appropriate methods, protection from excessive moisture, heat, or sunlight, and proper assembly and installation.
-                </p>
+            <section id="warranty-disclaimer" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">9.0 — The Artisan Guarantee</h2>
+                <div class="legal-text space-y-8">
+                    <p>Éclore provides a limited <strong>6-month artisan warranty</strong> covering structural integrity and manufacturing craftsmanship of our jewellery pieces.</p>
+                    <p class="text-sm text-gray-400 italic">"Natural variations in stones, including inclusions and subtle color shifts, are celebrated as certificates of authenticity and are not considered defects."</p>
+                </div>
             </section>
 
             <!-- Dispute Resolution -->
-            <section id="dispute-resolution" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Dispute Resolution</h2>
-                
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5 mt-10">Informal Resolution</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    If you have any concerns or disputes, please contact us first. We will make good faith efforts to resolve the issue informally through negotiation.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Jurisdiction</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Any disputes arising from these Terms or your use of our services shall be resolved exclusively in the courts of Cavite, Philippines. You consent to the personal jurisdiction of such courts.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Arbitration (Optional)</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    As an alternative to litigation, disputes may be submitted to binding arbitration in accordance with the rules of the Philippine Dispute Resolution Center, Inc. (PDRCI) or similar arbitration body, if both parties agree.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Severability</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    If any provision of these Terms is found to be invalid, illegal, or unenforceable by a court of competent jurisdiction, the remaining provisions shall continue in full force and effect. The invalid provision shall be modified to the minimum extent necessary to make it valid and enforceable.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Waiver</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Our failure to enforce any right or provision of these Terms shall not constitute a waiver of such right or provision. Any waiver must be in writing and signed by an authorized representative of David's Wood.
+            <section id="dispute-resolution" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">10.0 — Harmony & Resolution</h2>
+                <p class="legal-text">
+                    In the spirit of artisanal excellence, Éclore seeks to resolve any collectors' concerns through direct dialogue. Any dispute arising from your acquisition journey shall first be submitted to our Boutique Concierge for an amicable resolution process before pursuing formal digital arbitration.
                 </p>
             </section>
 
-            <!-- Governing Law -->
-            <section id="governing-law" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Governing Law</h2>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    These Terms are governed by and construed in accordance with the laws of the Republic of the Philippines, without regard to conflict of law principles.
+            <!-- Jurisdiction -->
+            <section id="governing-law" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">11.0 — Regulatory Jurisdiction</h2>
+                <p class="legal-text">
+                    These Terms and your relationship with Éclore shall be governed by and construed in accordance with the laws of the <strong>Republic of the Philippines</strong>. Any formal legal proceedings shall be conducted exclusively within the competent courts of <strong>Cavite</strong>, where our boutique heritage resides.
                 </p>
             </section>
 
-            <!-- Changes to Terms -->
-            <section id="changes-terms" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Changes to Terms</h2>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    We reserve the right to modify or update these Terms at any time. Changes will be effective immediately upon posting to our website with a new "Last Updated" date.
-                </p>
-                <p class="text-gray-700 mb-3 leading-relaxed text-base"><strong>Notification of Changes:</strong></p>
-                <ul class="list-disc list-inside text-gray-700 mb-10 space-y-3 ml-6 leading-relaxed text-base">
-                    <li>Material changes will be notified via email to registered users</li>
-                    <li>A notice will be displayed on our website homepage</li>
-                    <li>Continued use of our services after changes constitutes acceptance</li>
-                </ul>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We encourage you to review these Terms periodically to stay informed of any updates.
-                </p>
-            </section>
-
-            <!-- Contact Information -->
-            <section id="contact" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Contact Information</h2>
-                <p class="text-gray-700 mb-8 leading-relaxed text-base">
-                    If you have any questions, concerns, or feedback regarding these Terms of Service, please contact us:
-                </p>
-                <div class="p-8 rounded-lg mb-8" style="background-color:rgba(255, 255, 255, 0.4);">
-                    <p class="text-gray-700 mb-4 text-base"><strong>David's Wood Customer Service</strong></p>
-                    <p class="text-gray-700 mb-4 text-base">
-                        <strong>Email:</strong> <a href="mailto:hello@davidswood.shop" class="content-link">hello@davidswood.shop</a>
-                    </p>
-                    <p class="text-gray-700 mb-4 text-base">
-                        <strong>Phone:</strong> +63 (917) 123-4567
-                    </p>
-                    <p class="text-gray-700 mb-4 text-base">
-                        <strong>Address:</strong><br>
-                        123 Santa Rosa - Tagaytay Rd,<br>
-                        Silang, 4118 Cavite<br>
-                        Philippines
-                    </p>
-                    <p class="text-gray-700 text-base">
-                        <strong>Business Hours:</strong><br>
-                        Monday - Saturday, 9:00 AM - 6:00 PM (GMT +8)
-                    </p>
+            <!-- Concierge Contact -->
+            <section id="contact" class="pb-24" data-aos="fade-up">
+                <h2 class="text-4xl text-gray-900 mb-12">12.0 — Boutique Concierge</h2>
+                <div class="bg-[#B6965D] p-12 text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div>
+                            <h4 class="font-playfair text-2xl mb-4">Concierge Support</h4>
+                            <p class="font-azeret text-[10px] tracking-[0.2em] leading-relaxed uppercase">
+                                For inquiries regarding these Terms or your acquisition journey, our concierge team is available.
+                            </p>
+                        </div>
+                        <div class="space-y-4 font-azeret text-[11px] tracking-widest uppercase">
+                            <p>hello@eclorejewellery.shop</p>
+                            <p>+63 (917) 123-4567</p>
+                            <p class="pt-4 border-t border-white/20">Mon — Sat / 09:00 — 18:00</p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We aim to respond to all inquiries within 1-2 business days.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Newsletter and Marketing</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    By providing your email address, you may receive promotional emails from David's Wood. You can unsubscribe at any time by clicking the unsubscribe link in our emails.
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Feedback and Suggestions</h3>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We welcome your feedback and suggestions. Any feedback you provide may be used by David's Wood without obligation to you.
-                </p>
-            </section>
-
-            <!-- Privacy Policy Link -->
-            <section id="privacy-policy" class="pt-20 pb-10">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Privacy Policy Link</h2>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    Your privacy is important to us. Our collection, use, and protection of your personal information is governed by our <a href="{{ route('privacy-policy') }}" class="content-link">Privacy Policy</a>, which is incorporated into these Terms by reference. By using our services, you consent to our collection and use of personal information as described in the Privacy Policy. We comply with the Philippine Data Privacy Act of 2012 (Republic Act No. 10173).
-                </p>
-
-                <h3 class="text-2xl font-semibold text-gray-800 mb-5">Third-Party Services</h3>
-                <p class="text-gray-700 mb-6 leading-relaxed text-base">
-                    Our platform may integrate with or link to third-party services, including payment processors (Xendit, GCash, Maya), logistics and shipping partners, analytics and advertising services, and social media platforms (Google OAuth).
-                </p>
-                <p class="text-gray-700 mb-10 leading-relaxed text-base">
-                    We are not responsible for the availability, accuracy, or content of third-party services; the privacy practices or terms of third-party services; or any damages or losses caused by third-party services. Your use of third-party services is subject to their respective terms and policies.
-                </p>
             </section>
 
             <!-- Acceptance -->
-            <section class="border-t pt-10 pb-20">
-                <p class="text-gray-700 text-xl leading-relaxed">
-                    <strong>By using David's Wood's e-commerce platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</strong>
+            <section class="border-t border-gray-100 pt-12 pb-20">
+                <p class="font-playfair text-2xl text-gray-900 italic">
+                    By accessing the Éclore Journal and our boutique ecosystem, you acknowledge full acceptance of these Terms.
                 </p>
             </section>
         </main>
@@ -559,118 +361,47 @@
     'use strict';
     
     function initSidebarActive() {
-        try {
-            var contentArea = document.getElementById('content-area');
-            if (!contentArea) {
-                setTimeout(initSidebarActive, 100);
-                return;
-            }
-            
-            var sections = contentArea.querySelectorAll('section[id]');
-            var links = document.querySelectorAll('.sidebar-link');
-            
-            if (sections.length === 0 || links.length === 0) {
-                setTimeout(initSidebarActive, 100);
-                return;
-            }
-            
-            function setActiveLink() {
-                var current = '';
-                var scrollY = window.scrollY || window.pageYOffset || 0;
-                var scrollPos = scrollY + 200;
-                
-                // Find current section
-                for (var i = 0; i < sections.length; i++) {
-                    var section = sections[i];
-                    var sectionTop = section.offsetTop;
-                    var sectionHeight = section.offsetHeight || section.clientHeight;
-                    
-                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                        current = section.getAttribute('id');
-                        break;
-                    }
+        const sections = document.querySelectorAll('#content-area section');
+        const links = document.querySelectorAll('.sidebar-link');
+        
+        function setActive() {
+            let current = '';
+            const scrollPos = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollPos >= sectionTop) {
+                    current = section.getAttribute('id');
                 }
-                
-                // Fallback: find last passed section
-                if (!current) {
-                    if (scrollY < 100) {
-                        current = sections[0].getAttribute('id');
-                    } else {
-                        for (var j = sections.length - 1; j >= 0; j--) {
-                            if (scrollY >= sections[j].offsetTop - 200) {
-                                current = sections[j].getAttribute('id');
-                                break;
-                            }
-                        }
-                    }
+            });
+
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
                 }
-                
-                // Update links
-                if (current) {
-                    for (var k = 0; k < links.length; k++) {
-                        var link = links[k];
-                        var href = link.getAttribute('href') || '';
-                        var linkId = href.replace('#', '').trim();
-                        
-                        if (linkId === current) {
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active');
-                        }
-                    }
-                }
-            }
-            
-            // Click handlers
-            for (var i = 0; i < links.length; i++) {
-                (function(link) {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        var href = this.getAttribute('href') || '';
-                        var targetId = href.replace('#', '').trim();
-                        var target = document.getElementById(targetId);
-                        
-                        if (target) {
-                            // Remove all active
-                            for (var j = 0; j < links.length; j++) {
-                                links[j].classList.remove('active');
-                            }
-                            // Add to clicked
-                            this.classList.add('active');
-                            
-                            // Scroll
-                            var offset = 150;
-                            var rect = target.getBoundingClientRect();
-                            var targetPos = (rect.top + (window.pageYOffset || document.documentElement.scrollTop)) - offset;
-                            
-                            window.scrollTo({
-                                top: Math.max(0, targetPos),
-                                behavior: 'smooth'
-                            });
-                            
-                            setTimeout(setActiveLink, 600);
-                        }
-                    });
-                })(links[i]);
-            }
-            
-            // Scroll handler
-            var scrollTimeout = null;
-            window.addEventListener('scroll', function() {
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
-                scrollTimeout = setTimeout(setActiveLink, 10);
-            }, { passive: true });
-            
-            // Initial set
-            setTimeout(setActiveLink, 50);
-        } catch (e) {
-            console.error('Sidebar active error:', e);
+            });
         }
+
+        window.addEventListener('scroll', setActive);
+        setActive();
+
+        // Smooth scroll with offset
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     }
-    
-    // Run immediately if DOM is ready, otherwise wait
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initSidebarActive);
     } else {

@@ -130,8 +130,8 @@ sudo mysql -u root -p
 In MySQL prompt:
 ```sql
 CREATE DATABASE davids_wood;
-CREATE USER 'davidswood_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON davids_wood.* TO 'davidswood_user'@'localhost';
+CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+GRANT ALL PRIVILEGES ON davids_wood.* TO 'eclore_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -146,14 +146,14 @@ sudo chown -R ubuntu:ubuntu /var/www/html/davids-wood-furniture
 
 ### Create Apache virtual host
 ```bash
-sudo nano /etc/apache2/sites-available/davidswood.conf
+sudo nano /etc/apache2/sites-available/eclore.conf
 ```
 
 Add the following configuration:
 ```apache
 <VirtualHost *:80>
-    ServerName davidswood.shop
-    ServerAlias www.davidswood.shop
+    ServerName eclore.shop
+    ServerAlias www.eclore.shop
     DocumentRoot /var/www/html/davids-wood-furniture/public
 
     <Directory /var/www/html/davids-wood-furniture/public>
@@ -161,12 +161,12 @@ Add the following configuration:
         Require all granted
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/davidswood_error.log
-    CustomLog ${APACHE_LOG_DIR}/davidswood_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/eclore_error.log
+    CustomLog ${APACHE_LOG_DIR}/eclore_access.log combined
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName admin.davidswood.shop
+    ServerName admin.eclore.shop
     DocumentRoot /var/www/html/davids-wood-furniture/public
 
     <Directory /var/www/html/davids-wood-furniture/public>
@@ -174,14 +174,14 @@ Add the following configuration:
         Require all granted
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/davidswood_admin_error.log
-    CustomLog ${APACHE_LOG_DIR}/davidswood_admin_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/eclore_admin_error.log
+    CustomLog ${APACHE_LOG_DIR}/eclore_admin_access.log combined
 </VirtualHost>
 ```
 
 ### Enable the site
 ```bash
-sudo a2ensite davidswood.conf
+sudo a2ensite eclore.conf
 sudo a2dissite 000-default
 sudo systemctl reload apache2
 ```
@@ -195,7 +195,7 @@ sudo apt install -y certbot python3-certbot-apache
 
 ### Get SSL certificate
 ```bash
-sudo certbot --apache -d davidswood.shop -d www.davidswood.shop -d admin.davidswood.shop
+sudo certbot --apache -d eclore.shop -d www.eclore.shop -d admin.eclore.shop
 ```
 
 ### Test SSL renewal
@@ -357,7 +357,7 @@ php -m | grep -E "(mysql|redis|curl|gd|mbstring)"
 
 ### Test database connection
 ```bash
-mysql -u davidswood_user -p -e "SHOW DATABASES;"
+mysql -u eclore_user -p -e "SHOW DATABASES;"
 ```
 
 ## Step 17: Clone Your Repository
@@ -400,7 +400,7 @@ sudo nano .env
 
 4. **Database connection issues**
    ```bash
-   mysql -u davidswood_user -p -e "SELECT 1;"
+   mysql -u eclore_user -p -e "SELECT 1;"
    ```
 
 ### Log Locations

@@ -10,8 +10,16 @@ html {
 
 body {
   overflow-x: hidden;
-  font-family: "Inter", sans-serif;
+  font-family: "Azeret Mono", monospace;
   background-color: rgb(243, 239, 231);
+}
+
+.font-playfair {
+  font-family: "Playfair Display", serif !important;
+}
+
+.font-azeret {
+  font-family: "Azeret Mono", monospace !important;
 }
 
 /* Tailwind utility classes for custom components */

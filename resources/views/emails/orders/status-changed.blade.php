@@ -8,20 +8,20 @@
 <p>Your order status has been updated. Here are the details:</p>
 
 <div class="info-box">
-    <h2>Order Information</h2>
-    <p><strong>Order Number:</strong> #{{ $order->order_number }}</p>
-    <p><strong>Previous Status:</strong> {{ ucfirst($oldStatus ?? 'Unknown') }}</p>
+    <h2>Client Order Information</h2>
+    <p><strong>Order Reference:</strong> #{{ $order->order_number }}</p>
+    <p><strong>Previous Status:</strong> <span style="font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">{{ ucfirst($oldStatus ?? 'Unknown') }}</span></p>
     <p><strong>New Status:</strong> 
         @if($newStatus === 'shipped')
-            <span style="color: #3b82f6; font-weight: 600;">Shipped</span>
+            <span style="color: #1A1A1A; font-weight: 600; font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Shipped</span>
         @elseif($newStatus === 'delivered')
-            <span style="color: #10b981; font-weight: 600;">Delivered</span>
+            <span style="color: #1A1A1A; font-weight: 600; font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Delivered</span>
         @elseif($newStatus === 'cancelled')
-            <span style="color: #ef4444; font-weight: 600;">Cancelled</span>
+            <span style="color: #ef4444; font-weight: 600; font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Cancelled</span>
         @elseif($newStatus === 'processing')
-            <span style="color: #f59e0b; font-weight: 600;">Processing</span>
+            <span style="color: #1A1A1A; font-weight: 600; font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Processing</span>
         @else
-            <span style="font-weight: 600;">{{ ucfirst($newStatus) }}</span>
+            <span style="font-weight: 600; font-family: 'Azeret Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">{{ ucfirst($newStatus) }}</span>
         @endif
     </p>
     <p><strong>Updated:</strong> {{ now()->format('M d, Y \a\t g:i A') }}</p>
@@ -29,19 +29,19 @@
 
 @if($newStatus === 'shipped')
     <div class="info-box">
-        <h2>Shipping Information</h2>
-        <p>Your order has been shipped and is on its way!</p>
+        <h2>Secure Courier Dispatch</h2>
+        <p>Your exquisite acquisition has been secured and dispatched.</p>
         @if($order->tracking_number ?? false)
-            <p><strong>Tracking Number:</strong> {{ $order->tracking_number }}</p>
+            <p><strong>Tracking Number:</strong> <span style="font-family: 'Azeret Mono', monospace;">{{ $order->tracking_number }}</span></p>
         @endif
         @if($order->estimated_delivery ?? false)
-            <p><strong>Estimated Delivery:</strong> {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('M d, Y') }}</p>
+            <p><strong>Estimated Arrival:</strong> {{ \Carbon\Carbon::parse($order->estimated_delivery)->format('M d, Y') }}</p>
         @endif
     </div>
 @elseif($newStatus === 'delivered')
     <div class="info-box">
-        <h2>Delivery Confirmation</h2>
-        <p>Great news! Your order has been delivered.</p>
+        <h2>Delivery Complete</h2>
+        <p>Your beautiful piece has been delivered successfully.</p>
         @if($order->delivered_at ?? false)
             <p><strong>Delivered on:</strong> {{ \Carbon\Carbon::parse($order->delivered_at)->format('M d, Y \a\t g:i A') }}</p>
         @endif
@@ -49,17 +49,17 @@
 @elseif($newStatus === 'cancelled')
     <div class="info-box">
         <h2>Order Cancelled</h2>
-        <p>We're sorry to inform you that your order has been cancelled.</p>
+        <p>Your order has been updated to Cancelled.</p>
         @if($order->cancellation_reason ?? false)
             <p><strong>Reason:</strong> {{ $order->cancellation_reason }}</p>
         @endif
-        <p>If you have any questions about this cancellation, please contact our customer service team.</p>
+        <p>If you require further assistance regarding this matter, please contact our concierge services.</p>
     </div>
 @elseif($newStatus === 'processing')
     <div class="info-box">
-        <h2>Processing Your Order</h2>
-        <p>We're currently processing your order and preparing it for shipment.</p>
-        <p>You'll receive another email once your order ships with tracking information.</p>
+        <h2>Atelier Processing</h2>
+        <p>Your piece is currently being prepared by our specialists.</p>
+        <p>You will receive further correspondence once dispatched.</p>
     </div>
 @endif
 
@@ -82,13 +82,13 @@
 </div>
 
 @if($newStatus === 'delivered')
-    <p>We hope you love your new furniture! If you have any questions or need assistance, please don't hesitate to contact us.</p>
+    <p>We hope you love your new piece! If you require any aftercare, adjustments, or have any inquiries, please don't hesitate to contact us.</p>
     
     <div style="text-align: center; margin: 30px 0;">
-        <a href="{{ url('/products') }}" class="button">Shop More Products</a>
+        <a href="{{ url('/catalogue') }}" class="button">EXPLORE MORE CREATIONS</a>
     </div>
 @endif
 
-<p>Thank you for choosing David's Wood Furniture!</p>
+<p>Thank you for choosing Éclore!</p>
 @endsection
 

@@ -50,7 +50,7 @@ class CmsPageSeeder extends Seeder
                     <p>(555) 123-4567</p>
                     
                     <h3>Email</h3>
-                    <p>info@davidswoodfurniture.com</p>
+                    <p>info@eclorefurniture.com</p>
                     
                     <h3>Address</h3>
                     <p>123 Craftsmanship Lane<br>
@@ -96,7 +96,7 @@ class CmsPageSeeder extends Seeder
                 <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
                 
                 <h2>Contact Us</h2>
-                <p>If you have any questions about this Privacy Policy, please contact us at privacy@davidswoodfurniture.com</p>',
+                <p>If you have any questions about this Privacy Policy, please contact us at privacy@eclorefurniture.com</p>',
                 'type' => 'policy',
                 'is_featured' => false,
                 'published_at' => now(),
@@ -127,7 +127,7 @@ class CmsPageSeeder extends Seeder
                 <p>Returns must be made within 30 days of delivery. Custom orders are not eligible for returns unless there is a defect in workmanship.</p>
                 
                 <h2>Contact Information</h2>
-                <p>If you have any questions about these Terms of Service, please contact us at legal@davidswoodfurniture.com</p>',
+                <p>If you have any questions about these Terms of Service, please contact us at legal@eclorefurniture.com</p>',
                 'type' => 'policy',
                 'is_featured' => false,
                 'published_at' => now(),

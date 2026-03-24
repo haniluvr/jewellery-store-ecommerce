@@ -360,9 +360,9 @@ $adminRoutes = function () {
 };
 
 // Register admin routes for both domains
-Route::domain('admin.davidswood.test')->name('admin.test.')->group($adminRoutes);
+Route::domain('admin.eclore.test')->name('admin.test.')->group($adminRoutes);
 Route::domain('admin.localhost')->name('admin.local.')->group($adminRoutes);
-Route::domain('admin.davidswood.shop')->name('admin.')->group($adminRoutes);
+Route::domain('admin.eclore.shop')->name('admin.')->group($adminRoutes);
 
 // Fallback admin routes for any admin subdomain (handles ports)
 Route::group(['middleware' => 'admin.subdomain'], function () use ($adminRoutes) {
@@ -374,7 +374,7 @@ Route::get('/', function () {
     $host = request()->getHost();
 
     // If this is an admin subdomain, redirect to admin login
-    if ($host === 'admin.localhost' || $host === 'admin.davidswood.test' || $host === 'admin.davidswood.shop') {
+    if ($host === 'admin.localhost' || $host === 'admin.eclore.test' || $host === 'admin.eclore.shop') {
         if (auth()->guard('admin')->check()) {
             return redirect()->to(admin_route('dashboard'));
         }
@@ -385,7 +385,7 @@ Route::get('/', function () {
     // Otherwise, show the normal homepage
     return app(HomeController::class)->index();
 })->name('home');
-Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/catalogue', [ProductController::class, 'index'])->name('catalogue');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 // NOTE: The CMS catch-all route must come AFTER specific public/auth routes
@@ -396,6 +396,20 @@ Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store']
 // Static pages routes
 Route::get('/privacy-policy', [App\Http\Controllers\PageController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-of-service', [App\Http\Controllers\PageController::class, 'termsOfService'])->name('terms-of-service');
+Route::get('/conditions-of-sale', [App\Http\Controllers\PageController::class, 'conditionsOfSale'])->name('conditions-of-sale');
+Route::get('/cookie-policy', [App\Http\Controllers\PageController::class, 'cookiePolicy'])->name('cookie-policy');
+Route::get('/cookie-center', [App\Http\Controllers\PageController::class, 'cookieCenter'])->name('cookie-center');
+Route::get('/about', [App\Http\Controllers\PageController::class, 'about'])->name('about');
+Route::get('/vip-club', [App\Http\Controllers\PageController::class, 'vipClub'])->name('vip-club');
+Route::get('/collections', [App\Http\Controllers\PageController::class, 'collections'])->name('collections');
+Route::get('/newsroom', [App\Http\Controllers\PageController::class, 'newsroom'])->name('newsroom');
+Route::get('/boutiques-appointments', [App\Http\Controllers\PageController::class, 'boutiques'])->name('boutiques');
+Route::get('/corporate-responsibility', [App\Http\Controllers\PageController::class, 'corporateResponsibility'])->name('corporate-responsibility');
+Route::get('/help', [App\Http\Controllers\PageController::class, 'help'])->name('help');
+Route::get('/accessibility', [App\Http\Controllers\PageController::class, 'accessibility'])->name('accessibility');
+Route::get('/orders-payments', [App\Http\Controllers\PageController::class, 'ordersPayments'])->name('orders-payments');
+Route::get('/track-order', [App\Http\Controllers\PageController::class, 'trackOrder'])->name('track-order');
+Route::get('/contact', [App\Http\Controllers\PageController::class, 'contact'])->name('contact');
 
 // Login page route (for admin redirects and Authenticate middleware) - redirect to home with login modal
 // Note: 'login' route name is required by Laravel's Authenticate middleware
@@ -426,7 +440,7 @@ Route::middleware(['api.session'])->group(function () {
 // Keep this BELOW specific routes like auth, products, etc., to avoid shadowing
 Route::get('/{slug}', [App\Http\Controllers\CmsPageController::class, 'show'])
     ->name('cms.show')
-    ->where('slug', '^(?!test-route$|health$|login$|verify-email-sent$|verify-email$|reset-password$|auth$|checkout$|account$|products$|api$|contact$|privacy-policy$|terms-of-service$)[a-zA-Z0-9\-]+$');
+    ->where('slug', '^(?!test-route$|health$|login$|verify-email-sent$|verify-email$|reset-password$|auth$|checkout$|account$|catalogue$|collections$|newsroom$|api$|contact$|privacy-policy$|terms-of-service$|corporate-responsibility$|help$|accessibility$|orders-payments$|track-order$|boutiques-appointments$)[a-zA-Z0-9\-]+$');
 
 // Cart routes (using web middleware for proper session handling)
 Route::middleware(['web'])->group(function () {

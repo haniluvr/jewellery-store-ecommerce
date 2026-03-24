@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="modal-body p-6">
-                <p class="text-sm text-gray-600 mb-5">Find solid wood furniture and accessories from David's Wood.</p>
+                <p class="text-sm text-gray-600 mb-5">Find solid wood furniture and accessories from Éclore.</p>
                 <!-- Search Input -->
                 <div class="mb-3">
                     <input 

@@ -1,8 +1,8 @@
-# David's Wood E-Commerce System - Architecture Diagram
+# Éclore E-Commerce System - Architecture Diagram
 
 ## High-Level System Architecture
 
-This document provides an accurate representation of the David's Wood e-commerce platform architecture, showing the monolithic Laravel application structure with logical modules and external integrations.
+This document provides an accurate representation of the Éclore e-commerce platform architecture, showing the monolithic Laravel application structure with logical modules and external integrations.
 
 ---
 
@@ -10,7 +10,7 @@ This document provides an accurate representation of the David's Wood e-commerce
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         DAVID'S WOOD E-COMMERCE SYSTEM                      │
+│                         ÉCLORE E-COMMERCE SYSTEM                      │
 │                    (Monolithic Laravel 12 Application)                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
@@ -21,7 +21,7 @@ This document provides an accurate representation of the David's Wood e-commerce
 │  │                                                                     │   │
 │  │  ┌──────────────────────────────┐  ┌─────────────────────────────┐ │   │
 │  │  │   Customer Portal            │  │   Admin Dashboard           │ │   │
-│  │  │   (davidswood.shop)          │  │   (admin.davidswood.shop)   │ │   │
+│  │  │   (eclore.shop)          │  │   (admin.eclore.shop)   │ │   │
 │  │  ├──────────────────────────────┤  ├─────────────────────────────┤ │   │
 │  │  │ • Product Catalog            │  │ • Dashboard Analytics      │ │   │
 │  │  │ • Shopping Cart              │  │ • Product Management        │ │   │
@@ -174,8 +174,8 @@ This document provides an accurate representation of the David's Wood e-commerce
 - **Vite**: Frontend build tool and asset bundler
 
 **Access Points:**
-- **Customer Portal**: `https://davidswood.shop` - Main e-commerce storefront
-- **Admin Dashboard**: `https://admin.davidswood.shop` - Administrative interface (subdomain routing)
+- **Customer Portal**: `https://eclore.shop` - Main e-commerce storefront
+- **Admin Dashboard**: `https://admin.eclore.shop` - Administrative interface (subdomain routing)
 
 ### 2. Application Layer
 
@@ -269,7 +269,7 @@ This document provides an accurate representation of the David's Wood e-commerce
 ### Admin Product Management Flow
 
 ```
-1. Admin (Browser - admin.davidswood.shop)
+1. Admin (Browser - admin.eclore.shop)
    ↓
 2. Admin Dashboard (Blade Template)
    ↓

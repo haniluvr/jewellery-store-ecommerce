@@ -4,29 +4,33 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>@yield('title', 'David\'s Wood Furniture - Handcrafteded furniture with timeless design.')</title>
+        <title>@yield('title', 'Éclore - Handcrafted luxury jewellery with timeless design.')</title>
         
         <!-- css -->
         <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/favicon.png') }}">
         <link rel="stylesheet" href="{{ asset('frontend/style.css') }}">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
         
         <!-- scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+        <script src="https://unpkg.com/lucide@0.444.0/dist/umd/lucide.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" defer></script>
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
-        <script src='https://www.noupe.com/embed/019a5e5cee507dd2b76a5d76f7befc6b9eb6.js'></script>
         <!-- Preline UI -->
         <script src="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.js" defer></script>
         
-        <!-- Lazy Loading Styles -->
+        <!-- Typography Fixes -->
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+            
+            .font-playfair {
+                font-family: 'Playfair Display', serif !important;
+            }
+            .font-azeret {
+                font-family: 'Azeret Mono', monospace !important;
+            }
             .lazy-load {
                 opacity: 0;
                 transition: opacity 0.3s;
@@ -82,7 +86,7 @@
         @include('partials.modal-quick-view')
         
         <!-- Main Content -->
-        <main>
+        <main class="pt-[104px]">
             @yield('content')
         </main>
         
@@ -1111,10 +1115,12 @@
         
         <!-- Initialize Lucide Icons -->
         <script>
-            // Initialize Lucide icons on client-side pages
+            // Initialize Lucide icons with fallback for late loading
             function initClientIcons() {
                 if (typeof lucide !== 'undefined' && lucide.createIcons) {
                     lucide.createIcons();
+                    // Double check after a short delay for any dynamic content
+                    setTimeout(() => lucide.createIcons(), 500);
                 } else {
                     setTimeout(initClientIcons, 100);
                 }
@@ -1123,8 +1129,10 @@
             // Initialize when DOM is ready
             document.addEventListener('DOMContentLoaded', initClientIcons);
             
-            // Also try on window load
-            window.addEventListener('load', initClientIcons);
+            // Re-run on full window load to catch everything
+            window.addEventListener('load', () => {
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
         </script>
         
         <!-- Real-time Notification Listeners for Refund Events -->

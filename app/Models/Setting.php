@@ -152,7 +152,7 @@ class Setting extends Model
 
     public static function contactEmail(): string
     {
-        return self::get('contact_email', 'contact@davidswood.com');
+        return self::get('contact_email', 'contact@eclore.com');
     }
 
     public static function currency(): string

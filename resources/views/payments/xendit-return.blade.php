@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment {{ $status === 'success' ? 'Successful' : ($status === 'processing' ? 'Processing' : 'Error') }} - David's Wood Furniture</title>
+    <title>Payment {{ $status === 'success' ? 'Successful' : ($status === 'processing' ? 'Processing' : 'Error') }} - Éclore</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>

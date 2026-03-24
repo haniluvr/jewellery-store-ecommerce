@@ -93,8 +93,8 @@ sudo mysql -u root -p
 In MySQL prompt:
 ```sql
 CREATE DATABASE davids_wood;
-CREATE USER 'davidswood_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON davids_wood.* TO 'davidswood_user'@'localhost';
+CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
+GRANT ALL PRIVILEGES ON davids_wood.* TO 'eclore_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -106,10 +106,10 @@ sudo mkdir -p /var/www/html/davids-wood-furniture
 sudo chown -R ubuntu:ubuntu /var/www/html/davids-wood-furniture
 
 # Copy virtual host configuration
-sudo cp /var/www/html/davids-wood-furniture/.apache/davidswood.conf /etc/apache2/sites-available/
+sudo cp /var/www/html/davids-wood-furniture/.apache/eclore.conf /etc/apache2/sites-available/
 
 # Enable site
-sudo a2ensite davidswood.conf
+sudo a2ensite eclore.conf
 sudo a2dissite 000-default
 sudo systemctl reload apache2
 ```
@@ -135,7 +135,7 @@ Go to GitHub repository → Settings → Secrets and variables → Actions
 | `APP_KEY` | Generated key | Run `php artisan key:generate --show` locally |
 | `DB_HOST` | `127.0.0.1` | Local MySQL on same server |
 | `DB_DATABASE` | `davids_wood` | Database name you created |
-| `DB_USERNAME` | `davidswood_user` | Database user you created |
+| `DB_USERNAME` | `eclore_user` | Database user you created |
 | `DB_PASSWORD` | Your database password | Password you set in MySQL |
 | `APP_URL` | `http://your-ec2-ip` | Your EC2 public IP or domain |
 
@@ -149,7 +149,7 @@ Go to GitHub repository → Settings → Secrets and variables → Actions
 | `MAIL_USERNAME` | `your-email@gmail.com` | Your email |
 | `MAIL_PASSWORD` | `your-app-password` | App password for Gmail |
 | `MAIL_FROM_ADDRESS` | `noreply@yourdomain.com` | From email |
-| `MAIL_FROM_NAME` | `David's Wood Furniture` | From name |
+| `MAIL_FROM_NAME` | `Éclore` | From name |
 
 ## Test Deployment
 
@@ -183,7 +183,7 @@ sudo systemctl status apache2
 tail -f /var/www/html/davids-wood-furniture/storage/logs/laravel.log
 
 # Test database connection
-mysql -u davidswood_user -p -e "SELECT 1;"
+mysql -u eclore_user -p -e "SELECT 1;"
 ```
 
 ## Post-Deployment Setup
@@ -248,7 +248,7 @@ Add:
 ### ✅ Health Checks
 - [ ] **Application**: `curl http://your-ec2-ip`
 - [ ] **Health Endpoint**: `curl http://your-ec2-ip/health`
-- [ ] **Database**: `mysql -u davidswood_user -p -e "SELECT 1;"`
+- [ ] **Database**: `mysql -u eclore_user -p -e "SELECT 1;"`
 - [ ] **Apache**: `sudo systemctl status apache2`
 - [ ] **PHP**: `php -v`
 
@@ -322,7 +322,7 @@ node --version
 sudo systemctl status mysql
 
 # Test database connection
-mysql -u davidswood_user -p -e "SELECT 1;"
+mysql -u eclore_user -p -e "SELECT 1;"
 
 # Check application logs
 tail -f /var/www/html/davids-wood-furniture/storage/logs/laravel.log
