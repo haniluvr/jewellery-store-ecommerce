@@ -183,9 +183,9 @@
     </section>
 
     <!-- Appointment Section -->
-    <section class="py-40 bg-[#FAF9F6]">
-        <div class="container mx-auto px-6">
-            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-20">
+    <section class="py-28 bg-[#FAF9F6]">
+        <div class="container mx-auto px-12">
+            <div class="mx-auto flex flex-col md:flex-row items-center gap-20">
                 <div class="md:w-1/2" data-aos="fade-right">
                     <h2 class="font-playfair text-5xl md:text-7xl text-gray-900 mb-10">Private Appointments</h2>
                     <p class="font-azeret text-xs tracking-widest text-gray-400 uppercase leading-loose mb-12">
