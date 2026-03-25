@@ -2526,7 +2526,7 @@ button.btn-add-to-cart:hover {
   outline: none;
 }
 
-#contact-form .flex-col input:focusussed {
+#contact-form .flex-col input:focus {
   border-color: #1a1a1a;
 }
 
@@ -2553,7 +2553,7 @@ button.btn-add-to-cart:hover {
   outline: none;
 }
 
-.form-group textarea:focususs {
+.form-group textarea:focus {
   border-color: #1a1a1a;
 }
 
@@ -2608,7 +2608,7 @@ button.btn-add-to-cart:hover {
   outline: none;
 }
 
-.newsletter-form input:focususs {
+.newsletter-form input:focus {
   border-color: #1a1a1a;
 }
 
