@@ -92,9 +92,9 @@ sudo mysql -u root -p
 
 In MySQL prompt:
 ```sql
-CREATE DATABASE davids_wood;
+CREATE DATABASE eclore_db;
 CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON davids_wood.* TO 'eclore_user'@'localhost';
+GRANT ALL PRIVILEGES ON eclore_db.* TO 'eclore_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -102,11 +102,11 @@ EXIT;
 ### ✅ Configure Apache Virtual Host
 ```bash
 # Create application directory
-sudo mkdir -p /var/www/html/davids-wood-furniture
-sudo chown -R ubuntu:ubuntu /var/www/html/davids-wood-furniture
+sudo mkdir -p /var/www/html/eclore-jewellery
+sudo chown -R ubuntu:ubuntu /var/www/html/eclore-jewellery
 
 # Copy virtual host configuration
-sudo cp /var/www/html/davids-wood-furniture/.apache/eclore.conf /etc/apache2/sites-available/
+sudo cp /var/www/html/eclore-jewellery/.apache/eclore.conf /etc/apache2/sites-available/
 
 # Enable site
 sudo a2ensite eclore.conf
@@ -118,8 +118,8 @@ sudo systemctl reload apache2
 ```bash
 # Clone repository
 cd /var/www/html
-sudo git clone https://github.com/yourusername/davids-wood-furniture.git
-sudo chown -R www-data:www-data davids-wood-furniture
+sudo git clone https://github.com/yourusername/jewellry-store-ecommerce.git eclore-jewellery
+sudo chown -R www-data:www-data eclore-jewellery
 ```
 
 ## GitHub Secrets Configuration
@@ -134,7 +134,7 @@ Go to GitHub repository → Settings → Secrets and variables → Actions
 | `EC2_SSH_KEY` | Content of your `.pem` file | Download from AWS Console |
 | `APP_KEY` | Generated key | Run `php artisan key:generate --show` locally |
 | `DB_HOST` | `127.0.0.1` | Local MySQL on same server |
-| `DB_DATABASE` | `davids_wood` | Database name you created |
+| `DB_DATABASE` | `eclore_db` | Database name you created |
 | `DB_USERNAME` | `eclore_user` | Database user you created |
 | `DB_PASSWORD` | Your database password | Password you set in MySQL |
 | `APP_URL` | `http://your-ec2-ip` | Your EC2 public IP or domain |
@@ -180,7 +180,7 @@ ssh -i your-key.pem ubuntu@your-ec2-ip
 sudo systemctl status apache2
 
 # Check application logs
-tail -f /var/www/html/davids-wood-furniture/storage/logs/laravel.log
+tail -f /var/www/html/eclore-jewellery/storage/logs/laravel.log
 
 # Test database connection
 mysql -u eclore_user -p -e "SELECT 1;"
@@ -325,10 +325,10 @@ sudo systemctl status mysql
 mysql -u eclore_user -p -e "SELECT 1;"
 
 # Check application logs
-tail -f /var/www/html/davids-wood-furniture/storage/logs/laravel.log
+tail -f /var/www/html/eclore-jewellery/storage/logs/laravel.log
 
 # Fix permissions
-sudo chown -R www-data:www-data /var/www/html/davids-wood-furniture
-sudo chmod -R 775 /var/www/html/davids-wood-furniture/storage
-sudo chmod -R 775 /var/www/html/davids-wood-furniture/bootstrap/cache
+sudo chown -R www-data:www-data /var/www/html/eclore-jewellery
+sudo chmod -R 775 /var/www/html/eclore-jewellery/storage
+sudo chmod -R 775 /var/www/html/eclore-jewellery/bootstrap/cache
 ```

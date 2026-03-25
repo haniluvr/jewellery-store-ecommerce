@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\ReturnRepair;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -32,9 +33,11 @@ class RefundRejectedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Refund Request Update - '.$this->returnRepair->rma_number.' - David\'s Wood Furniture',
-            from: config('mail.from.address', 'noreply@eclore.shop'),
-            replyTo: 'hello@eclore.shop',
+            subject: 'Refund Request Update - '.$this->returnRepair->rma_number.' - Eclore Jewellery',
+            from: new Address(config('mail.from.address', 'noreply@eclorejewellery.shop'), config('mail.from.name', 'Eclore Jewellery')),
+            replyTo: [
+                new Address('hello@eclorejewellery.shop', 'Eclore Jewellery Support'),
+            ],
         );
     }
 

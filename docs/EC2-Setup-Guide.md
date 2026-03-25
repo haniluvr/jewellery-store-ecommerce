@@ -129,9 +129,9 @@ sudo mysql -u root -p
 
 In MySQL prompt:
 ```sql
-CREATE DATABASE davids_wood;
+CREATE DATABASE eclore_db;
 CREATE USER 'eclore_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON davids_wood.* TO 'eclore_user'@'localhost';
+GRANT ALL PRIVILEGES ON eclore_db.* TO 'eclore_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -140,8 +140,8 @@ EXIT;
 
 ### Create application directory
 ```bash
-sudo mkdir -p /var/www/html/davids-wood-furniture
-sudo chown -R ubuntu:ubuntu /var/www/html/davids-wood-furniture
+sudo mkdir -p /var/www/html/eclore-jewellery
+sudo chown -R ubuntu:ubuntu /var/www/html/eclore-jewellery
 ```
 
 ### Create Apache virtual host
@@ -152,11 +152,11 @@ sudo nano /etc/apache2/sites-available/eclore.conf
 Add the following configuration:
 ```apache
 <VirtualHost *:80>
-    ServerName eclore.shop
-    ServerAlias www.eclore.shop
-    DocumentRoot /var/www/html/davids-wood-furniture/public
+    ServerName eclorejewellery.shop
+    ServerAlias www.eclorejewellery.shop
+    DocumentRoot /var/www/html/eclore-jewellery/public
 
-    <Directory /var/www/html/davids-wood-furniture/public>
+    <Directory /var/www/html/eclore-jewellery/public>
         AllowOverride All
         Require all granted
     </Directory>
@@ -166,10 +166,10 @@ Add the following configuration:
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName admin.eclore.shop
-    DocumentRoot /var/www/html/davids-wood-furniture/public
+    ServerName admin.eclorejewellery.shop
+    DocumentRoot /var/www/html/eclore-jewellery/public
 
-    <Directory /var/www/html/davids-wood-furniture/public>
+    <Directory /var/www/html/eclore-jewellery/public>
         AllowOverride All
         Require all granted
     </Directory>
@@ -195,7 +195,7 @@ sudo apt install -y certbot python3-certbot-apache
 
 ### Get SSL certificate
 ```bash
-sudo certbot --apache -d eclore.shop -d www.eclore.shop -d admin.eclore.shop
+sudo certbot --apache -d eclorejewellery.shop -d www.eclorejewellery.shop -d admin.eclorejewellery.shop
 ```
 
 ### Test SSL renewal
@@ -246,10 +246,10 @@ sudo chmod 600 /home/deploy/.ssh/authorized_keys
 
 ### Set up proper permissions for Laravel
 ```bash
-sudo chown -R www-data:www-data /var/www/html/davids-wood-furniture
-sudo chmod -R 755 /var/www/html/davids-wood-furniture
-sudo chmod -R 775 /var/www/html/davids-wood-furniture/storage
-sudo chmod -R 775 /var/www/html/davids-wood-furniture/bootstrap/cache
+sudo chown -R www-data:www-data /var/www/html/eclore-jewellery
+sudo chmod -R 755 /var/www/html/eclore-jewellery
+sudo chmod -R 775 /var/www/html/eclore-jewellery/storage
+sudo chmod -R 775 /var/www/html/eclore-jewellery/bootstrap/cache
 ```
 
 ## Step 12: Install Additional Tools
@@ -300,7 +300,7 @@ sudo nano /etc/logrotate.d/laravel
 
 Add:
 ```
-/var/www/html/davids-wood-furniture/storage/logs/*.log {
+/var/www/html/eclore-jewellery/storage/logs/*.log {
     daily
     missingok
     rotate 14
@@ -365,13 +365,13 @@ mysql -u eclore_user -p -e "SHOW DATABASES;"
 ### Clone the repository
 ```bash
 cd /var/www/html
-sudo git clone https://github.com/yourusername/davids-wood-furniture.git
-sudo chown -R www-data:www-data davids-wood-furniture
+sudo git clone https://github.com/haniluvr/jewellery-store-ecommerce.git eclore-jewellery
+sudo chown -R www-data:www-data eclore-jewellery
 ```
 
 ### Set up initial environment
 ```bash
-cd davids-wood-furniture
+cd eclore-jewellery
 sudo cp .env.example .env
 sudo nano .env
 ```
@@ -407,7 +407,7 @@ sudo nano .env
 
 - Apache error log: `/var/log/apache2/error.log`
 - Apache access log: `/var/log/apache2/access.log`
-- Laravel logs: `/var/www/html/davids-wood-furniture/storage/logs/`
+- Laravel logs: `/var/www/html/eclore-jewellery/storage/logs/`
 - MySQL logs: `/var/log/mysql/error.log`
 
 ## Next Steps

@@ -14,8 +14,8 @@ This guide will help you set up Amazon S3 storage for your Laravel application.
 2. **Navigate to S3 service**
 3. **Click "Create bucket"**
 4. **Configure your bucket:**
-   - **Bucket name**: `davids-wood-furniture-storage` (must be globally unique)
-   - **Region**: Choose your preferred region (e.g., `us-east-1`)
+   - **Bucket name**: `eclore-jewellery-storage` (must be globally unique)
+   - **Region**: `ap-southeast-1` (Singapore)
    - **Object Ownership**: ACLs disabled (recommended)
    - **Block Public Access**: Keep all settings enabled for security
    - **Bucket Versioning**: Enable (recommended for file management)
@@ -23,35 +23,45 @@ This guide will help you set up Amazon S3 storage for your Laravel application.
 
 ## Step 2: Create IAM User
 
-1. **Go to IAM Console** in AWS
-2. **Create a new user:**
-   - Username: `davids-wood-s3-user`
-   - Access type: Programmatic access
-3. **Attach policies:**
-   - Create a custom policy with this JSON:
+## Step 2: Create IAM Role (Security Best Practice)
 
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::davids-wood-furniture-storage",
-                "arn:aws:s3:::davids-wood-furniture-storage/*"
-            ]
-        }
-    ]
-}
-```
+Instead of creating a user with access keys, we will create a **Role** that you attach directly to your EC2 instance. This is more secure.
 
-4. **Save the Access Key ID and Secret Access Key** - you'll need these for your environment variables.
+1. **Go to IAM Console** -> **Roles** -> **Create role**.
+2. **Select Trusted Entity**:
+   - Trusted entity type: **AWS service**
+   - Service or use case: **EC2**
+   - Click **Next**
+3. **Add Permissions**:
+   - Click **Create policy** (opens in a new tab).
+   - Select **JSON** tab and paste this exact policy:
+     ```json
+     {
+         "Version": "2012-10-17",
+         "Statement": [{
+             "Effect": "Allow",
+             "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"],
+             "Resource": [
+                 "arn:aws:s3:::eclore-jewellery-storage",
+                 "arn:aws:s3:::eclore-jewellery-storage/*"
+             ]
+         }]
+     }
+     ```
+   - Name it `EcloreS3AccessPolicy` and save it.
+   - Go back to the role creation tab, refresh the list, search for `EcloreS3AccessPolicy`, and check it.
+   - Click **Next**.
+4. **Finalize Role**:
+   - Role name: `EcloreEC2S3Role`
+   - Click **Create role**.
+
+## Step 3: Attach Role to EC2
+
+1. Go to your **EC2 Instances** list.
+2. Select your instance -> **Actions** -> **Security** -> **Modify IAM role**.
+3. Select `EcloreEC2S3Role` and click **Update IAM role**.
+
+*Your server now has secure access to S3 without needing any keys in the .env file!*
 
 ## Step 3: Configure Environment Variables
 
@@ -63,8 +73,8 @@ Update your `.env` file with:
 FILESYSTEM_DISK=s3
 AWS_ACCESS_KEY_ID=your_access_key_here
 AWS_SECRET_ACCESS_KEY=your_secret_key_here
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=davids-wood-furniture-storage
+AWS_DEFAULT_REGION=ap-southeast-1
+AWS_BUCKET=eclore-jewellery-storage
 AWS_URL=
 AWS_ENDPOINT=
 AWS_USE_PATH_STYLE_ENDPOINT=false
@@ -168,7 +178,7 @@ Storage::disk('s3')->delete('images/product.jpg');
 aws configure list
 
 # Test S3 access
-aws s3 ls s3://davids-wood-furniture-storage
+aws s3 ls s3://eclore-jewellery-storage
 ```
 
 ## Cost Optimization

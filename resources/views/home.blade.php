@@ -841,10 +841,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ÉCLORE IS NOT ONLY TIMELESS, BUT ALIVE AND EVOLVING. DISCOVER OUR LATEST CREATIONS, GLOBAL EXHIBITIONS, AND CULTURAL COLLABORATIONS THAT SHAPE THE PRESENT AND FUTURE OF LUXURY.
         </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 px-12">
             @foreach($newsPages as $index => $page)
             <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
-                <div class="aspect-[4/3] overflow-hidden mb-10">
+                <div class="aspect-[5/3] overflow-hidden mb-10">
                     <img loading="lazy" src="{{ asset('frontend/assets/' . ($page->featured_image ?: 'story-' . ($index + 1) . '.webp')) }}" alt="{{ $page->title }}" class="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
                 </div>
                 <h3 class="font-playfair text-3xl mb-4 border-b border-gray-200 inline-block pb-1">{{ $page->title }}</h3>

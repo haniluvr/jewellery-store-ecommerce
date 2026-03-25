@@ -1,5 +1,5 @@
 // API Configuration and Helper Functions
-class DavidsWoodAPI {
+class EcloreJewelleryAPI {
     constructor() {
         this.baseURL = window.APP_CONFIG?.API_BASE_URL || window.location.origin + '/api';
         this.token = localStorage.getItem(window.APP_CONFIG?.STORAGE_KEYS?.AUTH_TOKEN || 'auth_token');
@@ -240,7 +240,7 @@ class DavidsWoodAPI {
 }
 
 // Create global API instance
-window.api = new DavidsWoodAPI();
+window.api = new EcloreJewelleryAPI();
 
 // Authentication state management
 class AuthManager {

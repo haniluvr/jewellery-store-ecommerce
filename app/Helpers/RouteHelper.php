@@ -37,6 +37,7 @@ class RouteHelper
         // Fix URL scheme and port for specific environments
         if ($env === 'local') {
             // Reconstruct URL with current request's scheme, host, and port
+            $domain = $host === 'localhost' || $host === '127.0.0.1' ? 'localhost:8080' : ($host === 'eclorejewellery.shop' ? 'eclorejewellery.shop:8080' : 'eclorejewellery.shop');
             $portString = (($scheme === 'https' && $port === 443) || ($scheme === 'http' && $port === 80)) ? '' : ':'.$port;
             $parsedUrl = parse_url($url);
             $path = $parsedUrl['path'] ?? '/';

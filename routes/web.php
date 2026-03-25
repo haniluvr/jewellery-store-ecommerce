@@ -362,7 +362,7 @@ $adminRoutes = function () {
 // Register admin routes for both domains
 Route::domain('admin.eclore.test')->name('admin.test.')->group($adminRoutes);
 Route::domain('admin.localhost')->name('admin.local.')->group($adminRoutes);
-Route::domain('admin.eclore.shop')->name('admin.')->group($adminRoutes);
+Route::domain('admin.eclorejewellery.shop')->name('admin.')->group($adminRoutes);
 
 // Fallback admin routes for any admin subdomain (handles ports)
 Route::group(['middleware' => 'admin.subdomain'], function () use ($adminRoutes) {
@@ -374,7 +374,7 @@ Route::get('/', function () {
     $host = request()->getHost();
 
     // If this is an admin subdomain, redirect to admin login
-    if ($host === 'admin.localhost' || $host === 'admin.eclore.test' || $host === 'admin.eclore.shop') {
+    if ($host === 'admin.localhost' || $host === 'admin.eclore.test' || $host === 'admin.eclorejewellery.shop') {
         if (auth()->guard('admin')->check()) {
             return redirect()->to(admin_route('dashboard'));
         }
@@ -682,7 +682,7 @@ Route::get('/health', function () {
         return response()->json([
             'status' => $allHealthy ? 'healthy' : 'unhealthy',
             'timestamp' => date('Y-m-d H:i:s'),
-            'service' => 'davids-wood-furniture',
+            'service' => 'eclore-jewellery',
             'php_version' => PHP_VERSION,
             'checks' => $checks,
             'errors' => $errors,

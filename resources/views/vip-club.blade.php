@@ -172,7 +172,7 @@
     <section class="hero-scroll-container" id="hero-scene">
         <div class="hero-sticky-frame">
             <!-- Fixed-depth background -->
-            <img src="{{ asset('frontend/assets/vip_hero_sand_jewelry_1774340721908.png') }}" class="sand-backdrop grayscale-[20%]" alt="Sand Texture">
+            <img src="{{ asset('frontend/assets/vip-hero-1.webp') }}" class="sand-backdrop grayscale-[20%]" alt="Sand Texture">
 
             <!-- Title Layer (Behind/Around Image) -->
             <div class="hero-layer" id="layer-title">
@@ -184,7 +184,7 @@
             <!-- Image Tile Layer (Front) -->
             <div class="hero-layer" id="layer-image">
                 <div class="image-tile" id="hero-tile">
-                    <img src="{{ asset('frontend/assets/vip_parallax_hands_bw_1774340762201.png') }}" alt="Artistry">
+                    <img src="{{ asset('frontend/assets/vip-hero-2.webp') }}" alt="Artistry">
                     <div class="absolute bottom-10 left-0 w-full text-center px-12 pointer-events-none">
                         <p class="font-azeret text-[10px] tracking-[0.4em] uppercase text-white/80 leading-relaxed">
                             An invitation-only society created for those who value discretion.
@@ -199,13 +199,13 @@
     <section class="invitation-section relative min-h-screen py-30 overflow-hidden flex items-center justify-center">
         <!-- Background Columns -->
         <div class="absolute inset-0 z-0">
-            <img src="{{ asset('frontend/assets/vip_invitation_architecture_bg_1774340805373.png') }}" alt="Salon" class="w-full h-full object-cover grayscale-[20%]">
+            <img src="{{ asset('frontend/assets/vip-invitation-1.webp') }}" alt="Salon" class="w-full h-full object-cover grayscale-[20%]">
         </div>
         
         <div class="container mx-auto px-6 relative z-10">
             <div class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-2">
                 <div class="invitation-polaroid paper-texture" data-aos="fade-right">
-                    <img src="{{ asset('frontend/assets/vip_invitation_model_portrait_1774340852494.png') }}" alt="Portrait" class="w-full h-full object-cover">
+                    <img src="{{ asset('frontend/assets/vip-ceo.webp') }}" alt="Portrait" class="w-full h-full object-cover">
                     <p class="font-azeret text-[11px] tracking-[0.4em] text-center text-gray-400 uppercase mt-4">A House Of Timeless Beauty.</p>
                 </div>
 
@@ -215,7 +215,7 @@
                             "It Is My Pleasure To Invite You To Éclore, A Refined Space Created For Those Who Value Timeless Beauty And Quiet Sophistication."
                         </p>
                         <div class="text-right mt-10">
-                            <p class="signature text-5xl text-[#C5B391] mb-2">Warmly, Charlotte Marais</p>
+                            <p class="signature text-5xl text-[#C5B391] mb-2">Warmly,<br>Charlotte Marais</p>
                         </div>
                     </div>
                     <div class="absolute bottom-8 left-0 w-full flex justify-between px-10 font-azeret text-[8px] tracking-[0.4em] text-gray-400 uppercase border-t border-black/5 pt-4">
@@ -250,14 +250,14 @@
             <div class="relative z-10">
                 <div class="experience-text-behind group hover:text-gray-200 transition-colors">Personal Advisory</div>
                 <div class="experience-floating-image left-[10%] top-[-20%] transform -rotate-12" data-speed="2">
-                     <img src="{{ asset('frontend/assets/vip_membership_ring_close_up_1774340976819.png') }}" class="w-full h-full object-cover">
+                     <img src="{{ asset('frontend/assets/vip-membership-6.webp') }}" class="w-full h-full object-cover">
                 </div>
             </div>
 
             <div class="relative z-10">
                 <div class="experience-text-behind group hover:text-gray-200 transition-colors">Maison Collaborations</div>
                 <div class="experience-floating-image right-[5%] top-0 rotate-6" data-speed="-1.5">
-                     <img src="{{ asset('frontend/assets/vip_membership_boutique_interior_1774341016927.png') }}" class="w-full h-full object-cover">
+                     <img src="{{ asset('frontend/assets/vip-membership-3.webp') }}" class="w-full h-full object-cover">
                 </div>
             </div>
 
@@ -268,7 +268,7 @@
             <div class="relative z-10">
                 <div class="experience-text-behind group hover:text-gray-200 transition-colors">Invitational Only Events</div>
                 <div class="experience-floating-image right-[20%] bottom-[-30%] -rotate-6" data-speed="2.5">
-                     <img src="{{ asset('frontend/assets/vip_membership_gold_necklace_close_up_1774341096993.png') }}" class="w-full h-full object-cover">
+                     <img src="{{ asset('frontend/assets/vip-membership-5.webp') }}" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
@@ -320,24 +320,12 @@
         <!-- Lifestyle Grid (Merged into Image 1 visual flow) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:h-[90vh]">
             <div class="relative group overflow-hidden">
-                <img src="{{ asset('frontend/assets/vip_lifestyle_hermes_porsche_vibe_1774340894111.png') }}" class="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105">
+                <img src="{{ asset('frontend/assets/vip-partner-1.webp') }}" class="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105">
                 <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-4 group-hover:translate-y-0">
-                         <img src="{{ asset('frontend/assets/partner-hermes-logo.webp') }}" class="h-6 invert mx-auto mb-4">
-                         <p class="font-azeret text-[10px] tracking-[0.4em] text-white uppercase">The Heritage Drive</p>
-                    </div>
-                </div>
             </div>
             <div class="relative group overflow-hidden">
-                <img src="{{ asset('frontend/assets/vip_lifestyle_bottega_boots_vibe_1774340935709.png') }}" class="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105">
+                <img src="{{ asset('frontend/assets/vip-partner-2.webp') }}" class="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105">
                 <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                        <p class="font-playfair text-4xl text-white tracking-widest uppercase mb-2">Bottega Veneta</p>
-                        <p class="font-azeret text-[10px] tracking-[0.4em] text-white/60 uppercase">The Fashion Edit</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -372,11 +360,11 @@
         <div class="marquee-container">
             @php
                 $marqueeImgs = [
-                    'vip_lifestyle_hermes_porsche_vibe_1774340894111.png', // Swapping for more "lifestyle" vibe as in image 2
-                    'vip_membership_ring_close_up_1774340976819.png',
-                    'vip_membership_boutique_interior_1774341016927.png',
-                    'vip_membership_jewellery_box_velvet_1774341057110.png',
-                    'vip_membership_gold_necklace_close_up_1774341096993.png'
+                    'vip-membership-1.webp', // Swapping for more "lifestyle" vibe as in image 2
+                    'vip-membership-2.webp',
+                    'vip-membership-3.webp',
+                    'vip-membership-4.webp',
+                    'vip-membership-5.webp'
                 ];
                 $allImgs = array_merge($marqueeImgs, $marqueeImgs, $marqueeImgs);
             @endphp

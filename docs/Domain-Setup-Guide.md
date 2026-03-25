@@ -1,39 +1,19 @@
 # Domain Setup Guide for Éclore
 
-## Option 1: Free Domain with Freenom (Recommended)
+## Option 1: Direct DNS Management with Spaceship.com (Recommended)
 
-### Step 1: Get a Free Domain
-1. Go to [Freenom.com](https://www.freenom.com)
-2. Search for available domains (e.g., `eclore.tk`, `eclore.ml`, `eclore.ga`)
-3. Register the domain (free for 12 months)
+If you have a domain already on Spaceship.com:
+1. Log into your **Spaceship.com** account.
+2. Go to **Domain Management** -> **Advanced DNS**.
+3. Ensure you are using **Spaceship Basic DNS** (this is the default, and it's free).
+4. Add the following **A Records**:
+   - `Host: @` -> `Value: <Your EC2 Public IP>`
+   - `Host: www` -> `Value: <Your EC2 Public IP>`
+   - `Host: admin` -> `Value: <Your EC2 Public IP>`
+5. *Note: DNS propagation usually takes 5-30 minutes.*
 
-### Step 2: Point Domain to Your EC2 Instance
-1. In Freenom control panel, go to "My Domains"
-2. Click "Manage Domain" for your domain
-3. Go to "Nameservers" tab
-4. Set nameservers to:
-   - `ns1.aws.amazon.com`
-   - `ns2.aws.amazon.com`
-
-### Step 3: Create Route 53 Hosted Zone
-1. Go to AWS Route 53 console
-2. Create a new hosted zone for your domain
-3. Note the 4 nameservers provided
-4. Update your domain's nameservers in Freenom with these 4 AWS nameservers
-
-### Step 4: Create DNS Records
-Create these records in Route 53:
-- **A Record**: `@` → `13.211.143.224`
-- **A Record**: `www` → `13.211.143.224`
-- **A Record**: `admin` → `13.211.143.224`
-
-## Option 2: Use AWS Route 53 with Existing Domain
-
-If you have a domain already:
-1. Go to Route 53 console
-2. Create hosted zone for your domain
-3. Update your domain's nameservers to AWS nameservers
-4. Create the same DNS records as above
+## Option 2: AWS Route 53 (Alternative - Paid service)
+- Mentioned in previous versions, but not recommended if you prefer a free DNS setup via your registrar.
 
 ## Option 3: Use a Subdomain Service
 

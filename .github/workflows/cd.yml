@@ -79,7 +79,7 @@ jobs:
         #!/bin/bash
         set -e
         
-        APP_DIR="/var/www/html/davids-wood-furniture"
+        APP_DIR="/var/www/html/eclore-jewellery"
         
         # Create directory if it doesn't exist
         echo "Creating application directory..."
@@ -120,7 +120,7 @@ jobs:
           --exclude='.DS_Store' \
           --exclude='README.md' \
           -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i key.pem -o ConnectTimeout=15" \
-          ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/html/davids-wood-furniture/
+          ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/html/eclore-jewellery/
         
         echo "✅ Files deployed successfully"
 
@@ -134,7 +134,7 @@ jobs:
         
         echo "🚀 Setting file permissions on EC2..."
         
-        APP_DIR="/var/www/html/davids-wood-furniture"
+        APP_DIR="/var/www/html/eclore-jewellery"
         
         # Set proper ownership and permissions for web server
         echo "Setting file permissions for web server..."
@@ -171,7 +171,7 @@ jobs:
         
         echo "🚀 Installing dependencies and setting up Laravel..."
         
-        APP_DIR="/var/www/html/davids-wood-furniture"
+        APP_DIR="/var/www/html/eclore-jewellery"
         cd "$APP_DIR"
         
         # Install PHP dependencies
@@ -198,22 +198,24 @@ jobs:
         
         # Create MySQL user for 127.0.0.1 (required for GitHub Actions environment)
         echo "Creating MySQL user for 127.0.0.1 as root..."
-        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER IF NOT EXISTS 'davidswood_user'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'StrongPass123!';" || echo "User creation failed, but continuing..."
-        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON davids_wood.* TO 'davidswood_user'@'127.0.0.1';" || echo "Grant privileges failed, but continuing..."
+        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER IF NOT EXISTS 'eclore_user'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'StrongPass123!';" || echo "User creation failed, but continuing..."
+        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON eclore_db.* TO 'eclore_user'@'127.0.0.1';" || echo "Grant privileges failed, but continuing..."
         mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;" || echo "Flush privileges failed, but continuing..."
         
         # Also ensure the database exists
         echo "Creating database if it doesn't exist..."
-        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS davids_wood;" || echo "Database creation failed, but continuing..."
+        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS eclore_db;" || echo "Database creation failed, but continuing..."
         
         # Create .env file with production values
         echo "Creating .env file with production values..."
         sudo tee "$APP_DIR/.env" > /dev/null << 'ENV_EOF'
-        APP_NAME="David's Wood Furniture"
+        APP_NAME="Éclore Jewellery Shop"
         APP_ENV=production
         APP_KEY=
         APP_DEBUG=false
-        APP_URL=https://davidswood.shop
+        APP_URL=https://eclorejewellery.shop
+        ADMIN_URL=https://admin.eclorejewellery.shop
+        BASE_DOMAIN=eclorejewellery.shop
 
         LOG_CHANNEL=stack
         LOG_DEPRECATIONS_CHANNEL=null
@@ -222,9 +224,9 @@ jobs:
         DB_CONNECTION=mysql
         DB_HOST=localhost
         DB_PORT=3306
-        DB_DATABASE=davids_wood
-        DB_USERNAME=davidswood_user
-        DB_PASSWORD=StrongPass123!
+        DB_DATABASE=eclore_db
+        DB_USERNAME=eclore_user
+        DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
         BROADCAST_DRIVER=log
         CACHE_DRIVER=file
@@ -248,15 +250,9 @@ jobs:
         MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}
         MAIL_FROM_NAME="${APP_NAME}"
 
-        # Map repository secrets named AWS_S3_* to Laravel's expected AWS_* envs
-        AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION=ap-southeast-2
+        # Using IAM Roles (Instance Profile) for S3 access - No keys required in .env
+        AWS_DEFAULT_REGION=ap-southeast-1
         AWS_BUCKET=${{ secrets.AWS_S3_BUCKET }}
-        AWS_S3_ACCESS_KEY_ID=${{ secrets.AWS_S3_ACCESS_KEY_ID }}
-        AWS_S3_SECRET_ACCESS_KEY=${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
-        AWS_S3_REGION=${{ secrets.AWS_S3_REGION }}
-        AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
         AWS_USE_PATH_STYLE_ENDPOINT=false
 
         PUSHER_APP_ID=
@@ -277,7 +273,7 @@ jobs:
         # Google OAuth Configuration
         GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
         GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-        GOOGLE_REDIRECT_URL=https://davidswood.shop/auth/google/callback
+        GOOGLE_REDIRECT_URL=https://eclorejewellery.shop/auth/google/callback
         ENV_EOF
         
         # Set proper ownership for .env (readable by both www-data and ubuntu users)
@@ -307,14 +303,14 @@ jobs:
                 # Run database migrations
         echo "Running database migrations..."
         # Disable foreign key checks for migration
-        mysql -u davidswood_user -p${{ secrets.DB_PASSWORD }} -e "SET FOREIGN_KEY_CHECKS=0;" davids_wood || echo "FK disable failed"
+        mysql -u eclore_user -p${{ secrets.DB_PASSWORD }} -e "SET FOREIGN_KEY_CHECKS=0;" eclore_db || echo "FK disable failed"
         sudo -u www-data php artisan migrate --force
         if [ $? -ne 0 ]; then
           echo "❌ Migration failed - stopping deployment"
           exit 1
         fi
         # Re-enable foreign key checks
-        mysql -u davidswood_user -p${{ secrets.DB_PASSWORD }} -e "SET FOREIGN_KEY_CHECKS=1;" davids_wood || echo "FK enable failed"
+        mysql -u eclore_user -p${{ secrets.DB_PASSWORD }} -e "SET FOREIGN_KEY_CHECKS=1;" eclore_db || echo "FK enable failed"
         
         # Restart services
         echo "Restarting services..."
@@ -355,7 +351,7 @@ jobs:
         echo "Current Apache config before update:"
         sudo cat /etc/apache2/sites-available/000-default.conf | grep DocumentRoot || echo "No DocumentRoot found"
         
-        sudo sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/davids-wood-furniture/public|' /etc/apache2/sites-available/000-default.conf || echo "Document root update failed"
+        sudo sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/eclore-jewellery/public|' /etc/apache2/sites-available/000-default.conf || echo "Document root update failed"
         
         echo "Apache config after update:"
         sudo cat /etc/apache2/sites-available/000-default.conf | grep DocumentRoot || echo "No DocumentRoot found"
@@ -365,7 +361,7 @@ jobs:
         sudo tee -a /etc/apache2/sites-available/000-default.conf > /dev/null << 'APACHE_CONFIG'
         
         # Laravel configuration
-        <Directory /var/www/html/davids-wood-furniture/public>
+        <Directory /var/www/html/eclore-jewellery/public>
             AllowOverride All
             Require all granted
         </Directory>
@@ -405,7 +401,7 @@ jobs:
         #!/bin/bash
         set -e
         
-        APP_DIR="/var/www/html/davids-wood-furniture"
+        APP_DIR="/var/www/html/eclore-jewellery"
         cd "$APP_DIR"
         
         # Check if .env file exists and has content

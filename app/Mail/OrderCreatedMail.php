@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -31,9 +32,11 @@ class OrderCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Confirmation - #'.$this->order->order_number.' - David\'s Wood Furniture',
-            from: config('mail.from.address', 'noreply@eclore.shop'),
-            replyTo: 'hello@eclore.shop',
+            subject: 'Order Confirmation - #'.$this->order->order_number.' - Eclore Jewellery',
+            from: new Address(config('mail.from.address', 'noreply@eclorejewellery.shop'), config('mail.from.name', 'Eclore Jewellery')),
+            replyTo: [
+                new Address('hello@eclorejewellery.shop', 'Eclore Jewellery Support'),
+            ],
         );
     }
 

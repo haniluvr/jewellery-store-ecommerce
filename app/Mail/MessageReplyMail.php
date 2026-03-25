@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\ContactMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -39,9 +40,11 @@ class MessageReplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->subject,
-            from: config('mail.from.address', 'noreply@eclore.shop'),
-            replyTo: 'hello@eclore.shop',
+            subject: 'Response to your message: '.$this->contactMessage->subject.' - Eclore Jewellery',
+            from: new Address(config('mail.from.address', 'noreply@eclorejewellery.shop'), config('mail.from.name', 'Eclore Jewellery')),
+            replyTo: [
+                new Address('hello@eclorejewellery.shop', 'Eclore Jewellery Support'),
+            ],
         );
     }
 
