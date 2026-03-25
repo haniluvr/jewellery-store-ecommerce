@@ -35,9 +35,10 @@ jobs:
         node-version: '20'
         cache: 'npm'
 
-    - name: Install dependencies (Runner)
+    - name: Install dependencies and Build (Runner)
       run: |
         npm ci
+        npm run build
 
     - name: Prepare SSH key
       run: |
@@ -98,7 +99,6 @@ jobs:
           --exclude='storage/framework/views/*' \
           --exclude='database/*.sqlite' \
           --exclude='database/*.sql' \
-          --exclude='public/build' \
           --exclude='*.log' \
           --exclude='npm-debug.log' \
           --exclude='yarn-debug.log' \
@@ -164,18 +164,8 @@ jobs:
         echo "Installing PHP dependencies..."
         sudo -u www-data composer install --no-dev --optimize-autoloader --no-interaction
         
-        # Fix npm permissions and create clean environment
-        echo "Setting up npm environment..."
-        sudo rm -rf /var/www/.npm /var/www/.npmrc /tmp/.npm
-        sudo mkdir -p /tmp/.npm
-        sudo chown -R www-data:www-data /tmp/.npm
-        
-        # Set npm environment variables for www-data
-        echo "Configuring npm environment..."
-        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global && npm ci'
-        
-        echo "Building frontend assets..."
-        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global && npm run build'
+        # PHP and Laravel setup (No NPM needed on server!)
+        echo "Running Laravel setup..."
         
         # Ensure MySQL is running
         echo "Checking MySQL status..."
