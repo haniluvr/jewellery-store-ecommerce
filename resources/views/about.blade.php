@@ -21,9 +21,9 @@
     .font-playfair { font-family: 'Playfair Display', serif; }
     .font-azeret { font-family: 'Azeret Mono', monospace; }
     
-    .section-padding { padding: 8rem 1.5rem; }
-    @media (min-width: 768px) { .section-padding { padding: 12rem 4rem; } }
-    @media (min-width: 1024px) { .section-padding { padding: 15rem 6rem; } }
+    .section-padding { padding: 4rem 1.5rem; }
+    @media (min-width: 768px) { .section-padding { padding: 5rem 4rem; } }
+    @media (min-width: 1024px) { .section-padding { padding: 6rem 1rem; } }
 
     .gold-text { color: #B6965D; }
     .gold-bg { background-color: #B6965D; }
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="w-full lg:w-[45%] flex justify-center" data-aos="fade-left">
-                    <div class="circular-text-wrapper scale-[120%] lg:scale-[180%]">
+                    <div class="circular-text-wrapper scale-[10%] lg:scale-[120%]">
                         <svg class="circular-text" viewBox="0 0 100 100">
                             <path id="circlePath" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" fill="transparent" />
                             <text class="font-azeret text-[3.2px] uppercase tracking-[0.5em] fill-[#B6965D] font-medium opacity-60">
@@ -141,8 +141,8 @@
                                 </textPath>
                             </text>
                         </svg>
-                        <div class="w-24 h-24 flex items-center justify-center">
-                             <img src="{{ asset('frontend/assets/favicon.png') }}" alt="Éclore" class="w-full h-full object-contain grayscale opacity-20">
+                        <div class="w-auto h-[65%] flex items-center justify-center">
+                             <img loading="lazy" src="{{ asset('frontend/assets/favicon.png') }}" alt="Éclore" class="w-full h-full object-contain invert opacity-20 rotate-[0.349rad]">
                         </div>
                     </div>
                 </div>
@@ -209,5 +209,4 @@
         </div>
     </section>
 </div>
-@endsection
 @endsection

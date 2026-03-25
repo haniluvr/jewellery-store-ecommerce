@@ -83,7 +83,7 @@ class PageController extends Controller
         $currentCategory = $request->get('category', 'Latest');
 
         $query = \App\Models\CmsPage::published()
-            ->where('type', 'news')
+            ->where('type', 'blog')
             ->orderBy('published_at', 'desc');
 
         if ($currentCategory !== 'Latest') {
@@ -166,5 +166,13 @@ class PageController extends Controller
     public function boutiques()
     {
         return view('boutiques');
+    }
+
+    /**
+     * Display the Care & Maintenance page.
+     */
+    public function care()
+    {
+        return view('care');
     }
 }

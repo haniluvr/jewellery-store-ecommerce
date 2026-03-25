@@ -4,63 +4,27 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\User;
-use App\Models\WishlistItem;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WishlistItemSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $wishlistItemCount = 300;
+        DB::table('wishlist_items')->truncate();
 
-        // Get all user IDs and product IDs
-        $userIds = User::pluck('id')->toArray();
-        $productIds = Product::pluck('id')->toArray();
+        $users = User::all();
+        $products = Product::all();
 
-        if (empty($userIds) || empty($productIds)) {
-            $this->command->error('No users or products found. Please run UserSeeder and ProductSeeder first.');
+        for ($i = 0; $i < 400; $i++) {
+            $user = $users->random();
+            $product = $products->random();
 
-            return;
-        }
-
-        $createdItems = 0;
-        $attempts = 0;
-        $maxAttempts = $wishlistItemCount * 3; // Prevent infinite loop
-
-        while ($createdItems < $wishlistItemCount && $attempts < $maxAttempts) {
-            $attempts++;
-
-            // Get random user and product
-            $userId = $userIds[array_rand($userIds)];
-            $productId = $productIds[array_rand($productIds)];
-
-            // Check if this combination already exists
-            $existingItem = WishlistItem::where('user_id', $userId)
-                ->where('product_id', $productId)
-                ->first();
-
-            if (! $existingItem) {
-                // Generate random created_at date (within last 2 years)
-                $createdAt = date('Y-m-d H:i:s', rand(strtotime('-2 years'), time()));
-
-                WishlistItem::create([
-                    'user_id' => $userId,
-                    'product_id' => $productId,
-                    'created_at' => $createdAt,
-                ]);
-
-                $createdItems++;
-            }
-        }
-
-        $this->command->info("Created {$createdItems} wishlist items successfully!");
-
-        if ($createdItems < $wishlistItemCount) {
-            $this->command->warn("Only created {$createdItems} wishlist items due to unique constraints. ".
-                'This is normal if there are limited users and products.');
+            DB::table('wishlist_items')->insert([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'created_at' => now()->subDays(rand(1, 30)),
+            ]);
         }
     }
 }

@@ -25,29 +25,32 @@ class AppServiceProvider extends ServiceProvider
         $scheme = request()->getScheme();
         $port = request()->getPort();
         $appEnv = config('app.env');
+        $baseDomain = config('app.base_domain');
+        $adminUrl = config('app.admin_url');
+        $frontendUrl = config('app.frontend_url');
+
+        // Construct port string if not standard
+        $portString = (($scheme === 'https' && $port === 443) || ($scheme === 'http' && $port === 80)) ? '' : ':'.$port;
 
         // Production domains
         if ($appEnv === 'production') {
-            if ($host === 'admin.eclore.shop' || str_contains($host, 'admin.eclore.shop')) {
-                config(['app.url' => 'https://admin.eclore.shop']);
-            } elseif ($host === 'eclore.shop' || str_contains($host, 'eclore.shop')) {
-                config(['app.url' => 'https://eclore.shop']);
+            if ($adminUrl && (str_contains($host, 'admin.') || $host === parse_url($adminUrl, PHP_URL_HOST))) {
+                config(['app.url' => $adminUrl]);
+            } elseif ($frontendUrl && ($host === parse_url($frontendUrl, PHP_URL_HOST))) {
+                config(['app.url' => $frontendUrl]);
             } else {
                 // Fallback: construct URL from current request in production
-                $portString = (($scheme === 'https' && $port === 443) || ($scheme === 'http' && $port === 80)) ? '' : ':'.$port;
                 config(['app.url' => $scheme.'://'.$host.$portString]);
             }
         }
         // Local development domains
         elseif ($appEnv === 'local') {
-            if ($host === 'admin.eclore.test') {
-                config(['app.url' => 'https://admin.eclore.test:8443']);
-            } elseif ($host === 'eclore.test') {
-                config(['app.url' => 'https://eclore.test:8443']);
-            } elseif ($host === 'admin.localhost') {
-                config(['app.url' => 'http://admin.localhost:8080']);
-            } elseif ($host === 'localhost') {
-                config(['app.url' => 'http://localhost:8080']);
+            if (str_contains($host, 'admin.')) {
+                // For admin subdomains, preserve the current host and port
+                config(['app.url' => $scheme.'://'.$host.$portString]);
+            } else {
+                // For main domain, preserve the current host and port
+                config(['app.url' => $scheme.'://'.$host.$portString]);
             }
         }
         // For other environments, use env() or construct from request

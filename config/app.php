@@ -123,4 +123,13 @@ return [
     ],
 
     'force_https' => env('FORCE_HTTPS', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Routing Configuration
+    |--------------------------------------------------------------------------
+    */
+    'admin_url' => env('ADMIN_URL'),
+    'frontend_url' => env('APP_URL', 'http://localhost'),
+    'base_domain' => env('BASE_DOMAIN', 'eclore.test'),
 ];

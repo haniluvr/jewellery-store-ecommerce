@@ -79,10 +79,14 @@
                     <div class="mt-16 bg-[#fafafa] p-8 border border-gray-100">
                         <h5 class="text-xs uppercase tracking-[0.3em] font-medium mb-4">Éclore Newsletters</h5>
                         <p class="text-[10px] text-gray-400 leading-relaxed mb-6">Receive the latest news, collection launches and exhibition announcements from the world of Éclore.</p>
-                        <form action="#" class="flex border-b border-gray-900 pb-1">
-                            <input type="email" placeholder="Your Address" class="bg-transparent border-none outline-none text-[10px] uppercase w-full">
+                        <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex border-b border-gray-900 pb-1">
+                            @csrf
+                            <input type="email" name="email" placeholder="Your Address" class="bg-transparent border-none outline-none text-[10px] uppercase w-full" required>
                             <button type="submit" class="ml-2 text-[10px] uppercase tracking-widest font-bold">Join</button>
                         </form>
+                        @if(session('success'))
+                            <p class="mt-2 text-[8px] tracking-widest text-[#C5B391] uppercase">{{ session('success') }}</p>
+                        @endif
                     </div>
                 </div>
             </aside>

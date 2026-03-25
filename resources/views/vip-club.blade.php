@@ -360,7 +360,7 @@
                        <p class="font-azeret text-[11px] text-gray-500 tracking-widest leading-loose uppercase mb-12">
                            EXCLUSIVE ACCESS TO FORTHCOMING COLLECTIONS, PRIVATE PRESENTATIONS, AND INVITATION-ONLY GATHERINGS THROUGHOUT THE YEAR. MEMBERSHIP IS EXTENDED PERSONALLY FOLLOWING A PRIVATE APPOINTMENT AT OUR BOUTIQUE. WE LOOK FORWARD TO WELCOMING YOU.
                        </p>
-                       <a href="#" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 text-[10px] tracking-[0.4em] uppercase font-bold hover:bg-[#B6965D] transition-all">
+                       <a href="{{ route('boutiques') }}" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 text-[10px] tracking-[0.4em] uppercase font-bold hover:bg-[#B6965D] transition-all">
                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
                            Private Appointment
                        </a>

@@ -74,14 +74,14 @@
                     <p class="font-azeret text-[10px] tracking-widest text-gray-500 uppercase leading-loose mb-10">
                         Guidance on maintaining the brilliance of your Éclore pieces over lifetimes.
                     </p>
-                    <a href="#" class="font-azeret text-[10px] tracking-[0.4em] text-black border-b border-black pb-1 hover:text-[#C5B391] hover:border-[#C5B391] transition-all">READ GUIDE</a>
+                    <a href="{{ route('care') }}" class="font-azeret text-[10px] tracking-[0.4em] text-black border-b border-black pb-1 hover:text-[#C5B391] hover:border-[#C5B391] transition-all">READ GUIDE</a>
                 </div>
                 <div class="help-card" data-aos="fade-up" data-aos-delay="300">
                     <h3 class="font-playfair text-2xl mb-6">Appointments</h3>
                     <p class="font-azeret text-[10px] tracking-widest text-gray-500 uppercase leading-loose mb-10">
                         Schedule a private viewing at one of our global flagship boutiques.
                     </p>
-                    <a href="#" class="font-azeret text-[10px] tracking-[0.4em] text-black border-b border-black pb-1 hover:text-[#C5B391] hover:border-[#C5B391] transition-all">BOOK NOW</a>
+                    <a href="{{ route('boutiques') }}" class="font-azeret text-[10px] tracking-[0.4em] text-black border-b border-black pb-1 hover:text-[#C5B391] hover:border-[#C5B391] transition-all">BOOK NOW</a>
                 </div>
             </div>
 

@@ -11,9 +11,9 @@
 .font-playfair { font-family: 'Playfair Display', serif; }
 
 /* Global Layout Utilities */
-.section-padding { padding: 6rem 1.5rem; }
-@media (min-width: 768px) { .section-padding { padding: 8rem 4rem; } }
-@media (min-width: 1024px) { .section-padding { padding: 10rem 6rem; } }
+.section-padding { padding: 4rem 1.5rem; }
+@media (min-width: 768px) { .section-padding { padding: 5rem 4rem; } }
+@media (min-width: 1024px) { .section-padding { padding: 6rem 6rem; } }
 
 /* Hero Section Base */
 .hero-wrapper {
@@ -24,7 +24,7 @@
 
 .hero-section-1 {
     width: 100%;
-    min-height: 200vh; /* Accommodating the tall editorial layout */
+    min-height: 120vh; /* Normalized from 200vh for better balance */
     background-image: url('{{ asset("frontend/assets/hero-bg.webp") }}');
     background-size: cover;
     background-position: center;
@@ -276,7 +276,7 @@
                         </div>
                         <div class="relative z-10 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-1000">
                              @php $leftImg = (is_array($leftProduct->images) && count($leftProduct->images) > 0) ? $leftProduct->images[0] : 'products/default.webp'; @endphp
-                             <img src="{{ asset('storage/' . $leftImg) }}" alt="{{ $leftProduct->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
+                             <img loading="lazy" src="{{ asset('storage/' . $leftImg) }}" alt="{{ $leftProduct->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
                         </div>
                         <div class="mt-12 text-center relative z-10">
                             <h3 class="font-playfair text-2xl text-white mb-4">{{ $leftProduct->name }}</h3>
@@ -438,7 +438,7 @@
                 <p class="text-[#1a1a1a] font-azeret text-[11px] md:text-[13px] leading-relaxed uppercase tracking-[0.2em] mb-12">
                     RARE AND TIMELESS, OUR ICONIC CREATIONS EMBODY THE SPIRIT OF ETERNITY. EACH LIMITED PIECE TELLS A STORY OF HERITAGE, PASSION, AND EXCEPTIONAL ARTISTRY.
                 </p>
-                <a href="#" class="border border-black/10 px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 hover:bg-black hover:text-white transition-all">
+                <a href="{{ route('boutiques') }}" class="border border-black/10 px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 hover:bg-black hover:text-white transition-all">
                     <span class="text-[6px]">●</span> PRIVATE APPOINTMENT
                 </a>
             </div>
@@ -457,7 +457,7 @@
 
         <!-- Right Side: Full-Bleed Image -->
         <div class="lg:w-1/2 h-64 lg:h-auto overflow-hidden">
-            <img src="{{ asset('frontend/assets/limited-hero.webp') }}" alt="Limited Edition" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
+            <img loading="lazy" src="{{ asset('frontend/assets/limited-hero.webp') }}" alt="Limited Edition" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
         </div>
     </section>
     <section class="bg-white">
@@ -626,7 +626,7 @@
 
                 @foreach($creations as $index => $item)
                 <div class="relative aspect-[4/5] group overflow-hidden" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 50 }}">
-                    <img src="{{ $item['img'] }}" alt="{{ $item['label'] }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
+                    <img loading="lazy" src="{{ $item['img'] }}" alt="{{ $item['label'] }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform">
                     
                     <!-- Overlay Content -->
                     <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-black/5 group-hover:bg-black/20 transition-colors duration-500">
@@ -654,7 +654,7 @@
 <section class="relative min-h-screen flex bg-[#f8f8f8] overflow-hidden pt-20" id="legacy">
     <!-- Background Image (Grid effect) -->
     <div class="absolute inset-0 z-0">
-        <img src="{{ asset('frontend/assets/legacy-section.png') }}" alt="Legacy Grid" class="w-full h-full object-cover object-top">
+        <img loading="lazy" src="{{ asset('frontend/assets/legacy-section.png') }}" alt="Legacy Grid" class="w-full h-full object-cover object-top">
     </div>
 
     <div class="container mx-auto px-6 relative z-10 w-full h-full flex flex-col justify-between">
@@ -678,7 +678,7 @@
                 <p class="text-[#1a1a1a] font-azeret text-[11px] md:text-[12px] leading-relaxed uppercase tracking-[0.2em] mb-12">
                     EACH PIECE IS CREATED WITH RESPECT FOR TIME AND TRADITION. OUR ARTISANS PRESERVE THE ESSENCE OF FINE JEWELRY CRAFTSMANSHIP, BLENDING HERITAGE TECHNIQUES WITH MODERN PRECISION. SUSTAINABILITY IS AT THE HEART OF EVERY DESIGN A QUIET PROMISE OF BEAUTY MADE TO LAST.
                 </p>
-                <a href="#" class="bg-black text-white px-10 py-4 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 inline-flex hover:bg-gray-900 transition-colors">
+                <a href="{{ route('about') }}" class="bg-black text-white px-10 py-4 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 inline-flex hover:bg-gray-900 transition-colors">
                     <span class="text-[6px]">●</span> ABOUT Éclore
                 </a>
             </div>
@@ -690,7 +690,7 @@
 <section class="relative min-h-screen flex items-center overflow-hidden bg-black" id="masterpiece">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
-        <img src="{{ asset('frontend/assets/story-section.webp') }}" alt="Background" class="w-full h-full object-cover grayscale-[0.2] opacity-80">
+        <img loading="lazy" src="{{ asset('frontend/assets/story-section.webp') }}" alt="Background" class="w-full h-full object-cover grayscale-[0.2] opacity-80">
         <div class="absolute inset-0 bg-black/40"></div>
     </div>
 
@@ -754,14 +754,14 @@
                         <i data-lucide="arrow-right" class="w-10 h-10"></i>
                     </div>
 
-                    <img id="masterpiece-img" src="{{ asset('frontend/assets/ring.webp') }}" alt="Preview" class="w-full h-full object-contain transition-opacity duration-500">
+                    <img loading="lazy" id="masterpiece-img" src="{{ asset('frontend/assets/ring.webp') }}" alt="Preview" class="w-full h-full object-contain transition-opacity duration-500">
                 </div>
             </div>
         </div>
 
         <!-- Bottom Button (Moved inside relative container if needed, but keeping separate for now) -->
         <div class="flex justify-center mt-12">
-            <a href="#" class="bg-white text-black px-8 py-3 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 hover:bg-gray-100 transition-colors">
+            <a href="{{ route('vip-club') }}" class="bg-white text-black px-8 py-3 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-4 hover:bg-gray-100 transition-colors">
                 <span class="text-[6px]">●</span> CREATE YOUR DESIGN
             </a>
         </div>
@@ -827,10 +827,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Section 6: Newsroom -->
 @php
-    $newsPages = \App\Models\CmsPage::whereIn('slug', ['moments-we-share', 'stories-of-creation'])
-        ->where('is_active', true)
-        ->get()
-        ->keyBy('slug');
+    $newsPages = \App\Models\CmsPage::published()
+        ->where('type', 'blog')
+        ->orderBy('is_featured', 'desc')
+        ->orderBy('published_at', 'desc')
+        ->take(2)
+        ->get();
 @endphp
 <section class="bg-[#f8f8f8] py-32" id="newsroom">
     <div class="container mx-auto px-6 text-center">
@@ -840,41 +842,22 @@ document.addEventListener('DOMContentLoaded', () => {
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
-            <!-- News Card 1: Moments We Share -->
-            @if(isset($newsPages['moments-we-share']))
-            <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+            @foreach($newsPages as $index => $page)
+            <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                 <div class="aspect-[4/3] overflow-hidden mb-10">
-                    <img src="{{ asset('frontend/assets/story-1.webp') }}" alt="Moments We Share" class="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
+                    <img loading="lazy" src="{{ asset('frontend/assets/' . ($page->featured_image ?: 'story-' . ($index + 1) . '.webp')) }}" alt="{{ $page->title }}" class="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
                 </div>
-                <h3 class="font-playfair text-3xl mb-4 border-b border-gray-200 inline-block pb-1">{{ $newsPages['moments-we-share']->title }}</h3>
+                <h3 class="font-playfair text-3xl mb-4 border-b border-gray-200 inline-block pb-1">{{ $page->title }}</h3>
                 <p class="text-[10px] md:text-[11px] font-azeret text-gray-400 tracking-[0.2em] leading-relaxed uppercase mb-10 max-w-sm mx-auto">
-                    {{ $newsPages['moments-we-share']->meta_description }}
+                    {{ $page->meta_description ?: $page->excerpt }}
                 </p>
                 <div class="flex justify-center">
-                    <a href="{{ frontend_route('cms.show', $newsPages['moments-we-share']->slug) }}" class="bg-black text-white px-8 py-3 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3">
-                        <span class="text-[6px]">●</span> EXPLORE EVENTS
+                    <a href="{{ frontend_route('cms.show', $page->slug) }}" class="bg-black text-white px-8 py-3 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3">
+                        <span class="text-[6px]">●</span> EXPLORE {{ strtoupper($page->category ?: 'EVENTS') }}
                     </a>
                 </div>
             </div>
-            @endif
-
-            <!-- News Card 2: Stories Of Creation -->
-            @if(isset($newsPages['stories-of-creation']))
-            <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                <div class="aspect-[4/3] overflow-hidden mb-10">
-                    <img src="{{ asset('frontend/assets/story-2.webp') }}" alt="Stories Of Creation" class="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
-                </div>
-                <h3 class="font-playfair text-3xl mb-4 border-b border-gray-200 inline-block pb-1">{{ $newsPages['stories-of-creation']->title }}</h3>
-                <p class="text-[10px] md:text-[11px] font-azeret text-gray-400 tracking-[0.2em] leading-relaxed uppercase mb-10 max-w-sm mx-auto">
-                    {{ $newsPages['stories-of-creation']->meta_description }}
-                </p>
-                <div class="flex justify-center">
-                    <a href="{{ frontend_route('cms.show', $newsPages['stories-of-creation']->slug) }}" class="bg-black text-white px-8 py-3 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3">
-                        <span class="text-[6px]">●</span> EXPLORE BLOG
-                    </a>
-                </div>
-            </div>
-            @endif
+            @endforeach
         </div>
     </div>
 </section>
@@ -888,13 +871,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Book An Appointment -->
             <div class="flex flex-col items-center text-center px-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="w-32 h-32 mb-10 overflow-hidden">
-                    <img src="{{ asset('frontend/assets/appointment.webp') }}" alt="Book An Appointment" class="w-full h-full object-contain">
+                    <img loading="lazy" src="{{ asset('frontend/assets/appointment.webp') }}" alt="Book An Appointment" class="w-full h-full object-contain">
                 </div>
                 <h3 class="font-playfair text-3xl mb-6 text-[#1a1a1a]">Book An Appointment</h3>
                 <p class="text-[10px] md:text-[11px] font-azeret text-gray-500 tracking-[0.2em] leading-relaxed uppercase mb-10 max-w-[270px]">
                     DISCOVER HOW TO MAINTAIN AND PRESERVE YOUR CREATIONS FOR YEARS TO COME.
                 </p>
-                <a href="#" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                <a href="{{ route('boutiques') }}" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
                     <span class="text-[4px]">●</span> BOOK NOW
                 </a>
             </div>
@@ -902,13 +885,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Shipping & Returns -->
             <div class="flex flex-col items-center text-center px-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-32 h-32 mb-10 overflow-hidden">
-                    <img src="{{ asset('frontend/assets/shipping.webp') }}" alt="Shipping & Returns" class="w-full h-full object-contain">
+                    <img loading="lazy" src="{{ asset('frontend/assets/shipping.webp') }}" alt="Shipping & Returns" class="w-full h-full object-contain">
                 </div>
                 <h3 class="font-playfair text-3xl mb-6 text-[#1a1a1a]">Shipping & Returns</h3>
                 <p class="text-[10px] md:text-[11px] font-azeret text-gray-500 tracking-[0.2em] leading-relaxed uppercase mb-10 max-w-[270px]">
                     ENJOY EXCLUSIVE PREVIEWS, PRIVATE EVENTS, AND TIMELESS PRIVILEGES.
                 </p>
-                <a href="#" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                <a href="{{ route('help') }}" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
                     <span class="text-[4px]">●</span> LEARN MORE
                 </a>
             </div>
@@ -916,13 +899,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- At Your Service -->
             <div class="flex flex-col items-center text-center px-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-32 h-32 mb-10 overflow-hidden">
-                    <img src="{{ asset('frontend/assets/service.webp') }}" alt="At Your Service" class="w-full h-full object-contain">
+                    <img loading="lazy" src="{{ asset('frontend/assets/service.webp') }}" alt="At Your Service" class="w-full h-full object-contain">
                 </div>
                 <h3 class="font-playfair text-3xl mb-6 text-[#1a1a1a]">At Your Service</h3>
                 <p class="text-[10px] md:text-[11px] font-azeret text-gray-500 tracking-[0.2em] leading-relaxed uppercase mb-10 max-w-[270px]">
                     PERSONALIZE STRAPS, DETAILS, OR ENGRAVINGS TO MAKE EACH PIECE UNIQUE.
                 </p>
-                <a href="#" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                <a href="{{ route('contact') }}" class="bg-white border border-gray-100 text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
                     <span class="text-[4px]">●</span> CONTACT US
                 </a>
             </div>
@@ -945,7 +928,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <h2 class="font-playfair text-5xl md:text-7xl text-white tracking-tight" data-aos="fade-right">Partners</h2>
             
             <div class="relative w-full max-w-md aspect-[16/8] overflow-hidden" data-aos="zoom-in">
-                <img id="partner-display-img" src="{{ asset('frontend/assets/partner-bottega-veneta.webp') }}" alt="Boutique" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
+                <img loading="lazy" id="partner-display-img" src="{{ asset('frontend/assets/partner-bottega-veneta.webp') }}" alt="Boutique" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
             </div>
 
             <h2 class="font-playfair text-5xl md:text-7xl text-white tracking-tight" data-aos="fade-left">& Friends</h2>
@@ -955,23 +938,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="flex flex-wrap justify-center items-center gap-6 mt-12" data-aos="fade-up" data-aos-delay="200">
             <!-- Bottega Veneta -->
             <button onclick="switchPartner('{{ asset('frontend/assets/partner-bottega-veneta.webp') }}', this)" class="partner-btn w-24 h-24 md:w-32 md:h-32 border border-white/10 flex items-center justify-center p-6 grayscale hover:grayscale-0 hover:border-white/30 transition-all bg-black/20 active-partner">
-                <img src="{{ asset('frontend/assets/partner-bottega-veneta-logo.webp') }}" alt="Bottega Veneta" class="w-full h-auto object-contain opacity-60">
+                <img loading="lazy" src="{{ asset('frontend/assets/partner-bottega-veneta-logo.webp') }}" alt="Bottega Veneta" class="w-full h-auto object-contain opacity-60">
             </button>
             <!-- Givenchy -->
             <button onclick="switchPartner('{{ asset('frontend/assets/partner-givenchy.webp') }}', this)" class="partner-btn w-24 h-24 md:w-32 md:h-32 border border-white/10 flex items-center justify-center p-6 grayscale hover:grayscale-0 hover:border-white/30 transition-all bg-black/20">
-                <img src="{{ asset('frontend/assets/partner-givenchy-logo.webp') }}" alt="Givenchy" class="w-full h-auto object-contain opacity-60">
+                <img loading="lazy" src="{{ asset('frontend/assets/partner-givenchy-logo.webp') }}" alt="Givenchy" class="w-full h-auto object-contain opacity-60">
             </button>
             <!-- Hermes -->
             <button onclick="switchPartner('{{ asset('frontend/assets/partner-hermes.webp') }}', this)" class="partner-btn w-24 h-24 md:w-32 md:h-32 border border-white/10 flex items-center justify-center p-6 grayscale hover:grayscale-0 hover:border-white/30 transition-all bg-black/20">
-                <img src="{{ asset('frontend/assets/partner-hermes-logo.webp') }}" alt="Hermes" class="w-full h-auto object-contain opacity-60">
+                <img loading="lazy" src="{{ asset('frontend/assets/partner-hermes-logo.webp') }}" alt="Hermes" class="w-full h-auto object-contain opacity-60">
             </button>
             <!-- Versace -->
             <button onclick="switchPartner('{{ asset('frontend/assets/partner-versace.webp') }}', this)" class="partner-btn w-24 h-24 md:w-32 md:h-32 border border-white/10 flex items-center justify-center p-6 grayscale hover:grayscale-0 hover:border-white/30 transition-all bg-black/20">
-                <img src="{{ asset('frontend/assets/partner-versace-logo.webp') }}" alt="Versace" class="w-full h-auto object-contain opacity-60">
+                <img loading="lazy" src="{{ asset('frontend/assets/partner-versace-logo.webp') }}" alt="Versace" class="w-full h-auto object-contain opacity-60">
             </button>
             <!-- Gucci -->
             <button onclick="switchPartner('{{ asset('frontend/assets/partner-gucci.webp') }}', this)" class="partner-btn w-24 h-24 md:w-32 md:h-32 border border-white/10 flex items-center justify-center p-6 grayscale hover:grayscale-0 hover:border-white/30 transition-all bg-black/20">
-                <img src="{{ asset('frontend/assets/partner-gucci-logo.webp') }}" alt="Gucci" class="w-full h-auto object-contain opacity-60">
+                <img loading="lazy" src="{{ asset('frontend/assets/partner-gucci-logo.webp') }}" alt="Gucci" class="w-full h-auto object-contain opacity-60">
             </button>
         </div>
     </div>

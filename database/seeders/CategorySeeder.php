@@ -4,132 +4,72 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Define main categories
-        $mainCategories = [
-            [
-                'name' => 'Beds',
-                'slug' => 'beds',
-                'description' => 'Wooden beds and bedroom furniture.',
-                'is_active' => true,
-                'sort_order' => 1,
-            ],
-            [
-                'name' => 'Cabinets',
-                'slug' => 'cabinets',
-                'description' => 'Storage solutions including dressers, wardrobes, and storage cabinets.',
-                'is_active' => true,
-                'sort_order' => 2,
-            ],
-            [
-                'name' => 'Chairs',
-                'slug' => 'chairs',
-                'description' => 'Handcrafted wooden chairs for dining, office, and relaxation.',
-                'is_active' => true,
-                'sort_order' => 3,
-            ],
-            [
-                'name' => 'Tables',
-                'slug' => 'tables',
-                'description' => 'Beautiful tables for dining, coffee, and office use.',
-                'is_active' => true,
-                'sort_order' => 4,
-            ],
-            [
-                'name' => 'Shelves',
-                'slug' => 'shelves',
-                'description' => 'Bookshelves, display shelves, and wall-mounted storage.',
-                'is_active' => true,
-                'sort_order' => 5,
-            ],
-            [
-                'name' => 'Sofas',
-                'slug' => 'sofas',
-                'description' => 'Comfortable wooden sofas and seating arrangements.',
-                'is_active' => true,
-                'sort_order' => 6,
-            ],
+        Category::truncate();
+
+        $categories = [
+            // Main Categories
+            ['id' => 1, 'name' => 'Rings', 'slug' => 'rings', 'category_order' => 0],
+            ['id' => 2, 'name' => 'Necklaces & Pendants', 'slug' => 'necklaces-pendants', 'category_order' => 0],
+            ['id' => 3, 'name' => 'Earrings', 'slug' => 'earrings', 'category_order' => 0],
+            ['id' => 4, 'name' => 'Bracelets & Bangles', 'slug' => 'bracelets-bangles', 'category_order' => 0],
+            ['id' => 5, 'name' => 'Timepieces & Fine Accessories', 'slug' => 'timepieces-accessories', 'category_order' => 0],
         ];
 
-        $mainCategoryObjects = [];
-        foreach ($mainCategories as $category) {
-            $mainCategoryObjects[] = Category::create($category);
+        foreach ($categories as $cat) {
+            Category::create($cat);
         }
 
-        // Define subcategories structure
-        $subCategories = [
-            // Beds subcategories
-            1 => [
-                ['name' => 'Queen/King Sized Bed', 'slug' => 'queen-king-bed'],
-                ['name' => 'Sofabed', 'slug' => 'sofabed'],
-                ['name' => 'Daybed', 'slug' => 'daybed'],
-                ['name' => 'Loft Bed', 'slug' => 'loft-bed'],
-                ['name' => 'Bed with Storage', 'slug' => 'bed-storage'],
-                ['name' => 'Bunk Bed', 'slug' => 'bunk-bed'],
-                ['name' => 'Nursery Bed', 'slug' => 'nursery-bed'],
-            ],
-            // Cabinets subcategories
-            2 => [
-                ['name' => 'Chest Drawer', 'slug' => 'chest-drawer'],
-                ['name' => 'Wardrobe', 'slug' => 'wardrobe'],
-                ['name' => 'Cupboard', 'slug' => 'cupboard'],
-                ['name' => 'Sideboard', 'slug' => 'sideboard'],
-                ['name' => 'Display Cabinet', 'slug' => 'display-cabinet'],
-            ],
-            // Chairs subcategories
-            3 => [
-                ['name' => 'Arm Chair', 'slug' => 'arm-chair'],
-                ['name' => 'Dining Chair', 'slug' => 'dining-chair'],
-                ['name' => 'Stool', 'slug' => 'stool'],
-                ['name' => 'Sunlongue', 'slug' => 'sunlongue'],
-                ['name' => 'Outdoor Chair', 'slug' => 'outdoor-chair'],
-            ],
-            // Tables subcategories
-            4 => [
-                ['name' => 'Dressing Table', 'slug' => 'dressing-table'],
-                ['name' => 'Console Table', 'slug' => 'console-table'],
-                ['name' => 'Dining Table', 'slug' => 'dining-table'],
-                ['name' => 'Coffee Table', 'slug' => 'coffee-table'],
-                ['name' => 'Nightstand', 'slug' => 'nightstand'],
-                ['name' => 'Desk', 'slug' => 'desk'],
-                ['name' => 'Side Table', 'slug' => 'side-table'],
-                ['name' => 'Bar Table', 'slug' => 'bar-table'],
-                ['name' => 'Outdoor Table', 'slug' => 'outdoor-table'],
-            ],
-            // Shelves subcategories
-            5 => [
-                ['name' => 'Wall Shelf', 'slug' => 'wall-shelf'],
-                ['name' => 'Bookcase', 'slug' => 'bookcase'],
-            ],
-            // Sofas subcategories
-            6 => [
-                ['name' => 'Indoor Sofa', 'slug' => 'indoor-sofa'],
-                ['name' => 'Outdoor Sofa', 'slug' => 'outdoor-sofa'],
-            ],
+        $subcategories = [
+            // id=1 Rings
+            ['name' => 'Engagement Rings', 'parent_id' => 1, 'category_order' => 1],
+            ['name' => 'Wedding Bands', 'parent_id' => 1, 'category_order' => 2],
+            ['name' => 'Statement Rings', 'parent_id' => 1, 'category_order' => 3],
+            ['name' => 'Gemstone Rings', 'parent_id' => 1, 'category_order' => 4],
+            ['name' => "Signet & Men's Rings", 'parent_id' => 1, 'category_order' => 5],
+
+            // id=2 Necklaces
+            ['name' => 'Solitaire Pendants', 'parent_id' => 2, 'category_order' => 6],
+            ['name' => 'Statement Necklaces', 'parent_id' => 2, 'category_order' => 7],
+            ['name' => 'Fine Chains', 'parent_id' => 2, 'category_order' => 8],
+            ['name' => 'Lockets & Charms', 'parent_id' => 2, 'category_order' => 9],
+            ['name' => 'Chokers & Collars', 'parent_id' => 2, 'category_order' => 10],
+
+            // id=3 Earrings
+            ['name' => 'Diamond Studs', 'parent_id' => 3, 'category_order' => 11],
+            ['name' => 'Drop & Dangle Earrings', 'parent_id' => 3, 'category_order' => 12],
+            ['name' => 'Hoop Earrings', 'parent_id' => 3, 'category_order' => 13],
+            ['name' => 'Chandelier Earrings', 'parent_id' => 3, 'category_order' => 14],
+            ['name' => 'Ear Cuffs & Climbers', 'parent_id' => 3, 'category_order' => 15],
+
+            // id=4 Bracelets
+            ['name' => 'Tennis Bracelets', 'parent_id' => 4, 'category_order' => 16],
+            ['name' => 'Charm Bracelets', 'parent_id' => 4, 'category_order' => 17],
+            ['name' => 'Cuff Bracelets', 'parent_id' => 4, 'category_order' => 18],
+            ['name' => 'Bangle Sets', 'parent_id' => 4, 'category_order' => 19],
+            ['name' => 'Chain Bracelets', 'parent_id' => 4, 'category_order' => 20],
+
+            // id=5 Timepieces
+            ['name' => "Luxury Women's Watches", 'parent_id' => 5, 'category_order' => 21],
+            ['name' => "Men's Dress Watches", 'parent_id' => 5, 'category_order' => 22],
+            ['name' => 'Jewelry Boxes & Travel Cases', 'parent_id' => 5, 'category_order' => 23],
+            ['name' => 'Cufflinks & Tie Bars', 'parent_id' => 5, 'category_order' => 24],
+            ['name' => 'Brooches & Pins', 'parent_id' => 5, 'category_order' => 25],
         ];
 
-        // Create subcategories
-        foreach ($subCategories as $mainCategoryIndex => $subCats) {
-            $mainCategory = $mainCategoryObjects[$mainCategoryIndex - 1];
-
-            foreach ($subCats as $index => $subCat) {
-                Category::create([
-                    'name' => $subCat['name'],
-                    'slug' => $subCat['slug'],
-                    'description' => $subCat['name'],
-                    'parent_id' => $mainCategory->id,
-                    'is_active' => true,
-                    'sort_order' => $mainCategory->sort_order,
-                    'category_order' => $index + 1,
-                ]);
-            }
+        foreach ($subcategories as $sub) {
+            Category::create([
+                'name' => $sub['name'],
+                'slug' => Str::slug($sub['name']),
+                'parent_id' => $sub['parent_id'],
+                'category_order' => $sub['category_order'],
+                'is_active' => true,
+            ]);
         }
     }
 }

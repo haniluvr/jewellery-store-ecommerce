@@ -8,22 +8,15 @@
         
         <!-- css -->
         <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/favicon.png') }}">
+        <!-- Original Stable Assets -->
         <link rel="stylesheet" href="{{ asset('frontend/style.css') }}">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
         <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-        
-        <!-- scripts -->
-        <script src="https://unpkg.com/lucide@0.444.0/dist/umd/lucide.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" defer></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
-        <!-- Preline UI -->
-        <script src="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.js" defer></script>
         
         <!-- Typography Fixes -->
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
             
             .font-playfair {
                 font-family: 'Playfair Display', serif !important;
@@ -93,11 +86,11 @@
         <!-- footer -->
         @include('partials.footer')
         
+        <!-- Site Assets (Vite) -->
+        <!-- Combined Scripts -->
+        @vite(['resources/js/app.js'])
+        
         <!-- scripts -->
-        <script src="{{ asset('frontend/js/config.js') }}"></script>
-        <script src="{{ asset('frontend/js/api.js') }}"></script>
-        <script src="{{ asset('frontend/js/auth.js') }}"></script>
-        <script src="{{ asset('frontend/js/app.js') }}?v={{ time() }}"></script>
         <script>
         </script>
         <script>

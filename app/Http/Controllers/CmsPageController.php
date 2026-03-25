@@ -22,9 +22,9 @@ class CmsPageController extends Controller
         $relatedArticles = collect();
         $currentCategory = $page->category ?: 'Latest';
 
-        if ($page->type === 'news') {
+        if ($page->type === 'blog') {
             $relatedArticles = CmsPage::published()
-                ->where('type', 'news')
+                ->where('type', 'blog')
                 ->where('id', '!=', $page->id)
                 ->where(function ($query) use ($page) {
                     if ($page->category) {
@@ -36,7 +36,7 @@ class CmsPageController extends Controller
 
             if ($relatedArticles->count() < 3) {
                 $moreArticles = CmsPage::published()
-                    ->where('type', 'news')
+                    ->where('type', 'blog')
                     ->where('id', '!=', $page->id)
                     ->whereNotIn('id', $relatedArticles->pluck('id'))
                     ->limit(3 - $relatedArticles->count())

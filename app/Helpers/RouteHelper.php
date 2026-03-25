@@ -15,10 +15,12 @@ class RouteHelper
         $port = request()->getPort();
         $scheme = request()->getScheme();
 
+        $baseDomain = config('app.base_domain');
+
         // Determine the correct prefix based on environment and domain
         if ($env === 'local') {
             // For local development, check domain to determine prefix
-            if (str_contains($httpHost, 'admin.eclore.test')) {
+            if (str_contains($httpHost, 'admin.'.$baseDomain)) {
                 $prefix = 'admin.test.';
             } elseif (str_contains($httpHost, 'admin.localhost')) {
                 $prefix = 'admin.local.';
@@ -34,23 +36,30 @@ class RouteHelper
 
         // Fix URL scheme and port for specific environments
         if ($env === 'local') {
-            // Fix HTTPS for admin.eclore.test:8443
-            if ($host === 'admin.eclore.test' && $port === 8443) {
-                $url = str_replace('http://admin.eclore.test:8080', 'https://admin.eclore.test:8443', $url);
-            }
+            // Reconstruct URL with current request's scheme, host, and port
+            $portString = (($scheme === 'https' && $port === 443) || ($scheme === 'http' && $port === 80)) ? '' : ':'.$port;
+            $parsedUrl = parse_url($url);
+            $path = $parsedUrl['path'] ?? '/';
+            $query = isset($parsedUrl['query']) ? '?'.$parsedUrl['query'] : '';
+            $fragment = isset($parsedUrl['fragment']) ? '#'.$parsedUrl['fragment'] : '';
 
-            // Fix localhost port issues
-            if ($host === 'admin.localhost' && $port === 8080) {
-                $url = str_replace('admin.localhost:8000', 'admin.localhost:8080', $url);
-            }
+            $url = $scheme.'://'.$host.$portString.$path.$query.$fragment;
         } elseif ($env === 'production') {
-            // Ensure production URLs always use HTTPS
-            if ($scheme === 'http' && (str_contains($host, 'eclore.shop'))) {
-                $url = str_replace('http://', 'https://', $url);
-            }
-            // Remove port from HTTPS URLs in production (standard HTTPS port 443)
-            if (str_contains($url, 'https://') && preg_match('/https:\/\/[^:]+:\d+/', $url)) {
-                $url = preg_replace('/https:\/\/([^:]+):\d+/', 'https://$1', $url);
+            // Use production domain from config if available
+            $frontendUrl = config('app.frontend_url');
+            if ($frontendUrl) {
+                $parsedUrl = parse_url($url);
+                $path = $parsedUrl['path'] ?? '/';
+                $query = isset($parsedUrl['query']) ? '?'.$parsedUrl['query'] : '';
+                $fragment = isset($parsedUrl['fragment']) ? '#'.$parsedUrl['fragment'] : '';
+
+                // If the route generated was an admin route, use admin_url
+                if (str_contains($url, 'admin.')) {
+                    $adminUrl = config('app.admin_url') ?: 'https://admin.'.config('app.base_domain');
+                    $url = $adminUrl.$path.$query.$fragment;
+                } else {
+                    $url = $frontendUrl.$path.$query.$fragment;
+                }
             }
         }
 

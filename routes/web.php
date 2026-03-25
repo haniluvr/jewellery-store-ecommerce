@@ -404,11 +404,16 @@ Route::get('/vip-club', [App\Http\Controllers\PageController::class, 'vipClub'])
 Route::get('/collections', [App\Http\Controllers\PageController::class, 'collections'])->name('collections');
 Route::get('/newsroom', [App\Http\Controllers\PageController::class, 'newsroom'])->name('newsroom');
 Route::get('/boutiques-appointments', [App\Http\Controllers\PageController::class, 'boutiques'])->name('boutiques');
+Route::get('/care', [App\Http\Controllers\PageController::class, 'care'])->name('care');
 Route::get('/corporate-responsibility', [App\Http\Controllers\PageController::class, 'corporateResponsibility'])->name('corporate-responsibility');
 Route::get('/help', [App\Http\Controllers\PageController::class, 'help'])->name('help');
 Route::get('/accessibility', [App\Http\Controllers\PageController::class, 'accessibility'])->name('accessibility');
 Route::get('/orders-payments', [App\Http\Controllers\PageController::class, 'ordersPayments'])->name('orders-payments');
 Route::get('/track-order', [App\Http\Controllers\PageController::class, 'trackOrder'])->name('track-order');
+Route::post('/track-order/search', [App\Http\Controllers\OrderController::class, 'search'])->name('track-order.search');
+
+Route::post('/appointments/store', [App\Http\Controllers\AppointmentController::class, 'store'])->name('appointments.store');
+Route::post('/newsletter/subscribe', [App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/contact', [App\Http\Controllers\PageController::class, 'contact'])->name('contact');
 
 // Login page route (for admin redirects and Authenticate middleware) - redirect to home with login modal

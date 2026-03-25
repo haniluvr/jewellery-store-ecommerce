@@ -209,44 +209,58 @@
                 
                 <div class="md:w-3/5" data-aos="fade-left">
                     <div class="appointment-form">
-                        <form action="#" method="POST">
+                        @if(session('success'))
+                            <div class="mb-8 p-6 bg-[#C5B391]/10 border border-[#C5B391]/20 text-[#C5B391] font-azeret text-[10px] tracking-widest uppercase text-center leading-loose">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <form action="{{ route('appointments.store') }}" method="POST">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                                 <div>
-                                    <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Full Name</label>
-                                    <input type="text" placeholder="GIVEN NAME" class="minimal-input">
+                                    <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">First Name</label>
+                                    <input type="text" name="first_name" placeholder="GIVEN NAME" class="minimal-input" required>
                                 </div>
                                 <div>
-                                    <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Email Address</label>
-                                    <input type="email" placeholder="YOUR@EMAIL.COM" class="minimal-input">
+                                    <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Last Name</label>
+                                    <input type="text" name="last_name" placeholder="SURNAME" class="minimal-input" required>
                                 </div>
+                            </div>
+                            <div class="mb-12">
+                                <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Email Address</label>
+                                <input type="email" name="email" placeholder="YOUR@EMAIL.COM" class="minimal-input" required>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                                 <div>
                                     <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Preferred Location</label>
-                                    <select class="minimal-input">
-                                        <option>PARIS, VENDÔME</option>
-                                        <option>LONDON, NEW BOND</option>
-                                        <option>NEW YORK, 5TH AVE</option>
-                                        <option>TOKYO, GINZA</option>
+                                    <select name="location" class="minimal-input" required>
+                                        <option value="PARIS, VENDÔME">PARIS, VENDÔME</option>
+                                        <option value="LONDON, NEW BOND">LONDON, NEW BOND</option>
+                                        <option value="NEW YORK, 5TH AVE">NEW YORK, 5TH AVE</option>
+                                        <option value="TOKYO, GINZA">TOKYO, GINZA</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Service Type</label>
-                                    <select class="minimal-input">
-                                        <option>ACCESSORY FITTING</option>
-                                        <option>PRIVATE VIEWING</option>
-                                        <option>RESTORATION CONSULT</option>
-                                        <option>VIP CONCEIRGE</option>
+                                    <select name="service_type" class="minimal-input" required>
+                                        <option value="ACCESSORY FITTING">ACCESSORY FITTING</option>
+                                        <option value="PRIVATE VIEWING">PRIVATE VIEWING</option>
+                                        <option value="RESTORATION CONSULT">RESTORATION CONSULT</option>
+                                        <option value="VIP CONCEIRGE">VIP CONCEIRGE</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="mb-16">
                                 <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Preferred Date & Time</label>
                                 <div class="flex gap-4">
-                                    <input type="date" class="minimal-input">
-                                    <input type="time" class="minimal-input">
+                                    <input type="date" name="appointment_date" class="minimal-input" required>
+                                    <input type="time" name="appointment_time" class="minimal-input" required>
                                 </div>
+                            </div>
+                            <div class="mb-12">
+                                <label class="font-azeret text-[9px] tracking-[0.4em] text-gray-300 uppercase">Special Requests (Optional)</label>
+                                <textarea name="notes" class="minimal-input h-24 pt-4 resize-none" placeholder="ADDITIONAL DETAILS..."></textarea>
                             </div>
                             <button type="submit" class="w-full bg-black text-white py-6 text-[11px] tracking-[0.4em] uppercase font-bold hover:bg-[#B6965D] transition-all flex items-center justify-center gap-4">
                                 <span class="w-2 h-2 bg-white rounded-full"></span>

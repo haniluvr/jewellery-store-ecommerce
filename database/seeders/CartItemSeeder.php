@@ -2,98 +2,36 @@
 
 namespace Database\Seeders;
 
-use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CartItemSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $cartItemCount = 400;
+        DB::table('cart_items')->truncate();
 
-        // Get all user IDs and product IDs
-        $userIds = User::pluck('id')->toArray();
-        $productIds = Product::pluck('id')->toArray();
+        $users = User::all();
+        $products = Product::all();
 
-        if (empty($userIds) || empty($productIds)) {
-            $this->command->error('No users or products found. Please run UserSeeder and ProductSeeder first.');
+        for ($i = 0; $i < 350; $i++) {
+            $user = $users->random();
+            $product = $products->random();
+            $qty = rand(1, 2);
 
-            return;
-        }
-
-        $createdItems = 0;
-        $attempts = 0;
-        $maxAttempts = $cartItemCount * 3; // Prevent infinite loop
-
-        while ($createdItems < $cartItemCount && $attempts < $maxAttempts) {
-            $attempts++;
-
-            // Get random user and product
-            $userId = $userIds[array_rand($userIds)];
-            $productId = $productIds[array_rand($productIds)];
-
-            // Check if this combination already exists
-            $existingItem = CartItem::where('user_id', $userId)
-                ->where('product_id', $productId)
-                ->first();
-
-            if (! $existingItem) {
-                // Get product details for pricing
-                $product = Product::find($productId);
-
-                if (! $product) {
-                    continue;
-                }
-
-                // Generate random quantity (1-5 items)
-                $quantity = rand(1, 5);
-
-                // Use current price (sale price if available, otherwise regular price)
-                $unitPrice = $product->sale_price ?? $product->price;
-                $totalPrice = $unitPrice * $quantity;
-
-                // Generate product data for cart item
-                $productData = [
-                    'name' => $product->name,
-                    'sku' => $product->sku,
-                    'slug' => $product->slug,
-                    'image' => $product->images[0] ?? null,
-                    'material' => $product->material,
-                    'dimensions' => $product->dimensions,
-                    'weight' => $product->weight,
-                ];
-
-                // Generate random created_at date (within last 2 years)
-                $createdAt = date('Y-m-d H:i:s', rand(strtotime('-2 years'), time()));
-                $updatedAt = date('Y-m-d H:i:s', rand(strtotime($createdAt), time()));
-
-                CartItem::create([
-                    'user_id' => $userId,
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                    'unit_price' => $unitPrice,
-                    'total_price' => $totalPrice,
-                    'product_name' => $product->name,
-                    'product_sku' => $product->sku,
-                    'product_data' => $productData,
-                    'created_at' => $createdAt,
-                    'updated_at' => $updatedAt,
-                ]);
-
-                $createdItems++;
-            }
-        }
-
-        $this->command->info("Created {$createdItems} cart items successfully!");
-
-        if ($createdItems < $cartItemCount) {
-            $this->command->warn("Only created {$createdItems} cart items due to unique constraints. ".
-                'This is normal if there are limited users and products.');
+            DB::table('cart_items')->insert([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'quantity' => $qty,
+                'unit_price' => $product->price,
+                'total_price' => $product->price * $qty,
+                'product_name' => $product->name,
+                'product_sku' => $product->sku,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
 }

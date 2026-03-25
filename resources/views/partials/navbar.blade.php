@@ -1,9 +1,11 @@
 @php
-    $categories = \App\Models\Category::whereNull('parent_id')
-        ->where('is_active', true)
-        ->with('subcategories')
-        ->orderBy('sort_order', 'asc')
-        ->get();
+    $categories = \Illuminate\Support\Facades\Cache::remember('navbar_categories', 86400, function () {
+        return \App\Models\Category::whereNull('parent_id')
+            ->where('is_active', true)
+            ->with('subcategories')
+            ->orderBy('sort_order', 'asc')
+            ->get();
+    });
 @endphp
 
 <header class="navbar fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 transition-all duration-300">
@@ -24,7 +26,7 @@
         }
     </style>
     <!-- Top Header -->
-    <div class="px-4 md:px-8 h-16 flex items-center justify-between">
+    <div class="px-4 md:px-8 h-16 flex items-center justify-between bg-white">
         
         <!-- Left: Search and Mobile Toggle -->
         <div class="flex items-center space-x-6 flex-1">

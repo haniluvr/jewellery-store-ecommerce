@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
@@ -50,7 +49,6 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'subcategory_id',
-        'room_category',
         'name',
         'slug',
         'description',
@@ -64,8 +62,6 @@ class Product extends Model
         'low_stock_threshold',
         'manage_stock',
         'in_stock',
-        'weight',
-        'dimensions',
         'tax_class',
         'material',
         'color',
@@ -90,7 +86,6 @@ class Product extends Model
         'in_stock' => 'boolean',
         'featured' => 'boolean',
         'is_active' => 'boolean',
-        'room_category' => 'array',
         'images' => 'array',
         'gallery' => 'array',
         'meta_data' => 'array',
@@ -111,9 +106,9 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'subcategory_id');
     }
 
-    public function wishlists(): BelongsToMany
+    public function wishlistItems(): HasMany
     {
-        return $this->belongsToMany(User::class, 'wishlists');
+        return $this->hasMany(WishlistItem::class);
     }
 
     public function getCurrentPriceAttribute()
@@ -153,29 +148,6 @@ class Product extends Model
             'sub_category' => (int) substr($customId, 1, 2),
             'product_number' => (int) substr($customId, 3, 2),
         ];
-    }
-
-    /**
-     * Get the room category text based on the array values.
-     */
-    public function getRoomCategoryTextAttribute()
-    {
-        $roomCategories = [
-            'bedroom' => 'Bedroom',
-            'living-room' => 'Living Room',
-            'dining-room' => 'Dining Room',
-            'bathroom' => 'Bathroom',
-            'office-and-study' => 'Office and Study',
-            'garden-and-balcony' => 'Garden and Balcony',
-        ];
-
-        if (is_array($this->room_category)) {
-            return array_map(function ($room) use ($roomCategories) {
-                return $roomCategories[$room] ?? ucfirst(str_replace('-', ' ', $room));
-            }, $this->room_category);
-        }
-
-        return $roomCategories[$this->room_category] ?? 'Unknown';
     }
 
     /**

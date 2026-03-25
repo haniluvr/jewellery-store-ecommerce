@@ -2,40 +2,27 @@
 
 namespace Database\Seeders;
 
-use App\Models\AdminPermission;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AdminPermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Clear existing permissions
-        AdminPermission::truncate();
+        DB::table('admin_permissions')->truncate();
+        $roles = ['super_admin', 'admin', 'manager', 'staff'];
+        $permissions = ['manage_products', 'manage_orders', 'manage_users', 'view_reports', 'manage_settings'];
 
-        // Get default role permissions
-        $defaultPermissions = AdminPermission::getDefaultRolePermissions();
-
-        // Create permissions for each role
-        foreach ($defaultPermissions as $role => $permissions) {
-            foreach ($permissions as $permission => $granted) {
-                // Only create if granted is true
-                if ($granted === true) {
-                    AdminPermission::updateOrCreate(
-                        [
-                            'role' => strtolower($role), // Normalize role to lowercase
-                            'permission' => $permission,
-                        ],
-                        [
-                            'granted' => true,
-                        ]
-                    );
-                }
+        foreach ($roles as $role) {
+            foreach ($permissions as $permission) {
+                DB::table('admin_permissions')->insert([
+                    'role' => $role,
+                    'permission' => $permission,
+                    'granted' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
         }
-
-        $this->command->info('Admin permissions seeded successfully.');
     }
 }
