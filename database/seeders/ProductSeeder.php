@@ -11,9 +11,7 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         Product::truncate();
-        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $subcategories = Category::whereNotNull('parent_id')->orderBy('category_order')->get();
 
