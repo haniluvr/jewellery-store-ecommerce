@@ -11,7 +11,9 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         Product::truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $subcategories = Category::whereNotNull('parent_id')->orderBy('category_order')->get();
 
@@ -38,7 +40,22 @@ class ProductSeeder extends Seeder
                 // DD = item number (01-05)
                 $sku = sprintf('%d%02d%02d', $sub->parent_id, $sub->category_order, $i);
 
-                $price = rand(15000, 500000);
+                // Determine price point based on category and material
+                $price = 0;
+                $isPremium = (str_contains($material, 'Platinum') || str_contains($gemstone, 'Diamond'));
+                
+                if ($sub->parent_id == 3) { // Earrings
+                    $price = $isPremium ? rand(90000, 370000) : rand(10000, 25000);
+                } elseif ($sub->parent_id == 1) { // Rings
+                    $price = $isPremium ? rand(45000, 150000) : rand(20000, 50000);
+                } elseif ($sub->parent_id == 2) { // Necklaces
+                    $price = $isPremium ? rand(120000, 450000) : rand(15000, 45000);
+                } elseif ($sub->parent_id == 4) { // Bracelets
+                    $price = $isPremium ? rand(80000, 250000) : rand(18000, 40000);
+                } else { // Others/Accessories
+                    $price = rand(15000, 120000);
+                }
+
                 $cost = $price * 0.45;
 
                 Product::create([
