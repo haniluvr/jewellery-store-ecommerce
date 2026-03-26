@@ -124,7 +124,7 @@
             <!-- Pagination -->
             @if($stories->hasPages())
             <div class="mt-32 flex justify-center items-center">
-                {{ $stories->links('pagination::simple-tailwind-newsroom') }}
+                {{ $stories->links('vendor.pagination.simple-tailwind-newsroom') }}
             </div>
             @endif
         </div>
