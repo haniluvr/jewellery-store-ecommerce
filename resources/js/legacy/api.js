@@ -138,6 +138,13 @@ class EcloreJewelleryAPI {
         return await this.request(`/search?${params}`);
     }
 
+    // Newsroom methods
+    async getNewsroomStories(filters = {}) {
+        const params = new URLSearchParams(filters);
+        // We call the same /newsroom endpoint but with AJAX headers (handled by request())
+        return await this.request(`/newsroom?${params}`);
+    }
+
     // Cart methods
     async getCart() {
         return await this.request('/cart');

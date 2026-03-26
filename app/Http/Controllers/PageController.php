@@ -96,10 +96,25 @@ class PageController extends Controller
         // Recent Highlights (exclude featured)
         $highlights = (clone $query)->where('id', '!=', $featuredStory?->id)->limit(3)->get();
 
-        // Secondary Feed with Pagination
+        // Secondary Feed with Pagination (6 per page)
         $stories = $query->where('id', '!=', $featuredStory?->id)
             ->paginate(6)
             ->withQueryString();
+
+        // If AJAX, return JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'data' => $stories->items(),
+                'meta' => [
+                    'current_page' => $stories->currentPage(),
+                    'last_page' => $stories->lastPage(),
+                    'per_page' => $stories->perPage(),
+                    'total' => $stories->total(),
+                    'current_category' => $currentCategory,
+                ],
+            ]);
+        }
 
         return view('newsroom', compact('featuredStory', 'highlights', 'stories', 'currentCategory'));
     }

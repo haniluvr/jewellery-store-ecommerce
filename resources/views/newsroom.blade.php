@@ -8,10 +8,10 @@
     <nav class="sticky top-16 z-40 bg-white/95 backdrop-blur-md border-b border-gray-50 py-4 shadow-sm mx-[15%]">
         <div class="max-w-[1400px] mx-auto px-4 md:px-12 flex items-center justify-between overflow-x-auto whitespace-nowrap scrollbar-hide">
             <div class="flex space-x-12 text-[9px] uppercase tracking-[0.3em] font-medium text-gray-500">
-                <a href="{{ route('newsroom', ['category' => 'Latest']) }}" class="{{ $currentCategory === 'Latest' ? 'text-black' : 'hover:text-black' }} transition-colors">Latest</a>
-                <a href="{{ route('newsroom', ['category' => 'Press Releases']) }}" class="{{ $currentCategory === 'Press Releases' ? 'text-black' : 'hover:text-black' }} transition-colors">Press Releases</a>
-                <a href="{{ route('newsroom', ['category' => 'Exhibitions']) }}" class="{{ $currentCategory === 'Exhibitions' ? 'text-black' : 'hover:text-black' }} transition-colors">Exhibitions</a>
-                <a href="{{ route('newsroom', ['category' => 'Insights']) }}" class="{{ $currentCategory === 'Insights' ? 'text-black' : 'hover:text-black' }} transition-colors">Insights</a>
+                <a href="{{ route('newsroom', ['category' => 'Latest']) }}" data-category="Latest" class="news-category-link {{ $currentCategory === 'Latest' ? 'text-black' : 'hover:text-black' }} transition-colors">Latest</a>
+                <a href="{{ route('newsroom', ['category' => 'Press Releases']) }}" data-category="Press Releases" class="news-category-link {{ $currentCategory === 'Press Releases' ? 'text-black' : 'hover:text-black' }} transition-colors">Press Releases</a>
+                <a href="{{ route('newsroom', ['category' => 'Exhibitions']) }}" data-category="Exhibitions" class="news-category-link {{ $currentCategory === 'Exhibitions' ? 'text-black' : 'hover:text-black' }} transition-colors">Exhibitions</a>
+                <a href="{{ route('newsroom', ['category' => 'Insights']) }}" data-category="Insights" class="news-category-link {{ $currentCategory === 'Insights' ? 'text-black' : 'hover:text-black' }} transition-colors">Insights</a>
             </div>
             <div class="hidden md:block">
                 <span class="text-[9px] uppercase tracking-[0.2em] italic font-playfair text-gray-400">Éclore Editorial Journal</span>
@@ -98,35 +98,18 @@
         <div class="max-w-[1400px] mx-auto px-4 md:px-12">
             <h2 class="text-[12px] uppercase tracking-[0.5em] text-gray-400 mb-20 text-center">In Depth</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-                @forelse($stories as $index => $story)
-                <!-- Card -->
-                <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-                    <a href="{{ url($story->slug) }}">
-                        <div class="aspect-[16/10] overflow-hidden mb-8 shadow-sm">
-                            <img src="{{ asset('frontend/assets/' . ($story->featured_image ?: 'bracelet.webp')) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="{{ $story->title }}">
-                        </div>
-                        <div>
-                            <span class="text-[9px] uppercase tracking-[0.3em] text-[#B6965D] mb-4 block">{{ $story->category }}</span>
-                            <h3 class="text-2xl font-playfair font-light mb-4">{{ $story->title }}</h3>
-                            <p class="text-xs text-gray-500 leading-relaxed mb-6 font-light line-clamp-3">{{ $story->excerpt }}</p>
-                            <span class="text-[9px] flex items-center group-hover:text-[#B6965D] transition-colors">CONTINUE READING <i data-lucide="chevron-right" class="w-3 h-3 ml-2"></i></span>
-                        </div>
-                    </a>
-                </div>
-                @empty
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16" id="news-stories-grid">
+                <!-- Content will be loaded via AJAX in app.js initNewsroomSection() -->
                 <div class="col-span-full py-20 text-center">
-                    <p class="text-gray-400 font-light">No additional stories found for this category.</p>
+                    <div class="inline-block w-8 h-8 border-2 border-t-[#B6965D] border-gray-200 rounded-full animate-spin"></div>
+                    <p class="mt-4 text-gray-400 font-light uppercase tracking-widest text-[10px]">Loading Stories...</p>
                 </div>
-                @endforelse
             </div>
 
-            <!-- Pagination -->
-            @if($stories->hasPages())
-            <div class="mt-32 flex justify-center items-center">
-                {{ $stories->links('vendor.pagination.simple-tailwind-newsroom') }}
+            <!-- Pagination Container -->
+            <div class="mt-32 flex justify-center items-center" id="news-pagination-container">
+                <!-- Pagination will be injected here via AJAX -->
             </div>
-            @endif
         </div>
     </section>
 </main>

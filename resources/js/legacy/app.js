@@ -572,6 +572,192 @@ function renderPagination(meta) {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
+// ── Newsroom AJAX Pagination ──
+async function initNewsroomSection() {
+    const grid = document.getElementById('news-stories-grid');
+    if (!grid) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentPage = parseInt(urlParams.get('page')) || 1;
+    const initialCategory = urlParams.get('category') || 'Latest';
+
+    window.currentNewsPage = currentPage;
+    window.currentNewsCategory = initialCategory;
+
+    // Handle initial category active state
+    document.querySelectorAll('.news-category-link').forEach(link => {
+        if (link.getAttribute('data-category') === initialCategory) {
+            link.classList.add('text-black');
+            link.classList.remove('text-gray-500');
+        } else {
+            link.classList.remove('text-black');
+            link.classList.add('text-gray-500');
+        }
+
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const category = link.getAttribute('data-category');
+            
+            // Update global state
+            window.currentNewsCategory = category;
+            window.currentNewsPage = 1;
+
+            // Update URL
+            const url = new URL(window.location);
+            url.searchParams.set('category', category);
+            url.searchParams.set('page', '1');
+            window.history.pushState({}, '', url);
+
+            // Update UI (Active state)
+            document.querySelectorAll('.news-category-link').forEach(l => {
+                l.classList.remove('text-black');
+                l.classList.add('text-gray-500');
+            });
+            link.classList.add('text-black');
+            link.classList.remove('text-gray-500');
+
+            // Fetch and Render
+            try {
+                const response = await window.api.getNewsroomStories({
+                    category: category,
+                    page: 1
+                });
+                if (response.success) {
+                    renderNewsStories(response.data);
+                    renderNewsPagination(response.meta);
+                }
+            } catch (error) {
+                console.error('Category switch error:', error);
+            }
+        });
+    });
+
+    try {
+        // Initial fetch handled by JS if container is empty or user navigates
+        const response = await window.api.getNewsroomStories({
+            category: initialCategory,
+            page: currentPage
+        });
+
+        if (response.success) {
+            renderNewsStories(response.data);
+            if (response.meta) {
+                renderNewsPagination(response.meta);
+            }
+        }
+    } catch (error) {
+        console.error('Newsroom init error:', error);
+    }
+}
+
+function renderNewsStories(stories) {
+    const grid = document.getElementById('news-stories-grid');
+    if (!grid) return;
+
+    grid.style.transition = 'opacity 0.2s ease-in-out';
+    grid.style.opacity = '0.3';
+
+    setTimeout(() => {
+        grid.style.opacity = '1';
+        grid.innerHTML = '';
+        
+        if (!stories || stories.length === 0) {
+            grid.innerHTML = '<div class="col-span-full py-20 text-center"><p class="text-gray-400 font-light">No additional stories found.</p></div>';
+            return;
+        }
+
+        stories.forEach((story, index) => {
+            const card = document.createElement('div');
+            card.className = 'group cursor-pointer';
+            card.setAttribute('data-aos', 'fade-up');
+            card.setAttribute('data-aos-delay', (index * 100).toString());
+
+            card.innerHTML = `
+                <a href="/${story.slug}">
+                    <div class="aspect-[16/10] overflow-hidden mb-8 shadow-sm">
+                        <img src="/frontend/assets/${story.featured_image || 'bracelet.webp'}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="${story.title}">
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-[0.3em] text-[#B6965D] mb-4 block">${story.category}</span>
+                        <h3 class="text-2xl font-playfair font-light mb-4">${story.title}</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed mb-6 font-light line-clamp-3">${story.excerpt}</p>
+                        <span class="text-[9px] flex items-center group-hover:text-[#B6965D] transition-colors">CONTINUE READING <i data-lucide="chevron-right" class="w-3 h-3 ml-2"></i></span>
+                    </div>
+                </a>
+            `;
+            grid.appendChild(card);
+        });
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        if (typeof AOS !== 'undefined') AOS.refreshHard();
+    }, 150);
+}
+
+function renderNewsPagination(meta) {
+    const container = document.getElementById('news-pagination-container');
+    if (!container) return;
+
+    const { current_page, last_page } = meta;
+    if (last_page <= 1) {
+        container.innerHTML = '';
+        return;
+    }
+
+    let html = '<div class="flex justify-center items-center space-x-8">';
+    
+    // Previous Link
+    if (current_page > 1) {
+        html += `<a href="#" class="w-8 h-px bg-gray-900 hover:bg-[#B6965D] transition-colors news-page-link" data-page="${current_page - 1}"></a>`;
+    } else {
+        html += `<span class="w-8 h-px bg-gray-100"></span>`;
+    }
+
+    // Number Links
+    html += `<div class="flex items-center space-x-6">`;
+    for (let i = 1; i <= last_page; i++) {
+        if (i === current_page) {
+            html += `<span class="text-[10px] font-bold text-gray-900 tracking-widest">${String(i).padStart(2, '0')}</span>`;
+        } else {
+            html += `<a href="#" class="text-[10px] text-gray-300 hover:text-gray-900 transition-colors tracking-widest news-page-link" data-page="${i}">${String(i).padStart(2, '0')}</a>`;
+        }
+    }
+    html += `</div>`;
+
+    // Next Link
+    if (current_page < last_page) {
+        html += `<a href="#" class="w-8 h-px bg-gray-900 hover:bg-[#B6965D] transition-colors news-page-link" data-page="${current_page + 1}"></a>`;
+    } else {
+        html += `<span class="w-8 h-px bg-gray-100"></span>`;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+
+    // Attach listeners
+    container.querySelectorAll('.news-page-link').forEach(link => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const page = link.getAttribute('data-page');
+            window.currentNewsPage = page;
+            
+            // Update URL
+            const url = new URL(window.location);
+            url.searchParams.set('page', page);
+            window.history.pushState({}, '', url);
+
+            const response = await window.api.getNewsroomStories({
+                category: window.currentNewsCategory,
+                page: page
+            });
+            if (response.success) {
+                renderNewsStories(response.data);
+                renderNewsPagination(response.meta);
+                document.getElementById('news-stories-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+}
+
 // ── Initialize Add to Cart Buttons ──
 function initAddToCartButtons() {    
     // Remove any existing event listeners to prevent duplicates
@@ -3064,6 +3250,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     const productGrid = document.getElementById('product-grid');
     if (productGrid) {
         initProductsSection();
+    }
+
+    // Initialize Newsroom
+    const newsGrid = document.getElementById('news-stories-grid');
+    if (newsGrid) {
+        initNewsroomSection();
     }
 
     // Load both cart and wishlist counts simultaneously

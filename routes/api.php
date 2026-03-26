@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 // API routes for frontend JavaScript
 
+// Get newsroom stories (AJAX)
+Route::get('/newsroom', [App\Http\Controllers\PageController::class, 'newsroom']);
+
 // Get products for homepage
 Route::get('/products', function (Request $request) {
     try {
