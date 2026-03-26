@@ -16,7 +16,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     # Only run if CI pipeline was successful
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
@@ -35,7 +35,7 @@ jobs:
         node-version: '20'
         cache: 'npm'
 
-    - name: Install dependencies and Build (Runner)
+    - name: Install dependencies
       run: |
         npm ci
         npm run build
@@ -127,7 +127,6 @@ jobs:
         sudo chmod -R 755 "$APP_DIR"
         sudo chmod -R 775 "$APP_DIR/storage"
         sudo chmod -R 775 "$APP_DIR/bootstrap/cache"
-        sudo chown -R www-data:www-data "$APP_DIR"
         
         # Create missing Laravel storage directories
         echo "Creating missing Laravel storage directories..."
@@ -164,18 +163,28 @@ jobs:
         echo "Installing PHP dependencies..."
         sudo -u www-data composer install --no-dev --optimize-autoloader --no-interaction
         
-        # PHP and Laravel setup (No NPM needed on server!)
-        echo "Running Laravel setup..."
+        # Fix npm permissions and create clean environment
+        echo "Setting up npm environment..."
+        sudo rm -rf /var/www/.npm /var/www/.npmrc /tmp/.npm
+        sudo mkdir -p /tmp/.npm
+        sudo chown -R www-data:www-data /tmp/.npm
+        
+        # Set npm environment variables for www-data
+        echo "Configuring npm environment..."
+        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global && npm ci'
+        
+        echo "Building frontend assets..."
+        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global'
         
         # Ensure MySQL is running
         echo "Checking MySQL status..."
         sudo systemctl status mysql || echo "MySQL status check failed"
         sudo systemctl start mysql || echo "MySQL start failed"
         
-        # Create MySQL user for localhost
-        echo "Creating MySQL user for localhost as root..."
-        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER IF NOT EXISTS 'eclore_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '${{ secrets.DB_PASSWORD }}';" || echo "User creation failed, but continuing..."
-        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON eclore_db.* TO 'eclore_user'@'localhost';" || echo "Grant privileges failed, but continuing..."
+        # Create MySQL user for 127.0.0.1 (required for GitHub Actions environment)
+        echo "Creating MySQL user for 127.0.0.1 as root..."
+        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER IF NOT EXISTS 'eclore_user'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'StrongPass123!';" || echo "User creation failed, but continuing..."
+        mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON eclore_db.* TO 'eclore_user'@'127.0.0.1';" || echo "Grant privileges failed, but continuing..."
         mysql -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;" || echo "Flush privileges failed, but continuing..."
         
         # Also ensure the database exists
@@ -352,7 +361,7 @@ jobs:
         sudo cat /etc/apache2/sites-available/000-default.conf || echo "Could not read Apache config"
         
         # Verify Laravel public directory exists and has index.php
-        echo "Checking Laravel public directory..."
+        echo "Checking Laravel public directory:"
         ls -la /var/www/html/eclore-jewellery/public/ || echo "Public directory not found"
         ls -la /var/www/html/eclore-jewellery/public/index.php || echo "index.php not found"
         
