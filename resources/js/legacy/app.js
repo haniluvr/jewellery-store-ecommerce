@@ -379,16 +379,16 @@ async function initProductsSection() {
             }
 
             col.innerHTML = `
-                <div class="group flex flex-col h-full bg-white transition-all duration-500">
-                    <div class="relative overflow-hidden bg-[#f9f9f9] aspect-square">
+                <div class="group flex flex-col h-full bg-transparent transition-all duration-500">
+                    <div class="relative overflow-hidden bg-[#f9f9f9] aspect-[4/5]">
                         <img src="${getStorageUrl((productData.images && productData.images[0]) || productData.primary_image || productData.image)}" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                              alt="${productData.name}">
                         
-                        <div class="absolute top-4 right-4 z-10">
-                            <button class="wishlist-btn bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-sm hover:bg-white transition-colors" 
+                        <div class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="wishlist-btn bg-white/95 p-2 rounded-full shadow-sm hover:bg-white transition-all transform hover:scale-110" 
                                     data-product-id="${productData.id || ''}" onclick="event.stopPropagation();">
-                                <i id="heart-icon-${productData.id || ''}" data-lucide="heart" class="w-4 h-4 text-[#1a1a1a] group-[.is-wishlisted]:fill-red-500 group-[.is-wishlisted]:text-red-500"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#1a1a1a] group-[.is-wishlisted]:fill-red-500 group-[.is-wishlisted]:text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                             </button>
                         </div>
 
@@ -398,38 +398,33 @@ async function initProductsSection() {
                             </div>
                         ` : ''}
 
-                        <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
                         
                         <!-- Quick Add Overlay (High-End Editorial Redesign) -->
                         <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 bg-white/95 backdrop-blur-lg flex gap-2 border-t border-gray-100 z-30">
-                             <button class="btn-quick-view flex-1 bg-[#1a1a1a] border border-[#1A1A1A] text-[#1A1A1A] py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#000000] transition-all duration-400" 
+                             <button class="btn-quick-view flex-1 bg-[#1a1a1a] border border-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#000000] transition-all duration-400" 
                                     data-product-id="${productData.id}" data-product-slug="${productData.slug}">
                                 Quick View
-                            </button>
-                            <button class="btn-add-to-cart flex-1 bg-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#a6864d] transition-all duration-400" 
+                             </button>
+                             <button class="btn-add-to-cart flex-1 bg-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#a6864d] transition-all duration-400" 
                                     data-product-id="${productData.id}">
                                 Add to Cart
-                            </button>
+                             </button>
                         </div>
                     </div>
                     
                     <div class="pt-6 pb-2 flex flex-col items-center text-center">
                         <div class="mb-1">
-                            <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-light">
-                                ${productData.category ? productData.category.name : 'Fine Jewelry'}
+                            <span style="font-family: 'Azeret Mono', monospace; font-size: 0.65rem; color: #999; text-transform: uppercase; letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem;">
+                                ${productData.category ? (typeof productData.category === 'object' ? productData.category.name : productData.category) : 'Collection'}
                             </span>
                         </div>
-                        <h3 class="font-playfair text-lg text-[#1a1a1a] mb-2 cursor-pointer hover:text-[#B6965D] transition-colors line-clamp-1" 
+                        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 0.75rem;" class="cursor-pointer hover:text-[#B6965D] transition-colors line-clamp-1" 
                             onclick="window.open('/products/${productData.slug || productData.id}', '_blank')">
                             ${productData.name}
                         </h3>
-                        <div class="flex items-center gap-3">
-                            <span class="text-[#B6965D] font-medium tracking-wider">₱${Math.floor(productData.price).toLocaleString('en-US')}</span>
-                            <div class="w-1 h-1 rounded-full bg-gray-300"></div>
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-current"></i>
-                                <span class="text-[11px] text-gray-500">${productData.average_rating > 0 ? productData.average_rating.toFixed(1) : '5.0'}</span>
-                            </div>
+                        <div style="font-family: 'Azeret Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--brand-black);">
+                            ₱${Math.floor(productData.price).toLocaleString('en-US')}
                         </div>
                     </div>
                 </div>
@@ -437,8 +432,10 @@ async function initProductsSection() {
                 grid.appendChild(col);
             });
 
-            // Re-init icons
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            // Re-init icons with small delay to ensure DOM is ready
+            if (typeof lucide !== 'undefined') {
+                setTimeout(() => lucide.createIcons(), 50);
+            }
             if (typeof feather !== 'undefined') feather.replace();
             
             // Refresh AOS animations for new content with immediate trigger

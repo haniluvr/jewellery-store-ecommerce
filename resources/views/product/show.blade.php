@@ -4,217 +4,177 @@
 
 @section('content')
 <style>
-/* Product Details Styles */
+/* Product Details Styles – Editorial Edition */
+:root {
+    --brand-gold: #B6965D;
+    --brand-black: #1a1a1a;
+    --brand-gray: #666;
+    --brand-light-gray: #f9f9f9;
+    --brand-border: #f0f0f0;
+    --brand-bg: white;
+}
+
 .product-details-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0 2rem 5rem;
+    background-color: white;
+}
+
+body {
+    background-color: white !important;
+}
+
+/* Typography Overrides */
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-azeret { font-family: 'Azeret Mono', monospace; }
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--brand-black);
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.02em;
 }
 
 .breadcrumb {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    font-size: 0.875rem;
-    color: #666;
-    padding-top: 4rem;
+    gap: 0.75rem;
+    padding: 3rem 0;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #999;
     background: transparent;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .breadcrumb a {
-    color: #666;
+    color: #999;
     text-decoration: none;
-    transition: color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    transition: color 0.3s ease;
 }
 
 .breadcrumb a:hover {
-    color: #1a1a1a;
-    text-decoration: underline;
+    color: var(--brand-gold);
 }
 
 .breadcrumb .separator {
-    color: #ccc;
-    margin: 0 0.25rem;
+    color: #ddd;
 }
 
 .breadcrumb span:last-child {
-    color: #1a1a1a;
-    font-weight: 500;
+    color: var(--brand-black);
+    font-weight: 600;
 }
 
 .product-grid-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 4rem;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+    margin-bottom: 6rem;
 }
 
-.product-grid-layout > * {
-    min-width: 0; /* Prevent grid items from overflowing */
-}
-
-@media (max-width: 968px) {
+@media (max-width: 1024px) {
     .product-grid-layout {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
     }
 }
 
 /* Image Gallery */
 .image-gallery {
     position: sticky;
-    top: 80px;
+    top: 100px;
     height: fit-content;
 }
 
 .main-image-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 1;
-    background: #f9f9f9;
-    border-radius: 16px;
+    aspect-ratio: 4/5;
+    background: var(--brand-light-gray);
     overflow: hidden;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--brand-border);
 }
 
 .main-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    cursor: zoom-in;
-    transition: transform 0.3s ease;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .main-image:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 .badge-container {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 1.5rem;
+    left: 1.5rem;
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    flex-wrap: wrap;
+    z-index: 10;
 }
 
 .badge {
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
+    padding: 0.6rem 1.2rem;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.15em;
     backdrop-filter: blur(10px);
 }
 
 .badge-sale {
-    background: rgba(220, 38, 38, 0.9);
+    background: var(--brand-gold);
     color: white;
 }
 
 .badge-featured {
-    background: rgba(16, 185, 129, 0.9);
-    color: white;
-}
-
-.badge-stock {
-    background: rgba(59, 130, 246, 0.9);
-    color: white;
-}
-
-.badge-low-stock {
-    background: rgba(245, 158, 11, 0.9);
-    color: white;
-}
-
-.badge-out-of-stock {
-    background: rgba(107, 114, 128, 0.9);
+    background: var(--brand-black);
     color: white;
 }
 
 .thumbnail-container {
     position: relative;
     width: 100%;
+    padding: 1.5rem 0;
     display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
 .thumbnail-grid {
     display: flex;
-    gap: 0.75rem;
-    overflow-x: hidden;
+    gap: 1rem;
+    overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    width: 100%;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
 }
 
-.thumbnail-grid::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-.thumbnail-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.thumbnail-nav-btn:hover {
-    background: #f9fafb;
-    border-color: #1a1a1a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.thumbnail-nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.thumbnail-nav-btn.prev {
-    left: -14px;
-}
-
-.thumbnail-nav-btn.next {
-    right: -14px;
-}
+.thumbnail-grid::-webkit-scrollbar { display: none; }
 
 .thumbnail {
     flex-shrink: 0;
-    width: 80px;
-    height: 80px;
-    aspect-ratio: 1;
-    border-radius: 8px;
-    overflow: hidden;
+    width: 90px;
+    height: 110px;
+    background: white;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
+    border: 1px solid var(--brand-border);
+    transition: all 0.4s ease;
 }
 
-.thumbnail:hover {
-    border-color: #1a1a1a;
-}
-
-.thumbnail.active {
-    border-color: #1a1a1a;
-    box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+.thumbnail:hover, .thumbnail.active {
+    opacity: 1;
+    border-color: var(--brand-gold);
 }
 
 .thumbnail img {
@@ -223,216 +183,199 @@
     object-fit: cover;
 }
 
+.thumbnail-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: white;
+    border: 1px solid var(--brand-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.thumbnail-nav-btn:hover {
+    border-color: var(--brand-gold);
+    color: var(--brand-gold);
+}
+
+.thumbnail-nav-btn.prev { left: 0; }
+.thumbnail-nav-btn.next { right: 0; }
+
+.image-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator-dot.active {
+    background: var(--brand-gold);
+    transform: scale(1.5);
+}
+
 /* Product Info */
 .product-info {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2.5rem;
 }
 
-.product-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    color: #1a1a1a;
-    margin: 0;
+.product-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-gray);
 }
 
 .product-rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.95rem;
 }
 
 .stars {
     display: flex;
-    gap: 0.25rem;
-    color: #fbbf24;
+    gap: 0.15rem;
+    color: var(--brand-gold);
 }
 
-.review-count {
-    color: #666;
-}
+.stars i { width: 14px; height: 14px; }
 
 .price-section {
     display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding: 1.5rem 0;
-    border-top: 1px solid #e5e5e5;
-    border-bottom: 1px solid #e5e5e5;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--brand-border);
+    border-bottom: 1px solid var(--brand-border);
 }
 
 .current-price {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--brand-black);
 }
 
 .original-price {
-    font-size: 1.5rem;
-    color: #999;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 1.25rem;
+    color: #bbb;
     text-decoration: line-through;
+    letter-spacing: 0.05em;
 }
 
-.discount-badge {
-    background: #ef4444;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 50px;
-    font-size: 0.875rem;
-    font-weight: 600;
+.product-description-container h3 {
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--brand-gold);
+    margin-bottom: 1.5rem;
 }
 
 .product-description {
-    font-size: 1rem;
-    line-height: 1.75;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
     color: #444;
 }
 
 /* Specifications */
 .specifications {
-    background: #f9fafb;
-    border-radius: 12px;
-    padding: 1.5rem;
-}
-
-.specifications h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #1a1a1a;
-}
-
-.spec-grid {
-    display: grid;
-    gap: 1rem;
+    background: transparent;
+    padding: 0;
 }
 
 .spec-item {
     display: flex;
     justify-content: space-between;
-    align-items: start;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.spec-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--brand-border);
 }
 
 .spec-label {
-    font-weight: 600;
-    color: #666;
-    min-width: 140px;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--brand-gray);
 }
 
 .spec-value {
-    color: #1a1a1a;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--brand-black);
     text-align: right;
-    flex: 1;
 }
 
 /* Actions */
 .action-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: #f9fafb;
-    border-radius: 12px;
+    gap: 2rem;
+    margin-top: 1rem;
 }
 
 .quantity-selector {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    box-shadow: none;
-    border: none;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--brand-border);
 }
 
 .quantity-label {
-    font-weight: 600;
-    color: #1a1a1a;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
 }
 
 .quantity-controls {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    overflow: hidden;
-    background: white;
-    box-shadow: none !important;
+    gap: 1.5rem;
 }
 
 .quantity-btn {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
+    background: transparent;
     border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    color: #1a1a1a;
     font-size: 1.25rem;
-    font-weight: 600;
-    padding: 0;
-    outline: none;
-    box-shadow: none !important;
+    cursor: pointer;
+    color: var(--brand-black);
+    transition: color 0.3s;
 }
 
-.quantity-btn:hover {
-    background: #f3f4f6;
-}
-
-.quantity-btn:focus {
-    outline: none;
-    box-shadow: none !important;
-}
-
-.quantity-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
+.quantity-btn:hover { color: var(--brand-gold); }
 
 .quantity-input {
-    width: 60px;
-    height: 40px;
-    border: none;
-    border-left: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
+    width: 30px;
     text-align: center;
-    font-weight: 600;
+    border: none;
+    font-family: 'Azeret Mono', monospace;
     font-size: 1rem;
-    background: white;
-    outline: none !important;
-    box-shadow: none !important;
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-}
-
-.quantity-input:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border-left: 1px solid #e5e7eb;
-    border-right: 1px solid #e5e7eb;
-}
-
-/* Hide number input spinner arrows */
-.quantity-input::-webkit-inner-spin-button,
-.quantity-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    display: none;
-}
-
-.quantity-input[type=number] {
-    -moz-appearance: textfield;
+    font-weight: 600;
 }
 
 .action-buttons {
@@ -442,189 +385,117 @@
 
 .btn-add-cart {
     flex: 1;
-    padding: 1rem 2rem;
-    background: #1a1a1a;
+    height: 64px;
+    background: var(--brand-black);
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .btn-add-cart:hover {
-    background: #2a2a2a;
+    background: var(--brand-gold);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-add-cart:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 
 .btn-wishlist {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     background: white;
-    border: 2px solid #e5e5e5;
-    border-radius: 8px;
+    border: 1px solid var(--brand-border);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .btn-wishlist:hover {
-    border-color: #1a1a1a;
-    background: #f9fafb;
+    border-color: var(--brand-gold);
+    color: var(--brand-gold);
 }
 
 .btn-wishlist.active {
-    background: #fef2f2;
+    color: #ef4444;
     border-color: #ef4444;
-    color: #ef4444;
 }
 
-.btn-wishlist.active i {
-    color: #ef4444;
-}
-
-.btn-wishlist i.active {
-    color: #ef4444;
-    fill: #ef4444;
-}
-
-/* Tabs */
+/* Product Tabs */
 .product-tabs {
-    border-bottom: 2px solid #e5e5e5;
-    margin-bottom: 2rem;
+    margin-top: 5rem;
+    border-bottom: 1px solid var(--brand-border);
 }
 
 .tab-buttons {
     display: flex;
-    gap: 2rem;
+    gap: 4rem;
+    justify-content: center;
 }
 
 .tab-btn {
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     background: none;
     border: none;
-    border-bottom: 3px solid transparent;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #666;
+    border-bottom: 2px solid transparent;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #999;
     cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: -2px;
+    transition: all 0.3s;
 }
 
-.tab-btn:hover {
-    color: #1a1a1a;
+.tab-btn:hover, .tab-btn.active {
+    color: var(--brand-black);
 }
 
 .tab-btn.active {
-    color: #1a1a1a;
-    border-bottom-color: #1a1a1a;
+    border-bottom-color: var(--brand-gold);
 }
 
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* Related Products */
+/* Related Products Grid */
 .related-products {
-    margin-top: 5rem;
+    margin-top: 8rem;
 }
 
 .related-products h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
     text-align: center;
+    margin-bottom: 4rem;
 }
 
-.related-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+/* Scoped Recommendation Card Styles */
+.rec-card {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
 }
 
-/* Stock Status */
-.stock-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.875rem;
+.rec-card img {
+    box-shadow: none !important;
+    border: none !important;
 }
 
-.stock-status.in-stock {
-    background: #d1fae5;
-    color: #065f46;
+.rec-card .img-container {
+    border: none !important;
 }
 
-.stock-status.low-stock {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.stock-status.out-of-stock {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.stock-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: currentColor;
-}
-
-/* Button hover state class for animation */
-.btn-add-to-cart-hover {
-    background-color: rgba(26, 26, 26, 0.8) !important;
-    color: #fff !important;
-}
-
-/* Sparkle animation */
+/* Animations */
 @keyframes sparkleAnimation {
-    0% {
-        opacity: 0;
-        transform: scale(0) rotate(0deg);
-    }
-    20% {
-        opacity: 1;
-        transform: scale(1) rotate(72deg);
-    }
-    40% {
-        opacity: 1;
-        transform: scale(1.2) rotate(144deg);
-    }
-    60% {
-        opacity: 1;
-        transform: scale(1) rotate(216deg);
-    }
-    80% {
-        opacity: 0.8;
-        transform: scale(0.8) rotate(288deg);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0) rotate(360deg);
-    }
+    0% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(0); }
 }
 </style>
 
@@ -648,8 +519,9 @@
         <div class="image-gallery">
             <div class="main-image-container">
                 @php
-                    $mainImage = $product->images && is_array($product->images) && count($product->images) > 0 
-                        ? Storage::url($product->images[0]) 
+                    $firstImg = ($product->images && count($product->images) > 0) ? $product->images[0] : null;
+                    $mainImage = $firstImg 
+                        ? (str_starts_with($firstImg, 'http') ? $firstImg : Storage::url($firstImg)) 
                         : asset('frontend/assets/placeholder.jpg');
                 @endphp
                 <img 
@@ -663,40 +535,33 @@
                 <div class="badge-container">
                     @if($product->sale_price && $product->sale_price < $product->price)
                         <span class="badge badge-sale">
-                            Save {{ $product->discount_percentage }}%
+                            -{{ $product->discount_percentage }}%
                         </span>
                     @endif
                     
                     @if($product->featured)
-                        <span class="badge badge-featured">Featured</span>
-                    @endif
-                    
-                    @if($product->stock_quantity > 0 && $product->stock_quantity <= 10)
-                        <span class="badge badge-low-stock">Only {{ $product->stock_quantity }} left</span>
-                    @elseif($product->stock_quantity > 0)
-                        <span class="badge badge-stock">In Stock</span>
-                    @else
-                        <span class="badge badge-out-of-stock">Out of Stock</span>
+                        <span class="badge badge-featured">Signature</span>
                     @endif
                 </div>
             </div>
 
+            @php
+                $galleryImages = is_array($product->gallery) && count($product->gallery) > 0 ? $product->gallery : ($product->images ?? []);
+            @endphp
+            
             <!-- Thumbnails -->
-            @if($product->images && is_array($product->images) && count($product->images) > 1)
-                <div class="thumbnail-container">
-                    <button class="thumbnail-nav-btn prev" id="thumbnailPrevBtn" onclick="scrollThumbnails(-1)" style="display: none;">
-                        <i data-lucide="chevron-left" class="w-3 h-3"></i>
-                    </button>
-                    <div class="thumbnail-grid" id="thumbnailGrid">
-                    @foreach($product->images as $index => $image)
-                        <div class="thumbnail {{ $index === 0 ? 'active' : '' }}" onclick="changeImage('{{ Storage::url($image) }}', this)">
-                            <img src="{{ Storage::url($image) }}" alt="{{ $product->name }} - Image {{ $index + 1 }}">
+            @if(count($galleryImages) > 1)
+                <div class="thumbnail-container" style="display: flex; justify-content: flex-start; padding: 1.5rem 0;">
+                    <div class="thumbnail-grid" id="thumbnailGrid" style="display: flex; gap: 1rem; overflow-x: auto; scrollbar-width: none;">
+                    @foreach($galleryImages as $index => $image)
+                        @php $imgUrl = str_starts_with($image, 'http') ? $image : Storage::url($image); @endphp
+                        <div class="thumbnail {{ $index === 0 ? 'active' : '' }}" 
+                             style="flex-shrink: 0; width: 90px; height: 110px; background: white; cursor: pointer; border: 1px solid var(--brand-border); transition: all 0.4s ease;"
+                             onclick="changeImage('{{ $imgUrl }}', this, {{ $index }})">
+                            <img src="{{ $imgUrl }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ $product->name }} - Image {{ $index + 1 }}">
                         </div>
                     @endforeach
                     </div>
-                    <button class="thumbnail-nav-btn next" id="thumbnailNextBtn" onclick="scrollThumbnails(1)" style="display: none;">
-                        <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                    </button>
                 </div>
             @endif
         </div>
@@ -704,115 +569,83 @@
         <!-- Product Info -->
         <div class="product-info">
             <div>
-                <h1 class="product-title">{{ $product->name }}</h1>
-                
-                <!-- Rating -->
-                <div class="product-rating">
-                    <div class="stars">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= floor($product->average_rating))
-                                <i data-lucide="star" class="w-5 h-5" style="fill: currentColor;"></i>
-                            @elseif($i - 0.5 <= $product->average_rating)
-                                <i data-lucide="star-half" class="w-5 h-5" style="fill: currentColor;"></i>
-                            @else
-                                <i data-lucide="star" class="w-5 h-5"></i>
-                            @endif
-                        @endfor
+                <div class="product-meta">
+                    @if($product->category)
+                        <span>{{ $product->category->name }}</span>
+                    @endif
+                    <div class="product-rating">
+                        <div class="stars">
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= floor($product->average_rating))
+                                    <i data-lucide="star" class="fill-current"></i>
+                                @elseif($i - 0.5 <= $product->average_rating)
+                                    <i data-lucide="star-half" class="fill-current"></i>
+                                @else
+                                    <i data-lucide="star"></i>
+                                @endif
+                            @endfor
+                        </div>
+                        <span>({{ $product->reviews_count }})</span>
                     </div>
-                    <span class="font-semibold">{{ number_format($product->average_rating, 1) }}</span>
-                    <span class="review-count">({{ $product->reviews_count }} {{ Str::plural('review', $product->reviews_count) }})</span>
                 </div>
+                <h1 class="product-title">{{ $product->name }}</h1>
             </div>
 
             <!-- Price -->
             <div class="price-section">
-                <span class="current-price">₱{{ number_format($product->current_price, 2) }}</span>
-                
                 @if($product->sale_price && $product->sale_price < $product->price)
                     <span class="original-price">₱{{ number_format($product->price, 2) }}</span>
-                    <span class="discount-badge">-{{ $product->discount_percentage }}%</span>
                 @endif
+                <span class="current-price">₱{{ number_format($product->current_price, 2) }}</span>
             </div>
 
             <!-- Description -->
-            <div class="product-description">
-                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #1a1a1a;">Description</h3>
-                <p style="line-height: 1.8; color: #444;">{{ $product->description }}</p>
+            <div class="product-description-container">
+                <h3>Description</h3>
+                <div class="product-description">
+                    <p>{{ $product->description }}</p>
+                </div>
             </div>
 
             <!-- Specifications -->
             <div class="specifications">
-                <h3>Product Specifications</h3>
-                <div class="spec-grid">
-                    @if($product->sku)
-                        <div class="spec-item">
-                            <span class="spec-label">
-                                <i data-lucide="hash" class="w-4 h-4 inline mr-1"></i>
-                                SKU
-                            </span>
-                            <span class="spec-value">{{ $product->sku }}</span>
-                        </div>
-                    @endif
-                    
-                    @if($product->material)
-                        <div class="spec-item">
-                            <span class="spec-label">
-                                <i data-lucide="tree-deciduous" class="w-4 h-4 inline mr-1"></i>
-                                Material
-                            </span>
-                            <span class="spec-value">{{ $product->material }}</span>
-                        </div>
-                    @endif
-                    
-                    @if($product->dimensions)
-                        <div class="spec-item">
-                            <span class="spec-label">
-                                <i data-lucide="ruler" class="w-4 h-4 inline mr-1"></i>
-                                Dimensions
-                            </span>
-                            <span class="spec-value">{{ $product->dimensions }}</span>
-                        </div>
-                    @endif
-                    
-                    @if($product->weight)
-                        <div class="spec-item">
-                            <span class="spec-label">
-                                <i data-lucide="weight" class="w-4 h-4 inline mr-1"></i>
-                                Weight
-                            </span>
-                            <span class="spec-value">{{ $product->weight }}</span>
-                        </div>
-                    @endif
-                    
-                    @if($product->category)
-                        <div class="spec-item">
-                            <span class="spec-label">
-                                <i data-lucide="tag" class="w-4 h-4 inline mr-1"></i>
-                                Category
-                            </span>
-                            <span class="spec-value">{{ $product->category->name }}</span>
-                        </div>
-                    @endif
-                    
+                @if($product->sku)
                     <div class="spec-item">
-                        <span class="spec-label">
-                            <i data-lucide="package" class="w-4 h-4 inline mr-1"></i>
-                            Availability
-                        </span>
-                        <span class="spec-value">
-                            @if($product->stock_quantity > 0)
-                                <span class="stock-status in-stock">
-                                    <span class="stock-indicator"></span>
-                                    In Stock ({{ $product->stock_quantity }} available)
-                                </span>
-                            @else
-                                <span class="stock-status out-of-stock">
-                                    <span class="stock-indicator"></span>
-                                    Out of Stock
-                                </span>
-                            @endif
-                        </span>
+                        <span class="spec-label">Reference</span>
+                        <span class="spec-value">{{ $product->sku }}</span>
                     </div>
+                @endif
+                
+                @if($product->material)
+                    <div class="spec-item">
+                        <span class="spec-label">Metal</span>
+                        <span class="spec-value">{{ $product->material }}</span>
+                    </div>
+                @endif
+                
+                @if($product->dimensions)
+                    <div class="spec-item">
+                        <span class="spec-label">Dimensions</span>
+                        <span class="spec-value">{{ $product->dimensions }}</span>
+                    </div>
+                @endif
+                
+                @if($product->weight)
+                    <div class="spec-item">
+                        <span class="spec-label">Weight</span>
+                        <span class="spec-value">{{ $product->weight }}</span>
+                    </div>
+                @endif
+                
+                <div class="spec-item">
+                    <span class="spec-label">Availability</span>
+                    <span class="spec-value">
+                        @if($product->stock_quantity > 0)
+                            In Stock ({{ $product->stock_quantity }})
+                        @else
+                            Available by Request
+                        @endif
+                    </span>
                 </div>
             </div>
 
@@ -820,7 +653,7 @@
             <div class="action-section">
                 @if($product->stock_quantity > 0)
                     <div class="quantity-selector">
-                        <span class="quantity-label">Quantity:</span>
+                        <span class="quantity-label">Quantity</span>
                         <div class="quantity-controls">
                             <button type="button" class="quantity-btn" onclick="decrementQuantity()">-</button>
                             <input type="number" class="quantity-input" id="productQuantity" value="1" min="1" max="{{ $product->stock_quantity }}" readonly>
@@ -836,8 +669,7 @@
                         data-product-id="{{ $product->id }}"
                         {{ $product->stock_quantity <= 0 ? 'disabled' : '' }}
                     >
-                        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                        <span>{{ $product->stock_quantity > 0 ? 'Add to Cart' : 'Out of Stock' }}</span>
+                        <span>{{ $product->stock_quantity > 0 ? 'Add to Collection' : 'Out of Stock' }}</span>
                     </button>
                     
                     <button 
@@ -854,70 +686,72 @@
     </div>
 
     <!-- Customer Reviews Section -->
-    <div class="reviews-section" style="margin-top: 4rem; margin-bottom: 4rem;">
-        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem;">Customer Reviews</h2>
-        
-        <!-- Reviews Summary -->
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; margin-bottom: 3rem; background: #f9fafb; padding: 2rem; border-radius: 12px;">
+    </div> <!-- End product-details-container -->
+
+    <!-- Customer Reviews Section -->
+    <div class="reviews-section" style="margin-bottom: 0; background-color: white; padding: 8rem 0; width: 100%;">
+        <div class="container mx-auto px-6" style="max-width: 1400px; margin: 0 auto;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; margin-bottom: 4rem;">Client Testimonials</h2>
+            
+            <!-- Reviews Summary -->
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin-bottom: 5rem; border: 1px solid var(--brand-border); padding: 3rem; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
             <!-- Overall Rating -->
-            <div style="text-align: center; border-right: 1px solid #e5e7eb; padding-right: 2rem;">
-                <div style="font-size: 3.5rem; font-weight: 700; color: #1a1a1a;">{{ number_format($product->average_rating, 1) }}</div>
-                <div class="stars" style="display: flex; justify-content: center; gap: 0.25rem; margin: 0.5rem 0; color: #fbbf24;">
+            <div style="text-align: center; border-right: 1px solid var(--brand-border); padding-right: 2rem; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 400; color: var(--brand-black);">{{ number_format($product->average_rating, 1) }}</div>
+                <div class="stars" style="display: flex; justify-content: center; gap: 0.25rem; margin: 1rem 0;">
                     @for($i = 1; $i <= 5; $i++)
                         @if($i <= floor($product->average_rating))
-                            <i data-lucide="star" class="w-6 h-6" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
                         @elseif($i - 0.5 <= $product->average_rating)
-                            <i data-lucide="star-half" class="w-6 h-6" style="fill: currentColor;"></i>
+                            <i data-lucide="star-half" style="fill: currentColor;"></i>
                         @else
-                            <i data-lucide="star" class="w-6 h-6"></i>
+                            <i data-lucide="star"></i>
                         @endif
                     @endfor
                 </div>
-                <p style="color: #666; font-size: 0.875rem;">Based on {{ $product->reviews_count }} {{ Str::plural('review', $product->reviews_count) }}</p>
+                <p style="font-family: 'Azeret Mono', monospace; color: #999; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em;">Based on {{ $product->reviews_count }} reviews</p>
             </div>
             
             <!-- Rating Distribution -->
-            <div>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
                 @foreach([5,4,3,2,1] as $rating)
                     @php
                         $count = $ratingDistribution[$rating];
                         $percentage = $product->reviews_count > 0 ? ($count / $product->reviews_count) * 100 : 0;
                     @endphp
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                        <span style="width: 60px; font-size: 0.875rem; color: #666;">{{ $rating }} stars</span>
-                        <div style="flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; background: #fbbf24; width: {{ $percentage }}%;"></div>
+                    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem;">
+                        <span style="width: 80px; font-family: 'Azeret Mono', monospace; font-size: 0.65rem; color: #666; text-transform: uppercase;">{{ $rating }} Star</span>
+                        <div style="flex: 1; height: 1px; background: var(--brand-border);">
+                            <div style="height: 100%; background: var(--brand-gold); width: {{ $percentage }}%;"></div>
                         </div>
-                        <span style="width: 50px; text-align: right; font-size: 0.875rem; color: #666;">{{ $count }}</span>
+                        <span style="width: 40px; text-align: right; font-family: 'Azeret Mono', monospace; font-size: 0.65rem; color: #999;">{{ $count }}</span>
                     </div>
                 @endforeach
             </div>
         </div>
 
-        <!-- Write Review Button (for authenticated users) -->
+        <!-- Write Review Button -->
         @auth
-            <div style="margin-bottom: 2rem;">
+            <div style="margin-bottom: 4rem; text-align: center;">
                 <button 
                     id="writeReviewBtn" 
-                    style="padding: 0.75rem 1.5rem; background: #1a1a1a; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;"
+                    style="padding: 1.25rem 3rem; background: white; color: var(--brand-black); border: 1px solid var(--brand-black); font-family: 'Azeret Mono', monospace; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.02);"
                     onclick="showReviewForm()"
                 >
-                    <i data-lucide="pencil" class="w-5 h-5"></i>
-                    Write a Review
+                    Share Your Experience
                 </button>
             </div>
 
-            <!-- Review Form (hidden by default) -->
-            <div id="reviewForm" style="display: none; background: #f9fafb; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem;">Write Your Review</h3>
+            <!-- Review Form -->
+            <div id="reviewForm" style="display: none; border: 1px solid var(--brand-black); padding: 4rem; margin-bottom: 5rem;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 2.5rem; text-align: center;">Submit Your Review</h3>
                 <form id="submitReviewForm">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     
-                    <!-- Rating -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Rating *</label>
-                        <div class="star-rating" style="display: flex; gap: 0.5rem; font-size: 2rem; color: #d1d5db; cursor: pointer;">
+                    <div style="margin-bottom: 2.5rem;">
+                        <label style="display: block; font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #999; margin-bottom: 1rem;">Rating</label>
+                        <div class="star-rating" style="display: flex; gap: 1rem; font-size: 2rem; color: #ddd; cursor: pointer; justify-content: center;">
                             <i data-lucide="star" class="rating-star" data-rating="1"></i>
                             <i data-lucide="star" class="rating-star" data-rating="2"></i>
                             <i data-lucide="star" class="rating-star" data-rating="3"></i>
@@ -927,172 +761,109 @@
                         <input type="hidden" name="rating" id="selectedRating" required>
                     </div>
 
-                    <!-- Title -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Review Title</label>
-                        <input 
-                            type="text" 
-                            name="title" 
-                            style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px;"
-                            placeholder="e.g., Great quality furniture!"
-                        >
+                    <div style="margin-bottom: 2.5rem;">
+                        <label style="display: block; font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #999; margin-bottom: 1rem;">Title</label>
+                        <input type="text" name="title" style="width: 100%; padding: 1rem 0; border: none; border-bottom: 1px solid var(--brand-border); font-family: 'Playfair Display', serif; font-size: 1.25rem; outline: none; background: transparent;" placeholder="GIVE YOUR REVIEW A TITLE">
                     </div>
 
-                    <!-- Review Text -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Your Review *</label>
-                        <textarea 
-                            name="review" 
-                            rows="5" 
-                            style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px;"
-                            placeholder="Share your experience with this product..."
-                            required
-                            minlength="10"
-                        ></textarea>
+                    <div style="margin-bottom: 2.5rem;">
+                        <label style="display: block; font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #999; margin-bottom: 1rem;">Review</label>
+                        <textarea name="review" rows="5" style="width: 100%; padding: 1rem 0; border: none; border-bottom: 1px solid var(--brand-border); font-family: 'Playfair Display', serif; font-size: 1.15rem; outline: none; background: transparent; resize: none;" placeholder="DESCRIBE YOUR PIECE" required minlength="10"></textarea>
                     </div>
 
-                    <!-- Order Selection -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Select Your Order *</label>
-                        <select 
-                            name="order_id" 
-                            style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px;"
-                            required
-                        >
-                            <option value="">Select an order</option>
-                            <!-- Orders will be populated via JavaScript -->
+                    <div style="margin-bottom: 4rem;">
+                        <label style="display: block; font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #999; margin-bottom: 1rem;">Select Order</label>
+                        <select name="order_id" style="width: 100%; padding: 1rem 0; border: none; border-bottom: 1px solid var(--brand-border); font-family: 'Azeret Mono', monospace; font-size: 0.8rem; outline: none; background: transparent; text-transform: uppercase; letter-spacing: 0.1em;" required>
+                            <option value="">Reference your purchase</option>
                         </select>
                     </div>
 
-                    <div style="display: flex; gap: 1rem;">
-                        <button 
-                            type="submit" 
-                            style="padding: 0.75rem 2rem; background: #1a1a1a; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;"
-                        >
-                            Submit Review
-                        </button>
-                        <button 
-                            type="button" 
-                            onclick="hideReviewForm()" 
-                            style="padding: 0.75rem 2rem; background: #e5e7eb; color: #1a1a1a; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;"
-                        >
-                            Cancel
-                        </button>
+                    <div style="display: flex; gap: 2rem; justify-content: center;">
+                        <button type="submit" style="padding: 1.25rem 4rem; background: var(--brand-black); color: white; border: none; font-family: 'Azeret Mono', monospace; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; cursor: pointer;">Post Feedback</button>
+                        <button type="button" onclick="hideReviewForm()" style="padding: 1.25rem 4rem; background: transparent; color: #999; border: 1px solid #ddd; font-family: 'Azeret Mono', monospace; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; cursor: pointer;">Cancel</button>
                     </div>
                 </form>
             </div>
         @else
-            <div style="margin-bottom: 2rem; padding: 1rem; background: #f0f9ff; border: 1px solid #bfdbfe; border-radius: 8px; color: #1e40af;">
-                <i data-lucide="info" class="w-5 h-5 inline mr-2"></i>
-                Please <a href="#" onclick="showmodallogin(); return false;" style="text-decoration: underline; font-weight: 600;">log in</a> to write a review.
+            <div style="margin-bottom: 4rem; text-align: center; font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #999;">
+                <p>Please <a href="#" onclick="showmodallogin(); return false;" style="color: var(--brand-black); font-weight: 700; text-decoration: underline;">log in</a> to share your experience with this piece.</p>
             </div>
         @endauth
 
         <!-- Reviews List -->
-        <div class="reviews-list">
+        <div class="reviews-list" style="background: white; padding: 2rem 4rem; border: 1px solid var(--brand-border); box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
             @forelse($reviews as $review)
-                <div style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
-                    <div style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 1rem;">
+                <div style="padding: 3rem 0; border-bottom: 1px solid var(--brand-border);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
                         <div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <div class="stars" style="display: flex; gap: 0.25rem; color: #fbbf24;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <div class="stars" style="color: var(--brand-gold);">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= $review->rating)
-                                            <i data-lucide="star" class="w-4 h-4" style="fill: currentColor;"></i>
+                                            <i data-lucide="star" style="fill: currentColor; width: 14px; height: 14px;"></i>
                                         @else
-                                            <i data-lucide="star" class="w-4 h-4"></i>
+                                            <i data-lucide="star" style="width: 14px; height: 14px;"></i>
                                         @endif
                                     @endfor
                                 </div>
                                 @if($review->is_verified_purchase)
-                                    <span style="background: #d1fae5; color: #065f46; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">
-                                        <i data-lucide="check-circle" class="w-3 h-3 inline"></i> Verified Purchase
-                                    </span>
+                                    <span style="font-family: 'Azeret Mono', monospace; color: var(--brand-gold); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Verified Collector</span>
                                 @endif
                             </div>
                             @if($review->title)
-                                <h4 style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.5rem;">{{ $review->title }}</h4>
+                                <h4 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.75rem;">"{{ $review->title }}"</h4>
                             @endif
-                            <p style="color: #666; font-size: 0.875rem;">
-                                By {{ $review->user->first_name }} {{ substr($review->user->last_name, 0, 1) }}. on {{ $review->created_at->format('F d, Y') }}
-                            </p>
+                            <p style="font-family: 'Azeret Mono', monospace; color: #999; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">{{ $review->user->name }} — {{ $review->created_at->format('M d, Y') }}</p>
                         </div>
                     </div>
-                    <p style="color: #444; line-height: 1.75;">{{ $review->review }}</p>
+                    <p style="font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.8; color: #555; max-width: 800px;">{{ $review->review }}</p>
                 </div>
             @empty
-                <div style="text-align: center; padding: 3rem; color: #666;">
-                    <i data-lucide="message-circle" class="w-12 h-12 mx-auto mb-2" style="opacity: 0.5;"></i>
-                    <p>No reviews yet. Be the first to review this product!</p>
+                <div style="text-align: center; padding: 5rem 0; color: #ccc;">
+                    <p style="font-family: 'Azeret Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3em;">No testimonials recorded yet.</p>
                 </div>
             @endforelse
         </div>
-
-        <!-- Pagination -->
-        @if($reviews->hasPages())
-            <div style="margin-top: 2rem; display: flex; justify-content: center;">
-                {{ $reviews->links() }}
-            </div>
-        @endif
     </div>
+</div> <!-- End reviews-section -->
 
+<div class="product-details-container">
     <!-- Related Products -->
     @if($relatedProducts && count($relatedProducts) > 0)
         <div class="related-products">
-            <h2>You May Also Like</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="related-products-grid">
-                <!-- Related products will be rendered here via JavaScript or server-side -->
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; text-align: center; margin-bottom: 4rem;">Our Recommendations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12" id="related-products-grid">
                 @foreach($relatedProducts as $relatedProduct)
-                    <div class="card product-card flex flex-col h-full rounded-2xl border bg-white">
-                        <div class="relative">
+                    <div class="rec-card group">
+                        <div class="relative mb-6 h-64" style="background: transparent; border: none !important;">
                             @php
-                                $relatedImage = $relatedProduct->images && is_array($relatedProduct->images) && count($relatedProduct->images) > 0 
-                                    ? Storage::url($relatedProduct->images[0]) 
+                                $firstRelImg = ($relatedProduct->images && is_array($relatedProduct->images) && count($relatedProduct->images) > 0) ? $relatedProduct->images[0] : null;
+                                $relatedImage = $firstRelImg 
+                                    ? (str_starts_with($firstRelImg, 'http') ? $firstRelImg : Storage::url($firstRelImg)) 
                                     : asset('frontend/assets/placeholder.jpg');
                             @endphp
-                            <img src="{{ $relatedImage }}" class="w-full h-64 object-cover rounded-t-2xl" alt="{{ $relatedProduct->name }}">
-                            <div class="absolute top-4 right-4">
-                                <button class="wishlist-btn" data-product-id="{{ $relatedProduct->id }}">
-                                    <i data-lucide="heart" class="heart-toggle-icon"></i>
+                            <a href="{{ route('products.show', $relatedProduct->slug) }}">
+                                <img src="{{ $relatedImage }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ $relatedProduct->name }}">
+                            </a>
+                            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button class="wishlist-btn p-2 bg-white rounded-full shadow-sm" data-product-id="{{ $relatedProduct->id }}">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="p-4 flex flex-col flex-1">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                                <div class="md:col-span-2">
-                                    <h6 class="product-title text-lg font-semibold">
-                                        {{ $relatedProduct->name }}
-                                    </h6>
-                                    <p class="product-desc text-sm text-gray-600">{{ Str::limit($relatedProduct->short_description ?? $relatedProduct->description, 60) }}</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-gray-500 text-sm">Price</div>
-                                    <div class="price text-xl font-bold">₱{{ number_format($relatedProduct->current_price, 0) }}</div>
-                                    <div class="rating flex items-center justify-end mt-1">
-                                        <div class="flex items-center space-x-1">
-                                            <i data-lucide="star" class="w-3 h-3 {{ $relatedProduct->average_rating > 0 ? 'text-amber-400 fill-current' : 'text-amber-500' }}"></i>
-                                            <span class="text-sm font-medium text-amber-500">{{ $relatedProduct->average_rating > 0 ? number_format($relatedProduct->average_rating, 1) : '0.0' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-auto flex p-4 justify-between">
-                            <button class="btn btn-quick-view max-w-[45%] shrink flex items-center justify-center py-2 px-0" data-product-id="{{ $relatedProduct->id }}" data-product-slug="{{ $relatedProduct->slug }}">
-                                <i data-lucide="proportions" class="lucide-small"></i> 
-                                <span class="font-medium ml-2">Quick view</span>
-                            </button>
-                            <button class="btn btn-add-to-cart max-w-[45%] shrink flex items-center justify-center py-2 px-0" data-product-id="{{ $relatedProduct->id }}">
-                                <i data-lucide="shopping-cart" class="lucide-small"></i> 
-                                <span class="font-medium ml-2">Add to cart</span>
-                            </button>
+                        <div class="text-center">
+                            <span style="font-family: 'Azeret Mono', monospace; font-size: 0.65rem; color: #999; text-transform: uppercase; letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem;">{{ $relatedProduct->category->name ?? 'Collection' }}</span>
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 0.75rem;">
+                                <a href="{{ route('products.show', $relatedProduct->slug) }}" class="hover:text-var(--brand-gold)">{{ $relatedProduct->name }}</a>
+                            </h3>
+                            <div style="font-family: 'Azeret Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--brand-black);">₱{{ number_format($relatedProduct->current_price, 0) }}</div>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     @endif
-</div>
+</div> <!-- End product-details-container -->
 
 @push('scripts')
 <script>
@@ -1101,9 +872,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
+    
+    // Refresh Lucide specifically for the heart icons if they are empty
+    setTimeout(() => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }, 100);
 
     // Initialize wishlist button state
-    initWishlistButton();
+    if (typeof initWishlistButton === 'function') {
+        initWishlistButton();
+    }
     
     // Initialize add to cart button
     initAddToCartButton();
@@ -1149,13 +929,23 @@ function scrollThumbnails(direction) {
 }
 
 // Image Gallery
-function changeImage(imageUrl, thumbnail) {
+function changeImage(imageUrl, thumbnail, index) {
     const mainImage = document.getElementById('mainImage');
     mainImage.src = imageUrl;
     
     // Update active thumbnail
-    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-    thumbnail.classList.add('active');
+    if (thumbnail) {
+        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+        thumbnail.classList.add('active');
+    }
+    
+    // Update dots
+    if (typeof index !== 'undefined') {
+        document.querySelectorAll('.indicator-dot').forEach((dot, idx) => {
+            if (idx === index) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
 }
 
 // Quantity Controls
@@ -1181,10 +971,11 @@ function decrementQuantity() {
 
 // Wishlist
 async function initWishlistButton() {
-    const wishlistBtn = document.getElementById('wishlistBtn');
-    if (!wishlistBtn) return;
+    const productId = {{ $product->id }};
+    const wishlistBtn = document.getElementById('wishlistBtn-' + productId);
+    const icon = document.getElementById('heart-icon-' + productId);
     
-    const productId = wishlistBtn.getAttribute('data-product-id');
+    if (!wishlistBtn || !icon) return;
     
     // Check if product is in wishlist
     try {
@@ -1193,11 +984,8 @@ async function initWishlistButton() {
         
         if (data.in_wishlist) {
             wishlistBtn.classList.add('active');
-            const icon = document.getElementById('wishlistIcon');
-            if (icon) {
-                icon.setAttribute('data-lucide', 'heart');
-                icon.style.fill = 'currentColor';
-            }
+            icon.style.fill = 'currentColor';
+            icon.style.color = 'var(--brand-gold)';
         }
     } catch (error) {
         console.error('Error checking wishlist status:', error);
@@ -1219,12 +1007,14 @@ async function initWishlistButton() {
             
             if (data.success) {
                 this.classList.toggle('active');
-                const icon = document.getElementById('wishlistIcon');
-                
                 if (data.action === 'added') {
                     icon.style.fill = 'currentColor';
+                    icon.style.color = 'var(--brand-gold)';
+                    showNotification('Added to Collection', 'success');
                 } else {
                     icon.style.fill = 'none';
+                    icon.style.color = 'inherit';
+                    showNotification('Removed from Collection', 'info');
                 }
                 
                 // Reinitialize icons
@@ -1251,33 +1041,17 @@ function initAddToCartButton() {
         // Disable button during request
         this.disabled = true;
         const originalText = this.querySelector('span').textContent;
-        this.querySelector('span').textContent = 'Adding...';
+        this.querySelector('span').textContent = 'PLACING IN COLLECTION...';
         
         try {
-            // Use the API helper for consistency
             const response = await window.api.addToCart(productId, quantity);
             
             if (response.success) {
-                // Use the same animation as product cards
                 await animateButtonSuccess(this);
-                
-                // Update cart count badge in navbar by fetching latest count from server
-                if (typeof updateCartCount === 'function') {
-                    await updateCartCount();
-                }
-                
-                // Load updated cart if cart offcanvas is open
-                const cartOffcanvas = document.getElementById('offcanvas-cart');
-                if (cartOffcanvas && !cartOffcanvas.classList.contains('hidden')) {
-                    if (typeof loadCartItems === 'function') {
-                        await loadCartItems();
-                    }
-                }
-                
-                // Re-enable button after animation
+                if (typeof updateCartCount === 'function') { await updateCartCount(); }
                 this.disabled = false;
             } else {
-                this.querySelector('span').textContent = 'Error!';
+                this.querySelector('span').textContent = 'UNAVAILABLE';
                 setTimeout(() => {
                     this.querySelector('span').textContent = originalText;
                     this.disabled = false;
@@ -1285,7 +1059,7 @@ function initAddToCartButton() {
             }
         } catch (error) {
             console.error('Error adding to cart:', error);
-            this.querySelector('span').textContent = 'Error!';
+            this.querySelector('span').textContent = 'ERROR';
             setTimeout(() => {
                 this.querySelector('span').textContent = originalText;
                 this.disabled = false;
@@ -1295,57 +1069,15 @@ function initAddToCartButton() {
 }
 
 // ── Button Success Animation ──
-async function animateButtonSuccess(clickedElement) {
-    // Find the actual button element
-    const button = clickedElement.closest('.btn-add-to-cart') || clickedElement.closest('#addToCartBtn') || clickedElement;
-    if (!button) return;
+async function animateButtonSuccess(button) {
+    const originalText = button.querySelector('span').textContent;
+    button.querySelector('span').textContent = 'IN COLLECTION';
+    button.classList.add('btn-success');
     
-    // Store original state
-    const originalText = button.innerHTML;
-    const originalClasses = button.className;
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Change button text to "Added"
-    const textSpan = button.querySelector('span');
-    if (textSpan) {
-        textSpan.textContent = 'Added';
-    }
-    
-    // Add hover state class (assuming it's a CSS class that gives the hover appearance)
-    button.classList.add('btn-add-to-cart-hover');
-    
-    // Create sparkle badge
-    const sparkleBadge = document.createElement('div');
-    sparkleBadge.className = 'sparkle-badge';
-    sparkleBadge.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4 text-yellow-500"></i>';
-    sparkleBadge.style.cssText = `
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        z-index: 10;
-        animation: sparkleAnimation 1.5s ease-out;
-        pointer-events: none;
-    `;
-    
-    // Make button position relative to contain the sparkle
-    button.style.position = 'relative';
-    
-    // Add sparkle badge to button
-    button.appendChild(sparkleBadge);
-    
-    // Re-initialize lucide icons for the sparkle
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-    
-    // Wait for 1.5 seconds
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Restore original state
-    if (textSpan) {
-        textSpan.textContent = 'Add to Cart';
-    }
-    button.className = originalClasses;
-    button.removeChild(sparkleBadge);
+    button.querySelector('span').textContent = originalText;
+    button.classList.remove('btn-success');
 }
 
 // Initialize Related Products Buttons
@@ -1407,10 +1139,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update star colors
             ratingStars.forEach((s, index) => {
                 if (index < rating) {
-                    s.style.fill = '#fbbf24';
-                    s.style.color = '#fbbf24';
+                    s.style.color = '#B6965D';
                 } else {
-                    s.style.fill = 'none';
                     s.style.color = '#d1d5db';
                 }
             });
@@ -1426,7 +1156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const rating = parseInt(this.getAttribute('data-rating'));
             ratingStars.forEach((s, index) => {
                 if (index < rating) {
-                    s.style.color = '#fbbf24';
+                    s.style.color = '#B6965D';
                 }
             });
         });
@@ -1436,7 +1166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedRating = parseInt(document.getElementById('selectedRating')?.value || 0);
         ratingStars.forEach((s, index) => {
             if (index < selectedRating) {
-                s.style.color = '#fbbf24';
+                s.style.color = '#B6965D';
             } else {
                 s.style.color = '#d1d5db';
             }
