@@ -43,7 +43,7 @@ class ProductSeeder extends Seeder
                 // Determine price point based on category and material
                 $price = 0;
                 $isPremium = (str_contains($material, 'Platinum') || str_contains($gemstone, 'Diamond'));
-                
+
                 if ($sub->parent_id == 3) { // Earrings
                     $price = $isPremium ? rand(90000, 370000) : rand(10000, 25000);
                 } elseif ($sub->parent_id == 1) { // Rings
