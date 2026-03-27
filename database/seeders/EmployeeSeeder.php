@@ -13,15 +13,15 @@ class EmployeeSeeder extends Seeder
         Employee::query()->delete();
 
         Employee::create([
-            'first_name' => 'Hannah',
-            'last_name' => 'Marquez',
-            'email' => 'hannah@eclore.com',
-            'personal_email' => 'hvniluvr@gmail.com',
-            'password' => Hash::make('admin123'),
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
+            'email' => 'admin@eclore.co',
+            'personal_email' => 'admin_2fa@example.com',
+            'password' => Hash::make('Password123'),
             'role' => 'super_admin',
             'status' => 'active',
             'department' => 'Management',
-            'position' => 'Owner',
+            'position' => 'System Administrator',
             'two_factor_enabled' => false,
         ]);
     }
