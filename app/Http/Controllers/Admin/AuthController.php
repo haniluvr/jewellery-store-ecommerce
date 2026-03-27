@@ -96,7 +96,7 @@ class AuthController extends Controller
 
                 // Still redirect to OTP page but with a clear error message
                 return redirect()->to(admin_route('verify-otp'))
-                    ->with('error', 'Authentication code could not be sent (Mail Server Error: ' . $e->getMessage() . '). Please check your internet connection or contact technical support.');
+                    ->with('error', 'Authentication code could not be sent (Mail Server Error: '.$e->getMessage().'). Please check your internet connection or contact technical support.');
             }
 
             if ($request->expectsJson()) {
@@ -357,10 +357,10 @@ class AuthController extends Controller
             ]);
 
             if ($request->expectsJson()) {
-                return response()->json(['message' => 'Mail Server Link Error: ' . $e->getMessage()], 422);
+                return response()->json(['message' => 'Mail Server Link Error: '.$e->getMessage()], 422);
             }
 
-            return back()->with('error', 'Failed to resend verification code. (Error: ' . $e->getMessage() . ')');
+            return back()->with('error', 'Failed to resend verification code. (Error: '.$e->getMessage().')');
         }
     }
 
