@@ -169,14 +169,14 @@ class UserController extends Controller
      */
     public function show(User $all_customer)
     {
-        $all_customer->load(['orders.orderItems', 'wishlists']);
+        $all_customer->load(['orders.orderItems', 'wishlistItems']);
 
         // Get user statistics
         $stats = [
             'total_orders' => $all_customer->orders->count(),
             'total_spent' => $all_customer->orders->where('payment_status', 'paid')->sum('total_amount'),
             'average_order_value' => $all_customer->orders->where('payment_status', 'paid')->avg('total_amount') ?? 0,
-            'wishlist_items' => $all_customer->wishlists->count(),
+            'wishlist_items' => $all_customer->wishlistItems->count(),
             'last_order' => $all_customer->orders->sortByDesc('created_at')->first(),
             'registration_method' => $all_customer->google_id ? 'Google' : 'Email',
         ];
@@ -242,7 +242,7 @@ class UserController extends Controller
         }
 
         // Delete user's wishlist items
-        $all_customer->wishlists()->delete();
+        $all_customer->wishlistItems()->delete();
 
         $userData = $all_customer->toArray();
         // Delete the user

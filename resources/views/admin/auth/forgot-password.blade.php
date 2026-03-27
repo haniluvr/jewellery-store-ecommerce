@@ -21,6 +21,7 @@
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -39,7 +40,12 @@
                         },
                         'error': {
                             500: '#ef4444'
-                        }
+                        },
+                        'rich-black': '#1A1A1A',
+                        'off-white': '#F0F0F0',
+                        'dm-teal': '#004D61',
+                        'dm-ruby': '#822659',
+                        'dm-green': '#3E5641'
                     }
                 }
             }
@@ -75,11 +81,11 @@
     :class="{'dark': darkMode}"
 >
     <!-- Page Wrapper Start -->
-    <div class="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0 transition-colors duration-300">
-        <div class="relative flex flex-col justify-center w-full h-screen dark:bg-gray-900 sm:p-0 lg:flex-row transition-colors duration-300">
+    <div class="relative p-6 bg-white z-1 dark:bg-rich-black sm:p-0 transition-colors duration-300">
+        <div class="relative flex flex-col justify-center w-full h-screen dark:bg-rich-black sm:p-0 lg:flex-row transition-colors duration-300">
             
             <!-- Form Section -->
-            <div class="flex flex-col flex-1 w-full lg:w-1/2">
+            <div class="flex flex-col flex-1 w-full lg:w-1/2 dark:bg-rich-black">
                 <div class="w-full max-w-md pt-10 mx-auto">
                     <a href="{{ admin_route('login') }}" class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
                         <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
@@ -147,7 +153,7 @@
                                     <div>
                                         <button
                                             type="submit"
-                                            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-sm hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
+                                            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-dm-green shadow-sm hover:bg-dm-green/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dm-green"
                                         >
                                             <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
                                             Send Reset Link
@@ -171,7 +177,7 @@
             </div>
 
             <!-- Right Side Image/Branding Section -->
-            <div class="relative items-center hidden w-full h-full bg-brand-950 dark:bg-white/5 lg:grid lg:w-1/2">
+            <div class="relative items-center hidden w-full h-full bg-brand-950 dark:bg-rich-black/50 lg:grid lg:w-1/2">
                 <div class="flex items-center justify-center z-1">
                     <!-- Decorative Grid Background -->
                     <div class="absolute inset-0 opacity-10">

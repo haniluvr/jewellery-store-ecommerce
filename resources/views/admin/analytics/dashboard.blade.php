@@ -44,18 +44,18 @@
     <!-- Quick Actions -->
     <div class="mb-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <a href="{{ admin_route('analytics.sales') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 shadow-lg shadow-blue-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-blue-900/20 dark:to-blue-800/10">
+            <a href="{{ admin_route('analytics.sales') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-teal-50 to-teal-100/50 p-6 shadow-lg shadow-teal-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-dm-teal/20 dark:to-dm-teal/10">
                 <div class="flex items-center gap-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="chart-bar" class="w-6 h-6 text-white"></i>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-dm-teal shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="chart-bar" class="w-6 h-6 text-dm-bg font-bold"></i>
                     </div>
                     <div class="flex-1">
                         <h3 class="text-base font-bold text-stone-900 dark:text-white">Sales Reports</h3>
                         <p class="text-xs text-stone-600 dark:text-gray-400 mt-0.5">Revenue & orders</p>
                     </div>
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-stone-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300"></i>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-stone-400 group-hover:text-dm-teal group-hover:translate-x-1 transition-all duration-300"></i>
                 </div>
-                <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-blue-500/10"></div>
+                <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-dm-teal/10"></div>
             </a>
 
             <a href="{{ admin_route('analytics.customers') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6 shadow-lg shadow-emerald-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-emerald-900/20 dark:to-emerald-800/10">
@@ -86,18 +86,18 @@
                 <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-amber-500/10"></div>
             </a>
 
-            <a href="{{ admin_route('analytics.revenue') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-purple-50 to-purple-100/50 p-6 shadow-lg shadow-purple-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-purple-900/20 dark:to-purple-800/10">
+            <a href="{{ admin_route('analytics.revenue') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-ruby-50 to-ruby-100/50 p-6 shadow-lg shadow-ruby-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-ruby-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-dm-ruby/20 dark:to-dm-ruby/10">
                 <div class="flex items-center gap-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="dollar-sign" class="w-6 h-6 text-white"></i>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-dm-ruby shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="dollar-sign" class="w-6 h-6 text-dm-bg font-bold"></i>
                     </div>
                     <div class="flex-1">
                         <h3 class="text-base font-bold text-stone-900 dark:text-white">Revenue Reports</h3>
                         <p class="text-xs text-stone-600 dark:text-gray-400 mt-0.5">Financial overview</p>
                     </div>
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-stone-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all duration-300"></i>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-stone-400 group-hover:text-dm-ruby group-hover:translate-x-1 transition-all duration-300"></i>
                 </div>
-                <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-purple-500/10"></div>
+                <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-dm-ruby/10"></div>
             </a>
         </div>
     </div>
@@ -391,7 +391,7 @@ const revenueChartOptions = {
             show: false
         }
     },
-    colors: ['#a855f7'],
+    colors: ['#80CBC4'],
     stroke: {
         curve: 'smooth',
         width: 3
@@ -458,7 +458,7 @@ const topProductsChartOptions = {
             show: false
         }
     },
-    colors: ['#8B5CF6'],
+    colors: ['#A5D6A7'],
     plotOptions: {
         bar: {
             borderRadius: 8,

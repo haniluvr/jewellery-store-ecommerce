@@ -8,12 +8,12 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl shadow-lg">
-                    <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-dm-teal to-dm-ruby flex items-center justify-center text-white shadow-lg">
+                    <i data-lucide="users" class="w-6 h-6 text-dm-bg font-bold"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold text-stone-900 dark:text-white">My Contacts</h1>
-                    <p class="mt-1 text-sm text-stone-600 dark:text-gray-400">View your coworkers and their contact information</p>
+                    <h1 class="text-2xl font-bold text-stone-900 dark:text-dm-text-primary">Contact List</h1>
+                    <p class="text-sm text-stone-600 dark:text-dm-text-secondary mt-1">Manage customer inquiries and messages</p>
                 </div>
             </div>
         </div>
@@ -35,15 +35,11 @@
                         class="w-full pl-12 pr-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400"
                     />
                 </div>
-                <button
-                    type="submit"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-sm font-medium text-white rounded-xl shadow-lg transition-all duration-200 hover:from-purple-700 hover:to-pink-700 hover:shadow-xl"
-                >
-                    <i data-lucide="search" class="w-4 h-4"></i>
+                <button type="submit" class="px-6 py-2.5 bg-dm-green text-dm-bg font-bold rounded-lg hover:opacity-90 transition-all duration-200 shadow-md">
                     Search
                 </button>
                 @if(request('search'))
-                    <a href="{{ admin_route('profile.contacts') }}" 
+                    <a href="{{ admin_route('profile.contacts') }}"
                        class="inline-flex items-center gap-2 px-6 py-3 border border-stone-200 bg-white text-sm font-medium text-stone-700 rounded-xl transition-all duration-200 hover:bg-stone-50 dark:border-strokedark dark:bg-boxdark dark:text-white dark:hover:bg-gray-800">
                         <i data-lucide="x" class="w-4 h-4"></i>
                         Clear
@@ -81,18 +77,18 @@
                                     'viewer' => 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
                                     default => 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
                                 };
-                                
+
                                 // Check if user is online
                                 $currentUser = auth()->guard('admin')->user();
-                                
+
                                 // Check if user has active session
                                 $hasActiveSession = isset($activeSessionIds) && in_array($contact->id, $activeSessionIds);
-                                
+
                                 // User is online if:
                                 // 1. They are the currently logged in user, OR
                                 // 2. They have an active session in the sessions table, OR
                                 // 3. They logged in within the last 30 minutes (extended window for better detection)
-                                $isOnline = ($currentUser && $contact->id === $currentUser->id) || 
+                                $isOnline = ($currentUser && $contact->id === $currentUser->id) ||
                                            $hasActiveSession ||
                                            ($contact->last_login_at && $contact->last_login_at->diffInMinutes(now()) <= 30);
                             @endphp
@@ -100,8 +96,8 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-12 w-12 relative">
-                                            <img src="{{ $contact->avatar_url }}" 
-                                                 alt="{{ $contact->full_name }}" 
+                                            <img src="{{ $contact->avatar_url }}"
+                                                 alt="{{ $contact->full_name }}"
                                                  class="h-12 w-12 rounded-full object-cover border-2 border-stone-200 dark:border-strokedark">
                                             @if($isOnline)
                                                 <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-boxdark"></div>
@@ -136,7 +132,7 @@
                                         // Extract username from email (part before @eclore.co)
                                         $username = str_replace('@eclore.co', '', $contact->email);
                                     @endphp
-                                    <a href="{{ admin_route('profile.contact-view', $username) }}" 
+                                    <a href="{{ admin_route('profile.contact-view', $username) }}"
                                        class="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors duration-200">
                                         <span>View Profile</span>
                                         <i data-lucide="arrow-right" class="w-4 h-4"></i>

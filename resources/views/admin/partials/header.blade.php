@@ -40,7 +40,7 @@
                         @focus="open = true"
                         @blur="setTimeout(() => { if (!clickingDropdown) open = false; }, 200)"
                         placeholder="Search or type command..."
-                        class="w-full xl:w-[500px] h-10 bg-gray-100 pl-11 pr-16 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-200 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 rounded-lg border border-stroke dark:border-strokedark hover:bg-gray-200 dark:hover:bg-gray-600"
+                        class="w-full xl:w-[500px] h-10 bg-gray-100 pl-11 pr-16 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-200 dark:bg-dm-bg dark:text-dm-text-primary dark:placeholder-dm-text-secondary rounded-lg border border-stroke dark:border-dm-border hover:bg-gray-200 dark:hover:bg-dm-surface focus:dark:ring-dm-teal/30"
                         autocomplete="off"
                     />
                     
@@ -51,7 +51,7 @@
                         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 pointer-events-none"
                     >
                         <span class="text-xs font-medium bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded border border-stroke dark:border-strokedark">
-                            <span class="hidden mac:inline">⌘</span><span class="mac:hidden">Ctrl</span>K
+                            <span class="hidden mac:inline">⌘</span><span class="mac:hidden">Ctrl</span>+K
                         </span>
                     </button>
                 </div>
@@ -117,12 +117,13 @@
                 <!-- Dark Mode Toggle Button -->
                 <li>
                     <button
+                        type="button"
                         @click="darkMode = !darkMode"
-                        class="flex items-center justify-center w-10 h-10 rounded-xl border border-stroke bg-white text-gray-600 hover:text-primary hover:bg-primary/5 hover:border-primary/20 transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-gray-400 dark:hover:text-primary dark:hover:bg-primary/10"
+                        class="relative flex items-center justify-center w-10 h-10 rounded-xl border border-stroke bg-white text-gray-600 hover:text-primary hover:bg-primary/5 hover:border-primary/20 transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-gray-400 dark:hover:text-primary dark:hover:bg-primary/10"
                         :title="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
                     >
-                        <i data-lucide="moon" class="w-4 h-4 transition-opacity duration-200" :class="darkMode ? 'opacity-0' : 'opacity-100'"></i>
-                        <i data-lucide="sun" class="w-4 h-4 absolute transition-opacity duration-200" :class="darkMode ? 'opacity-100' : 'opacity-0'"></i>
+                        <i data-lucide="moon" class="w-5 h-5 absolute" x-show="!darkMode"></i>
+                        <i data-lucide="sun" class="w-5 h-5 absolute" x-show="darkMode"></i>
                     </button>
                 </li>
                 <!-- Dark Mode Toggle Button -->
@@ -186,10 +187,10 @@
                     >
                         <span
                             x-show="unreadCount > 0"
-                            class="absolute -top-1 -right-1 z-10 h-3 w-3 rounded-full bg-red-500 border-2 border-white dark:border-boxdark"
+                            class="absolute -top-1 -right-1 z-10 h-3 w-3 rounded-full bg-dm-ruby border-2 border-white dark:border-dm-bg"
                         >
                             <span
-                                class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"
+                                class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-dm-ruby opacity-75"
                             ></span>
                         </span>
 
@@ -223,8 +224,8 @@
                             <template x-for="notification in (notifications.filter(n => !n.read) || []).slice(0, 10)" :key="notification.id">
                                 <li>
                                     <a
-                                        class="flex items-start gap-3 border-b border-stroke/30 px-6 py-4 hover:bg-gray-50/80 dark:border-strokedark/30 dark:hover:bg-gray-800/50 transition-colors duration-200"
-                                        :class="notification.read ? 'opacity-60' : 'bg-blue-50/50 dark:bg-blue-900/10'"
+                                        class="flex items-start gap-3 border-b border-stroke/30 px-6 py-4 hover:bg-gray-50/80 dark:border-dm-border/30 dark:hover:bg-dm-surface transition-colors duration-200"
+                                        :class="notification.read ? 'opacity-60' : 'bg-blue-50/50 dark:bg-dm-teal/5'"
                                         :href="notification.data && notification.data.link ? notification.data.link : (notification.data && notification.data.message_id ? '{{ admin_route("messages.show", ":id") }}'.replace(':id', notification.data.message_id) : (notification.data && notification.data.order_id ? '{{ admin_route("orders.show", ":id") }}'.replace(':id', notification.data.order_id) : '#'))"
                                         @click="markNotificationAsRead(notification.id)"
                                     >
@@ -232,14 +233,14 @@
                                         <div class="flex-shrink-0">
                                             <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
                                                  :class="{
-                                                     'bg-green-500': notification.type === 'order',
-                                                     'bg-blue-500': notification.type === 'order_status',
-                                                     'bg-yellow-500': notification.type === 'inventory',
-                                                     'bg-purple-500': notification.type === 'message',
-                                                     'bg-pink-500': notification.type === 'customer',
-                                                     'bg-orange-500': notification.type === 'review',
-                                                     'bg-red-500': notification.type === 'refund',
-                                                     'bg-gray-500': notification.type === 'info' || !notification.type
+                                                     'bg-green-500 dark:bg-dm-green dark:text-dm-bg': notification.type === 'order',
+                                                     'bg-blue-500 dark:bg-dm-teal dark:text-dm-bg': notification.type === 'order_status',
+                                                     'bg-yellow-500 dark:bg-amber-400 dark:text-dm-bg': notification.type === 'inventory',
+                                                     'bg-purple-500 dark:bg-dm-ruby dark:text-dm-bg': notification.type === 'message',
+                                                     'bg-pink-500 dark:bg-dm-ruby dark:text-dm-bg': notification.type === 'customer',
+                                                     'bg-orange-500 dark:bg-dm-ruby dark:text-dm-bg': notification.type === 'review',
+                                                     'bg-red-500 dark:bg-red-400 dark:text-dm-bg': notification.type === 'refund',
+                                                     'bg-gray-500 dark:bg-gray-600 dark:text-dm-bg': notification.type === 'info' || !notification.type
                                                  }"
                                                  x-text="getNotificationIcon(notification.type)">
                                             </div>
@@ -249,17 +250,17 @@
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-start justify-between gap-2">
                                                 <div class="flex-1 min-w-0">
-                                                    <p class="text-sm font-semibold text-gray-900 dark:text-white truncate" 
+                                                    <p class="text-sm font-semibold text-gray-900 dark:text-dm-text-primary truncate" 
                                                        x-text="getNotificationTitle(notification.type)">
                                                     </p>
-                                                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-2" 
+                                                    <p class="text-xs text-gray-600 dark:text-dm-text-secondary mt-0.5 line-clamp-2" 
                                                        x-text="getNotificationContent(notification)">
                                                     </p>
-                                                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-1.5" 
+                                                    <p class="text-xs text-gray-500 dark:text-dm-text-secondary mt-1.5" 
                                                        x-text="formatTime(notification.timestamp)">
                                                     </p>
                                                 </div>
-                                                <div x-show="!notification.read" class="flex-shrink-0 h-2 w-2 rounded-full bg-primary mt-1"></div>
+                                                <div x-show="!notification.read" class="flex-shrink-0 h-2 w-2 rounded-full bg-dm-teal mt-1"></div>
                                             </div>
                                         </div>
                                     </a>
@@ -312,7 +313,7 @@
                                 </span>
                             </span>
                         @endif
-                        <span class="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-green-500 border-2 border-white dark:border-boxdark"></span>
+                        <span class="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-green-500 border-2 border-white dark:border-[#242424]"></span>
                     </div>
 
                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 dark:text-gray-400 hidden sm:block transition-transform duration-200" :class="dropdownOpen ? 'rotate-180' : ''"></i>

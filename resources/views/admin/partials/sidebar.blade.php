@@ -129,7 +129,7 @@
                 @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('dashboard.view')))
                 <li>
                                 <a
-                                    class="group relative flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                                    class="group relative flex items-center gap-2.5 rounded-xl px-4 py-3 font-medium text-stone-600 transition-all duration-300 hover:bg-stone-50 dark:text-gray-400 dark:hover:bg-dm-teal/10 dark:hover:text-dm-teal {{ Request::is('admin/users*') ? 'bg-stone-50 text-stone-900 dark:bg-dm-teal/10 dark:text-dm-teal' : '' }}"
                                     href="{{ admin_route('dashboard') }}"
                                     :title="sidebarCollapsed ? 'Dashboard' : ''"
                                     x-tooltip="sidebarCollapsed ? 'Dashboard' : ''"
@@ -144,7 +144,7 @@
                 @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('appointments.view')))
                 <li>
                     <a
-                        class="group relative flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.appointments.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex items-center gap-2.5 rounded-xl px-4 py-3 font-medium text-stone-600 transition-all duration-300 hover:bg-stone-50 dark:text-gray-400 dark:hover:bg-dm-teal/10 dark:hover:text-dm-teal {{ Request::is('admin/appointments*') ? 'bg-stone-50 text-stone-900 dark:bg-dm-teal/10 dark:text-dm-teal' : '' }}"
                         href="{{ admin_route('appointments.index') }}"
                         :title="sidebarCollapsed ? 'Appointments' : ''"
                         x-tooltip="sidebarCollapsed ? 'Appointments' : ''"
@@ -160,7 +160,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (ordersOpen = !ordersOpen, window.closeAllAccordions('orders'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.orders.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.orders.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Orders' : ''"
                         x-tooltip="sidebarCollapsed ? 'Orders' : ''"
                     >
@@ -187,7 +187,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (productsOpen = !productsOpen, window.closeAllAccordions('products'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.products.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.products.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Products' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -210,7 +210,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (inventoryOpen = !inventoryOpen, window.closeAllAccordions('inventory'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.inventory.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.inventory.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Inventory' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -232,7 +232,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (customersOpen = !customersOpen, window.closeAllAccordions('customers'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Customers' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -260,7 +260,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (shippingOpen = !shippingOpen, window.closeAllAccordions('shipping'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.shipping-methods.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.shipping-methods.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Shipping & Logistics' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -282,7 +282,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (contentOpen = !contentOpen, window.closeAllAccordions('content'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.cms-pages.*') || request()->routeIs('admin.reviews.*') || request()->routeIs('admin.blogs.*') || request()->routeIs('admin.media-library*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.cms-pages.*') || request()->routeIs('admin.reviews.*') || request()->routeIs('admin.blogs.*') || request()->routeIs('admin.media-library*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Content' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -311,7 +311,7 @@
                 <li>
                     <button
                         @click="!sidebarCollapsed && (reportsOpen = !reportsOpen, window.closeAllAccordions('reports'))"
-                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.analytics*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        class="group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark dark:hover:bg-white/5 dark:hover:text-[#F0F0F0] {{ request()->routeIs('admin.analytics*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}"
                         :title="sidebarCollapsed ? 'Reports' : ''"
                     >
                         <div class="flex items-center gap-2.5">
@@ -379,6 +379,7 @@
                         <a href="{{ admin_route('permissions.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 {{ request()->routeIs('admin.permissions*') ? 'bg-primary/10 text-primary' : '' }}">
                             <i data-lucide="shield" class="w-4 h-4"></i>
                             Permissions
+                            <span class="bg-dm-teal h-2.5 w-2.5 rounded-full shadow-[0_0_8px_rgba(128,203,196,0.5)]"></span>
                         </a>
                         @endif
                         @if(($admin && ($admin->isSuperAdmin() || $admin->hasPermission('settings.view'))) || ($admin && ($admin->isSuperAdmin() || $admin->hasPermission('admins.view'))) || ($admin && ($admin->isSuperAdmin() || $admin->hasPermission('admins.edit'))))
@@ -400,7 +401,7 @@
                         <hr class="my-2 border-stroke dark:border-strokedark">
                         @endif
                         @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('audit.view')))
-                        <a href="{{ admin_route('audit.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 {{ request()->routeIs('admin.audit*') ? 'bg-primary/10 text-primary' : '' }}">
+                        <a href="{{ admin_route('audit.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 {{ request()->routeIs('admin.audit*') ? 'bg-primary/10 text-primary dark:bg-dm-green/20 dark:text-[#F0F0F0]' : '' }}">
                             <i data-lucide="shield-check" class="w-4 h-4"></i>
                             Audit Trail
                         </a>

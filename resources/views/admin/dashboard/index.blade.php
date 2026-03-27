@@ -44,7 +44,7 @@
             <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-blue-500/10"></div>
         </a>
 
-        <a href="{{ admin_route('products.index') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6 shadow-lg shadow-emerald-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-emerald-900/20 dark:to-emerald-800/10">
+        <a href="{{ admin_route('products.index') }}" class="group relative overflow-hidden rounded-xl border border-stone-200/50 bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6 shadow-lg shadow-emerald-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 hover:scale-[1.02] dark:border-strokedark/50 dark:from-[#3E5641]/20 dark:to-[#3E5641]/10">
             <div class="flex items-center gap-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <i data-lucide="package" class="w-6 h-6 text-white"></i>

@@ -3,10 +3,10 @@
 @section('title', 'Newsletter Subscriptions')
 
 @section('content')
-<div class="min-h-screen bg-white dark:bg-boxdark">
+<div class="min-h-screen">
     <!-- Header -->
-    <div class="bg-white dark:bg-boxdark shadow-sm border-b border-stone-200 dark:border-strokedark">
-        <div class="flex justify-between items-center py-6 px-4">
+    <div class="border-b border-stone-200 dark:border-strokedark">
+        <div class="flex justify-between items-center py-6">
             <div>
                 <h1 class="text-2xl font-bold text-stone-900 dark:text-white">Newsletter Subscriptions</h1>
                 <p class="mt-1 text-sm text-stone-600 dark:text-gray-400">Manage your newsletter subscriber list</p>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Stats -->
-    <div class="py-6 px-4">
+    <div class="py-6">
         <div class="bg-white dark:bg-boxdark rounded-xl shadow-sm border border-stone-200 dark:border-strokedark p-6 max-w-xs">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="pb-6 px-4">
+    <div class="pb-6">
         <div class="bg-white dark:bg-boxdark rounded-xl shadow-sm border border-stone-200 dark:border-strokedark p-6">
             <form method="GET" action="{{ admin_route('newsletter.index') }}" class="flex items-end gap-4 max-w-md">
                 <div class="flex-1">
@@ -60,7 +60,7 @@
     </div>
 
     <!-- Table -->
-    <div class="pb-8 px-4">
+    <div class="pb-8">
         <div class="bg-white dark:bg-boxdark rounded-xl shadow-sm border border-stone-200 dark:border-strokedark overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">

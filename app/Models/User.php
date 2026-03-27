@@ -115,14 +115,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's wishlists.
-     */
-    public function wishlists(): HasMany
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
-    /**
      * Get the user's payment methods.
      */
     public function paymentMethods(): HasMany

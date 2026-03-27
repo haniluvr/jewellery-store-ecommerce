@@ -3,9 +3,9 @@
 @section('title', 'Product Reviews')
 
 @section('content')
-<div class="min-h-screen bg-white">
+<div class="min-h-screen">
     <!-- Header -->
-    <div class="bg-white shadow-sm border-b border-stone-200">
+    <div class="border-b border-stone-200">
         <div class="flex justify-between items-center py-6">
             <div>
                 <h1 class="text-2xl font-bold text-stone-900">Product Reviews</h1>

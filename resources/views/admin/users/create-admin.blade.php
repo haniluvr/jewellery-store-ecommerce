@@ -8,12 +8,12 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
-                    <i data-lucide="user-plus" class="w-6 h-6 text-white"></i>
+                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-dm-teal to-dm-ruby flex items-center justify-center text-white shadow-lg">
+                    <i data-lucide="user-plus" class="w-6 h-6 text-dm-bg font-bold"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold text-stone-900 dark:text-white">Create New Admin</h1>
-                    <p class="mt-1 text-sm text-stone-600 dark:text-gray-400">Add a new admin user to your system</p>
+                    <h1 class="text-2xl font-bold text-stone-900 dark:text-dm-text-primary">Create Admin User</h1>
+                    <p class="text-sm text-stone-600 dark:text-dm-text-secondary mt-1">Configure account and access levels</p>
                 </div>
             </div>
             <a href="{{ admin_route('users.admins') }}" 
@@ -29,10 +29,10 @@
 
         <!-- Personal Information -->
         <div class="bg-white dark:bg-boxdark rounded-2xl shadow-xl border border-stone-200 dark:border-strokedark overflow-hidden">
-            <div class="px-8 py-6 border-b border-stone-200 dark:border-strokedark bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700">
+            <div class="px-8 py-6 border-b border-stone-200 dark:border-strokedark bg-gradient-to-r from-teal-50 to-teal-100 dark:from-[#004D61]/20 dark:to-[#004D61]/10">
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
-                        <i data-lucide="user" class="w-5 h-5 text-white"></i>
+                    <div class="w-12 h-12 rounded-xl bg-dm-teal/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-dm-teal"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-stone-900 dark:text-white">Personal Information</h3>
                 </div>
@@ -194,9 +194,9 @@
 
         <!-- Account Setup -->
         <div class="bg-white dark:bg-boxdark rounded-2xl shadow-xl border border-stone-200 dark:border-strokedark overflow-hidden">
-            <div class="px-8 py-6 border-b border-stone-200 dark:border-strokedark bg-gradient-to-r from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700">
+            <div class="px-8 py-6 border-b border-stone-200 dark:border-strokedark bg-gradient-to-r from-ruby-50 to-ruby-100 dark:from-[#822659]/20 dark:to-[#822659]/10">
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl">
+                    <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-dm-ruby to-ruby-700 rounded-xl">
                         <i data-lucide="mail" class="w-5 h-5 text-white"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-stone-900 dark:text-white">Account Setup</h3>
@@ -227,11 +227,9 @@
                 <i data-lucide="x" class="w-4 h-4"></i>
                 Cancel
             </a>
-            <button type="submit" 
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-sm font-medium text-white rounded-xl shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                Create Admin
-            </button>
+            <button type="submit" class="flex-1 px-6 py-3 bg-dm-green text-dm-bg font-bold rounded-xl hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dm-green transition-all duration-300 shadow-lg shadow-dm-green/20">
+                    Create Admin Account
+                </button>
         </div>
     </form>
 </div>

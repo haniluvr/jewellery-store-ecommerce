@@ -3,9 +3,9 @@
 @section('title', 'Appointments')
 
 @section('content')
-<div class="min-h-screen bg-white dark:bg-boxdark">
+<div class="min-h-screen">
     <!-- Header -->
-    <div class="bg-white dark:bg-boxdark shadow-sm border-b border-stone-200 dark:border-strokedark">
+    <div class="border-b border-stone-200 dark:border-strokedark">
         <div class="flex justify-between items-center py-6 px-4">
             <div>
                 <h1 class="text-2xl font-bold text-stone-900 dark:text-white">Appointments</h1>

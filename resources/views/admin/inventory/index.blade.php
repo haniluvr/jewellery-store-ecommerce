@@ -3,9 +3,9 @@
 @section('title', 'Inventory Management')
 
 @section('content')
-<div class="min-h-screen bg-white">
+<div class="min-h-screen">
     <!-- Header -->
-    <div class="bg-white shadow-sm border-b border-stone-200">
+    <div class="border-b border-stone-200 dark:border-strokedark">
         <div class="mx-auto max-w-screen-2xl">
             <div class="flex justify-between items-center py-6">
                 <div>

@@ -19,6 +19,17 @@
     
     <!-- Preline UI -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css">
+    
+    <!-- Dark Mode Root Sync -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -26,9 +37,9 @@
                 extend: {
                     colors: {
                         primary: '#3C50E0',
-                        secondary: '#80CAEE',
-                        success: '#219653',
-                        danger: '#D34053',
+                        secondary: '#004D61', // dark teal (Accent 1)
+                        success: '#3E5641', // forest green (CTA)
+                        danger: '#822659', // deep ruby (Accent 2)
                         warning: '#FFA70B',
                         info: '#0FADCF',
                         
@@ -40,14 +51,24 @@
                         'brand-rose': '#96616B',      // Rose accent
                         
                         // Dark Mode Variants
-                        'brand-dark-dm': '#1A2F2F',   // Lighter navy for dark mode
-                        'brand-green-dm': '#6B9266',  // Lighter green for dark mode
-                        'brand-beige-dm': '#2A2826',  // Dark beige for dark mode
-                        'brand-brown-dm': '#8B5D68',  // Lighter brown for dark mode
-                        'brand-rose-dm': '#B38791',   // Lighter rose for dark mode
+                        'brand-dark-dm': '#1A1A1A',   
+                        'brand-green-dm': '#3E5641',  
+                        'brand-beige-dm': '#2A2826',  
+                        'brand-brown-dm': '#8B5D68',  
+                        'brand-rose-dm': '#B38791',   
+                        
+                        // Custom Private Palette
+                        'dm-bg': '#121212',      // Material Dark Base
+                        'dm-surface': '#1E1E1E', // Material Elevation Surface
+                        'dm-teal': '#80CBC4',    // Accessible Teal
+                        'dm-ruby': '#F48FB1',    // Accessible Ruby
+                        'dm-green': '#A5D6A7',   // Accessible Forest Green
+                        'dm-text-primary': 'rgba(255, 255, 255, 0.87)',
+                        'dm-text-secondary': 'rgba(255, 255, 255, 0.60)',
+                     
                         dark: '#1C2434',
                         'body': '#64748B',
-                        'bodydark': '#AEB7C0',
+                        'bodydark': '#F0F0F0', // off-white
                         'bodydark1': '#DEE4EE',
                         'bodydark2': '#8A99AF',
                         'stroke': '#E2E8F0',
@@ -55,9 +76,9 @@
                         'graydark': '#333A48',
                         'whiten': '#F1F5F9',
                         'whiter': '#F5F7FD',
-                        'boxdark': '#24303F',
-                        'boxdark-2': '#1A222C',
-                        'strokedark': '#2E3A47',
+                        'boxdark': '#242424', // cards/sidebar
+                        'boxdark-2': '#1A1A1A', // background
+                        'strokedark': '#333333',
                         'form-strokedark': '#3d4d60',
                         'form-input': '#1d2a39',
                         'meta-1': '#DC3545',
@@ -352,9 +373,192 @@
     
     <style>
         [x-cloak] { display: none !important; }
+        
+        /* Root & Body Global Dark Mode */
+        .dark, .dark body { 
+            background-color: #121212 !important; 
+            color: rgba(255, 255, 255, 0.87) !important; 
+        }
+
+        /* Comprehensive Material Overrides */
+        .dark .bg-white, 
+        .dark .bg-stone-50, 
+        .dark .bg-stone-100, 
+        .dark .bg-gray-50, 
+        .dark .bg-gray-100,
+        .dark .bg-slate-50,
+        .dark .bg-slate-100,
+        .dark .bg-zinc-50,
+        .dark .bg-zinc-100,
+        .dark .bg-indigo-50,
+        .dark .bg-amber-50,
+        .dark .bg-violet-50,
+        .dark .bg-rose-50,
+        .dark .bg-cyan-50,
+        .dark .bg-green-50,
+        .dark .bg-blue-50,
+        .dark .bg-purple-50,
+        .dark .bg-emerald-50,
+        .dark .bg-fuchsia-50,
+        .dark .bg-pink-50,
+        .dark .bg-teal-50 { 
+            background-color: #1E1E1E !important; 
+        }
+
+        /* Nested Container Backgrounds */
+        .dark .min-h-screen.bg-white,
+        .dark .bg-[#F7F9FC],
+        .dark .bg-[#F1F5F9] {
+            background-color: #121212 !important;
+        }
+
+        /* Text Overrides - High Emphasis */
+        .dark .text-stone-950, .dark .text-stone-900, .dark .text-stone-800, .dark .text-stone-700,
+        .dark .text-gray-950, .dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700,
+        .dark .text-slate-950, .dark .text-slate-900, .dark .text-slate-800, .dark .text-slate-700,
+        .dark .text-zinc-950, .dark .text-zinc-900, .dark .text-zinc-800, .dark .text-zinc-700,
+        .dark .text-black, .dark .text-white { 
+            color: rgba(255, 255, 255, 0.87) !important; 
+        }
+        
+        /* Text Overrides - Medium Emphasis */
+        .dark .text-stone-600, .dark .text-stone-500, .dark .text-stone-400,
+        .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-400,
+        .dark .text-slate-600, .dark .text-slate-500, .dark .text-slate-400,
+        .dark .text-zinc-600, .dark .text-zinc-500, .dark .text-zinc-400 { 
+            color: rgba(255, 255, 255, 0.60) !important; 
+        }
+
+        /* Border Overrides */
+        .dark .border-stone-200, .dark .border-stone-300,
+        .dark .border-gray-200, .dark .border-gray-300,
+        .dark .border-slate-200, .dark .border-slate-300,
+        .dark .border-stone-100 { 
+            border-color: #262626 !important; 
+        }
+
+        /* Table & Divider Overrides */
+        .dark .divide-stone-200, .dark .divide-gray-200, .dark .divide-slate-200 {
+            border-color: #262626 !important;
+        }
+
+        /* Form Controls */
+        .dark input, .dark select, .dark textarea {
+            background-color: #121212 !important;
+            border-color: #333333 !important;
+            color: rgba(255, 255, 255, 0.87) !important;
+        }
+        
+        /* Material Accent Backgrounds (Desaturated) - Targeted for performance */
+        .dark .bg-blue-50, .dark .bg-blue-100 { background-color: rgba(128, 203, 196, 0.12) !important; color: #80CBC4 !important; }
+        .dark .bg-green-50, .dark .bg-green-100 { background-color: rgba(165, 214, 167, 0.12) !important; color: #A5D6A7 !important; }
+        .dark .bg-purple-50, .dark .bg-purple-100 { background-color: rgba(244, 143, 177, 0.12) !important; color: #F48FB1 !important; }
+        .dark .bg-yellow-50, .dark .bg-yellow-100 { background-color: rgba(255, 213, 79, 0.12) !important; color: #FFD54F !important; }
+        .dark .bg-red-50, .dark .bg-red-100 { background-color: rgba(239, 154, 154, 0.12) !important; color: #EF9A9A !important; }
+        
+        /* Optimized Gradients - Killing all pale light-mode gradients */
+        .dark .from-slate-50, .dark .from-slate-100, .dark .to-slate-50, .dark .to-slate-100,
+        .dark .from-gray-50, .dark .from-gray-100, .dark .to-gray-50, .dark .to-gray-100,
+        .dark .from-zinc-50, .dark .from-zinc-100, .dark .to-zinc-50, .dark .to-zinc-100,
+        .dark .from-neutral-50, .dark .from-neutral-100, .dark .to-neutral-50, .dark .to-neutral-100,
+        .dark .from-stone-50, .dark .from-stone-100, .dark .to-stone-50, .dark .to-stone-100,
+        .dark .from-red-50, .dark .from-red-100, .dark .to-red-50, .dark .to-red-100,
+        .dark .from-orange-50, .dark .from-orange-100, .dark .to-orange-50, .dark .to-orange-100,
+        .dark .from-amber-50, .dark .from-amber-100, .dark .to-amber-50, .dark .to-amber-100,
+        .dark .from-yellow-50, .dark .from-yellow-100, .dark .to-yellow-50, .dark .to-yellow-100,
+        .dark .from-lime-50, .dark .from-lime-100, .dark .to-lime-50, .dark .to-lime-100,
+        .dark .from-green-50, .dark .from-green-100, .dark .to-green-50, .dark .to-green-100,
+        .dark .from-emerald-50, .dark .from-emerald-100, .dark .to-emerald-50, .dark .to-emerald-100,
+        .dark .from-teal-50, .dark .from-teal-100, .dark .to-teal-50, .dark .to-teal-100,
+        .dark .from-cyan-50, .dark .from-cyan-100, .dark .to-cyan-50, .dark .to-cyan-100,
+        .dark .from-sky-50, .dark .from-sky-100, .dark .to-sky-50, .dark .to-sky-100,
+        .dark .from-blue-50, .dark .from-blue-100, .dark .to-blue-50, .dark .to-blue-100,
+        .dark .from-indigo-50, .dark .from-indigo-100, .dark .to-indigo-50, .dark .to-indigo-100,
+        .dark .from-violet-50, .dark .from-violet-100, .dark .to-violet-50, .dark .to-violet-100,
+        .dark .from-purple-50, .dark .from-purple-100, .dark .to-purple-50, .dark .to-purple-100,
+        .dark .from-fuchsia-50, .dark .from-fuchsia-100, .dark .to-fuchsia-50, .dark .to-fuchsia-100,
+        .dark .from-pink-50, .dark .from-pink-100, .dark .to-pink-50, .dark .to-pink-100,
+        .dark .from-rose-50, .dark .from-rose-100, .dark .to-rose-50, .dark .to-rose-100,
+        .dark .from-white, .dark .to-white {
+            background-image: none !important;
+            --tw-gradient-from: #1E1E1E !important;
+            --tw-gradient-to: #1E1E1E !important;
+        }
+
+        /* High-Performance Hover Overrides - Fixing "White-out" on row hover */
+        .dark .hover\:bg-stone-50:hover, 
+        .dark .hover\:bg-gray-50:hover,
+        .dark .hover\:bg-gray-100:hover,
+        .dark .hover\:bg-slate-50:hover,
+        .dark .hover\:bg-slate-100:hover,
+        .dark .hover\:bg-zinc-50:hover,
+        .dark .hover\:bg-zinc-100:hover,
+        .dark .hover\:bg-white:hover {
+            background-color: #2C2C2C !important;
+        }
+
+        /* Scrollbar Styling */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #2C2C2C;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #3D3D3D;
+        }
+
+        /* ApexCharts Global Dark Mode Overrides */
+        .dark .apexcharts-canvas {
+            filter: drop-shadow(0 0 0 transparent) !important;
+        }
+        .dark .apexcharts-tooltip {
+            background: #1E1E1E !important;
+            border: 1px solid #333333 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+            color: rgba(255, 255, 255, 0.87) !important;
+        }
+        .dark .apexcharts-tooltip-title {
+            background: #2D2D2D !important;
+            border-bottom: 1px solid #333333 !important;
+            color: rgba(255, 255, 255, 0.87) !important;
+            font-weight: 600 !important;
+        }
+        .dark .apexcharts-tooltip.apexcharts-theme-light {
+            background: #1E1E1E !important;
+            color: rgba(255, 255, 255, 0.87) !important;
+        }
+        .dark .apexcharts-text tspan, .dark .apexcharts-text {
+            fill: rgba(255, 255, 255, 0.60) !important;
+        }
+        .dark .apexcharts-gridline {
+            stroke: #262626 !important;
+        }
+        .dark .apexcharts-legend-text {
+            color: rgba(255, 255, 255, 0.87) !important;
+        }
+        .dark .apexcharts-xaxis-label, .dark .apexcharts-yaxis-label {
+            fill: rgba(255, 255, 255, 0.60) !important;
+        }
+        .dark .apexcharts-menu {
+            background: #1E1E1E !important;
+            border: 1px solid #333333 !important;
+            color: rgba(255, 255, 255, 0.87) !important;
+        }
+        .dark .apexcharts-menu-item:hover {
+            background: #2D2D2D !important;
+        }
+        .dark .apexcharts-xcrosshairs, .dark .apexcharts-ycrosshairs {
+            stroke: #333333 !important;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-boxdark-2 dark:to-boxdark" x-data="{ 
+<body class="bg-[#F7F9FC] dark:bg-[#1A1A1A] text-gray-700 dark:text-[#F0F0F0] selection:bg-primary/10" x-data="{ 
     sidebarOpen: false, 
     darkMode: localStorage.getItem('darkMode') === 'true' || false,
     sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' || false,
@@ -363,15 +567,19 @@
     echo: null
 }" 
 x-init="
-    $watch('darkMode', val => localStorage.setItem('darkMode', val));
+    $watch('darkMode', val => {
+        localStorage.setItem('darkMode', val);
+        document.documentElement.classList.toggle('dark', val);
+    });
     $watch('sidebarCollapsed', val => localStorage.setItem('sidebarCollapsed', val));
+    
     // Auto-collapse on mobile
     if (window.innerWidth < 1024) {
         sidebarCollapsed = false;
     }
     
     // Store component reference for notification functions
-    window.notificationComponent = this;
+    window.notificationComponent = $data;
     
     // Load notifications immediately after Alpine initializes
     $nextTick(() => {
@@ -388,7 +596,9 @@ x-init="
     }, 1000);
     
     // Initialize real-time notifications
-    initializeRealtimeNotifications();
+    if (typeof initializeRealtimeNotifications === 'function') {
+        initializeRealtimeNotifications();
+    }
     
     // Refresh notifications every 30 seconds
     setInterval(() => {

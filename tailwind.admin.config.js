@@ -24,11 +24,11 @@ module.exports = {
         black: '#1C2434',
         'black-2': '#010101',
         body: '#64748B',
-        bodydark: '#AEB7C0',
+        bodydark: '#F0F0F0', // off-white (Primary Text)
         bodydark1: '#DEE4EE',
         bodydark2: '#8A99AF',
-        primary: '#3C50E0',
-        secondary: '#80CAEE',
+        primary: '#3C50E0', 
+        secondary: '#004D61', // dark teal (Accent 1)
         stroke: '#E2E8F0',
         gray: '#EFF4FB',
         graydark: '#333A48',
@@ -36,11 +36,11 @@ module.exports = {
         'gray-3': '#FAFAFA',
         whiten: '#F1F5F9',
         whiter: '#F5F7FD',
-        boxdark: '#24303F',
-        'boxdark-2': '#1A222C',
-        strokedark: '#2E3A47',
-        'form-strokedark': '#3d4d60',
-        'form-input': '#1d2a39',
+        boxdark: '#242424', // cards/sidebar
+        'boxdark-2': '#1A1A1A', // rich black (Background)
+        strokedark: '#262626',
+        formstroke: '#E2E8F0',
+        formstrokedark: '#262626',
         'meta-1': '#DC3545',
         'meta-2': '#EFF2F7',
         'meta-3': '#10B981',
@@ -51,8 +51,8 @@ module.exports = {
         'meta-8': '#F0950C',
         'meta-9': '#E5E7EB',
         'meta-10': '#0FADCF',
-        success: '#219653',
-        danger: '#D34053',
+        success: '#3E5641', // forest green (CTA)
+        danger: '#822659', // deep ruby (Accent 2)
         warning: '#FFA70B',
         
         // Brand Colors - Light Mode
@@ -63,11 +63,18 @@ module.exports = {
         'brand-rose': '#96616B',      // Rose accent
         
         // Dark Mode Variants
-        'brand-dark-dm': '#1A2F2F',   // Lighter navy for dark mode
-        'brand-green-dm': '#6B9266',  // Lighter green for dark mode
-        'brand-beige-dm': '#2A2826',  // Dark beige for dark mode
-        'brand-brown-dm': '#8B5D68',  // Lighter brown for dark mode
-        'brand-rose-dm': '#B38791',   // Lighter rose for dark mode
+        'brand-dark-dm': '#1A1A1A',   
+        'brand-green-dm': '#3E5641',  
+        'brand-beige-dm': '#2A2826',  
+        'brand-brown-dm': '#8B5D68',  
+        'dm-bg': '#121212',      // Material Dark Base
+        'dm-surface': '#1E1E1E', // Material Elevation Surface
+        'dm-teal': '#80CBC4',    // Material Teal 200
+        'dm-ruby': '#F48FB1',    // Material Pink 200 (Ruby)
+        'dm-green': '#A5D6A7',   // Material Green 200
+        'dm-text-primary': 'rgba(255, 255, 255, 0.87)',
+        'dm-text-secondary': 'rgba(255, 255, 255, 0.60)',
+        'dm-border': '#262626',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],

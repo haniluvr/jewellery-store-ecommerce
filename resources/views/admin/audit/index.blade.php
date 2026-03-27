@@ -3,7 +3,7 @@
 @section('title', 'Audit Log')
 
 @section('content')
-<div class="min-h-screen bg-white dark:bg-boxdark">
+<div class="min-h-screen">
     <!-- Header -->
     <div class="bg-white dark:bg-boxdark shadow-sm border-b border-stroke dark:border-strokedark">
         <div class="mx-auto max-w-screen-2xl">

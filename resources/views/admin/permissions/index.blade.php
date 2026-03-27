@@ -3,7 +3,7 @@
 @section('title', 'Role & Permission Management')
 
 @section('content')
-<div class="min-h-screen bg-white" x-data='permissionsPage()' @keydown.window.ctrl.s.prevent="save()" @keydown.window.meta.s.prevent="save()">
+<div class="min-h-screen" x-data='permissionsPage()' @keydown.window.ctrl.s.prevent="save()" @keydown.window.meta.s.prevent="save()">
     <!-- Header -->
     <div class="bg-white shadow-sm border-b border-stone-200">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-6 px-4 sm:px-6">
