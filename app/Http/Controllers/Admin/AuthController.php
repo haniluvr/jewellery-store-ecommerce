@@ -72,6 +72,12 @@ class AuthController extends Controller
             // Generate OTP code
             $otpCode = $admin->generateOtpCode();
 
+            // Store pending 2FA state in session BEFORE sending email so they can hit "Resend"
+            session(['pending_admin_2fa_id' => $admin->id]);
+
+            // Save the session data to ensure it persists in case of a crash
+            $request->session()->save();
+
             // Send OTP email
             try {
                 Mail::to($admin->personal_email)->send(new AdminOtpMail($admin, $otpCode));
@@ -80,22 +86,18 @@ class AuthController extends Controller
                     'admin_id' => $admin->id,
                     'admin_email' => $admin->email,
                     'personal_email' => $admin->personal_email,
-                    'otp_code' => $otpCode,
                 ]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 \Log::error('Failed to send admin OTP email', [
                     'admin_id' => $admin->id,
                     'personal_email' => $admin->personal_email,
                     'error' => $e->getMessage(),
                 ]);
 
-                throw ValidationException::withMessages([
-                    'email' => ['Failed to send verification code. Please try again.'],
-                ]);
+                // Still redirect to OTP page but with a clear error message
+                return redirect()->to(admin_route('verify-otp'))
+                    ->with('error', 'Authentication code could not be sent (Mail Server Error: ' . $e->getMessage() . '). Please check your internet connection or contact technical support.');
             }
-
-            // Store pending 2FA state in session
-            session(['pending_admin_2fa_id' => $admin->id]);
 
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Verification code sent to your email']);
@@ -340,7 +342,6 @@ class AuthController extends Controller
             \Log::info('Admin OTP resent', [
                 'admin_id' => $admin->id,
                 'personal_email' => $admin->personal_email,
-                'otp_code' => $otpCode,
             ]);
 
             if ($request->expectsJson()) {
@@ -348,14 +349,18 @@ class AuthController extends Controller
             }
 
             return back()->with('success', 'Verification code resent to your email');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Failed to resend admin OTP email', [
                 'admin_id' => $admin->id,
                 'personal_email' => $admin->personal_email,
                 'error' => $e->getMessage(),
             ]);
 
-            return back()->withErrors(['error' => 'Failed to resend verification code. Please try again.']);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Mail Server Link Error: ' . $e->getMessage()], 422);
+            }
+
+            return back()->with('error', 'Failed to resend verification code. (Error: ' . $e->getMessage() . ')');
         }
     }
 
