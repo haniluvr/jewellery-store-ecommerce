@@ -399,7 +399,7 @@
             <span
               class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400"
             >
-              {{ Auth::guard('admin')->user()->email ?? 'admin@dwatelier.com' }}
+              {{ Auth::guard('admin')->user()->email ?? 'admin@eclore.com' }}
             </span>
           </div>
 

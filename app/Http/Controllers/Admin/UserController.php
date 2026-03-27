@@ -402,20 +402,7 @@ class UserController extends Controller
             $token = $magicLinkService->generateMagicLink($admin, 'password-setup');
 
             // Build the magic link URL using the current request's domain and port
-            $scheme = $request->getScheme();
-            $host = $request->getHost();
-            $port = $request->getPort();
-
-            // Construct URL with proper port handling
-            $portString = '';
-            if ($port && $port !== 80 && $port !== 443) {
-                // Only add port if it's not standard
-                if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
-                    $portString = ':'.$port;
-                }
-            }
-
-            $magicLink = $scheme.'://'.$host.$portString.'/setup-password/'.$token;
+            $magicLink = admin_route('setup-password', ['token' => $token]);
 
             // Send welcome email to personal email
             Mail::to($admin->personal_email)->send(new \App\Mail\AdminWelcomeMail($admin, $magicLink));
@@ -436,8 +423,8 @@ class UserController extends Controller
      */
     public function editAdmin($username)
     {
-        // Find admin by username (email prefix before @dwatelier.co)
-        $email = $username.'@dwatelier.co';
+        // Find admin by username (email prefix before @eclore.co)
+        $email = $username.'@eclore.co';
         $admin = Admin::where('email', $email)->first();
 
         if (! $admin) {
@@ -478,7 +465,7 @@ class UserController extends Controller
         AuditLog::log('admin_user.updated', Auth::guard('admin')->user(), $admin, $oldValues, $admin->only(['first_name', 'last_name', 'email', 'role', 'department', 'position']), "Updated admin user {$admin->first_name} {$admin->last_name} ({$admin->email})");
 
         // Get username from email for redirect
-        $username = str_replace('@dwatelier.co', '', $admin->email);
+        $username = str_replace('@eclore.co', '', $admin->email);
 
         return redirect()->to(admin_route('users.edit-admin', $username))
             ->with('success', 'Admin user updated successfully.');
@@ -510,19 +497,7 @@ class UserController extends Controller
             $token = $magicLinkService->generateMagicLink($admin, 'password_reset');
 
             // Build the reset URL using the current request's domain and port
-            $scheme = $request->getScheme();
-            $host = $request->getHost();
-            $port = $request->getPort();
-
-            // Construct URL with proper port handling
-            $portString = '';
-            if ($port && $port !== 80 && $port !== 443) {
-                if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
-                    $portString = ':'.$port;
-                }
-            }
-
-            $resetUrl = $scheme.'://'.$host.$portString.'/reset-password/'.$token;
+            $resetUrl = admin_route('reset-password', ['token' => $token]);
 
             // Send password reset email
             Mail::to($emailToUse)->send(new \App\Mail\AdminPasswordResetMail($admin, $resetUrl, now()->addHours(1)));
@@ -569,8 +544,8 @@ class UserController extends Controller
      */
     public function destroyAdmin($username)
     {
-        // Find admin by username (email prefix before @dwatelier.co)
-        $email = $username.'@dwatelier.co';
+        // Find admin by username (email prefix before @eclore.co)
+        $email = $username.'@eclore.co';
         $admin = Admin::where('email', $email)->first();
 
         if (! $admin) {

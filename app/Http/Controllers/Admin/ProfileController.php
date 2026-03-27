@@ -341,8 +341,8 @@ class ProfileController extends Controller
      */
     public function showContactProfile($username)
     {
-        // Find admin by username (email prefix before @dwatelier.co)
-        $email = $username.'@dwatelier.co';
+        // Find admin by username (email prefix before @eclore.co)
+        $email = $username.'@eclore.co';
         $admin = Admin::where('email', $email)->first();
 
         if (! $admin) {

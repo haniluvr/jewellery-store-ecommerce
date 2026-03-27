@@ -297,8 +297,7 @@
                                             type="email"
                                             id="email"
                                             name="email"
-                                                placeholder="hymarquez@eclore.co"
-                                                value="{{ old('email', 'hymarquez@eclore.co') }}"
+                                                placeholder="Enter your email"
                                             required
                                             class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-sm placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                         />
@@ -386,7 +385,7 @@
                                     <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 mb-4">
                                         <i data-lucide="mail" class="h-6 w-6 text-brand-600 dark:text-brand-400"></i>
                                     </div>
-                                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Éclore Jewellery</h1>
+                                    <h1 class="text-3xl font-bold text-white mb-2">Éclore Jewellery</h1>
                                     <p class="text-gray-500 font-medium">Administrative Core Access</p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400">
                                         We've sent a 6-digit code to your email
@@ -468,7 +467,7 @@
                             </div>
                         </div>
                         <p class="text-center text-gray-400 dark:text-white/60">
-                            Admin Dashboard for Éclore Jewellery.<br>Luxury Jewellery Management System
+                            Admin Dashboard for Éclore Jewellery.<br>E-commerce Management System
                         </p>
                     </div>
                 </div>

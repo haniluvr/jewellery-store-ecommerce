@@ -84,19 +84,19 @@
                             <input
                                 type="text"
                                 id="email_username"
-                                value="{{ old('email') ? preg_replace('/@dwatelier\.co$/', '', old('email')) : '' }}"
+                                value="{{ old('email') ? preg_replace('/@eclore\.co$/', '', old('email')) : '' }}"
                                 placeholder="Enter username (e.g., datelier)"
                                 class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 pr-32 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('email') border-red-300 @enderror"
                                 required
                                 autocomplete="off"
                             />
-                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-stone-500 dark:text-gray-400 pointer-events-none">@dwatelier.co</span>
+                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-stone-500 dark:text-gray-400 pointer-events-none">@eclore.co</span>
                         </div>
                         <input type="hidden" id="email" name="email" value="{{ old('email') }}">
                         @error('email')
                             <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
-                        <p class="text-xs text-stone-500 dark:text-gray-400">This email will be used for login. @dwatelier.co will be automatically appended.</p>
+                        <p class="text-xs text-stone-500 dark:text-gray-400">This email will be used for login. @eclore.co will be automatically appended.</p>
                     </div>
 
                     <div class="space-y-2">
@@ -320,13 +320,13 @@ document.addEventListener('alpine:init', () => {
 document.addEventListener('DOMContentLoaded', function() {
     const emailUsernameInput = document.getElementById('email_username');
     const emailHiddenInput = document.getElementById('email');
-    const domain = '@dwatelier.co';
+    const domain = '@eclore.co';
     
     // Function to update the full email
     function updateFullEmail() {
         let value = emailUsernameInput.value.trim();
         
-        // Remove @dwatelier.co if user typed it
+        // Remove @eclore.co if user typed it
         if (value.endsWith(domain)) {
             value = value.slice(0, -domain.length);
             emailUsernameInput.value = value;

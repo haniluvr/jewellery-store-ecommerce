@@ -178,19 +178,7 @@ class AuthController extends Controller
             $token = $magicLinkService->generateMagicLink($admin, 'password_reset');
 
             // Build the reset URL using the current request's domain and port
-            $scheme = $request->getScheme();
-            $host = $request->getHost();
-            $port = $request->getPort();
-
-            // Construct URL with proper port handling
-            $portString = '';
-            if ($port && $port !== 80 && $port !== 443) {
-                if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
-                    $portString = ':'.$port;
-                }
-            }
-
-            $resetUrl = $scheme.'://'.$host.$portString.'/reset-password/'.$token;
+            $resetUrl = admin_route('reset-password', ['token' => $token]);
 
             // Send password reset email to personal email
             Mail::to($admin->personal_email)->send(new \App\Mail\AdminPasswordResetMail($admin, $resetUrl, now()->addHours(1)));

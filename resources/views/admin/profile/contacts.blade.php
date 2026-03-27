@@ -133,8 +133,8 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @php
-                                        // Extract username from email (part before @dwatelier.co)
-                                        $username = str_replace('@dwatelier.co', '', $contact->email);
+                                        // Extract username from email (part before @eclore.co)
+                                        $username = str_replace('@eclore.co', '', $contact->email);
                                     @endphp
                                     <a href="{{ admin_route('profile.contact-view', $username) }}" 
                                        class="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors duration-200">
