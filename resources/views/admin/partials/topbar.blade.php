@@ -70,12 +70,9 @@
                     <div class="py-1">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                        <form method="POST" action="{{ admin_route('logout') }}">
-                            @csrf
-                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                Sign out
-                            </button>
-                        </form>
+                        <a href="{{ admin_route('logout.get') }}" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Sign out
+                        </a>
                     </div>
                 </div>
             </div>

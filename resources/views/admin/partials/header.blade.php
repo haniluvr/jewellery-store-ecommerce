@@ -386,13 +386,10 @@
                     </ul>
                     
                     <div class="border-t border-stroke/50 dark:border-strokedark/50 p-2">
-                        <form method="POST" action="{{ admin_route('logout') }}">
-                        @csrf
-                            <button type="submit" class="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50/80 hover:text-red-700 transition-colors duration-200 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 rounded-lg">
-                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                        <a href="{{ admin_route('logout.get') }}" class="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50/80 hover:text-red-700 transition-colors duration-200 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 rounded-lg">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
                             Log Out
-                        </button>
-                    </form>
+                        </a>
                     </div>
                 </div>
                 <!-- Dropdown End -->
