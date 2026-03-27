@@ -174,7 +174,7 @@ jobs:
         sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global && npm ci'
         
         echo "Building frontend assets..."
-        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global'
+        sudo -u www-data bash -c 'export NPM_CONFIG_CACHE=/tmp/.npm && export NPM_CONFIG_PREFIX=/tmp/.npm-global && npm run build'
         
         # Ensure MySQL is running
         echo "Checking MySQL status..."
@@ -254,6 +254,7 @@ jobs:
         VITE_PUSHER_PORT="${PUSHER_PORT}"
         VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
         VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+        ENV_EOF
         
         # Set proper ownership for .env (readable by both www-data and ubuntu users)
         sudo chown www-data:www-data "$APP_DIR/.env"
@@ -279,7 +280,7 @@ jobs:
         sudo -u www-data php artisan route:cache || echo "Route cache failed"
         sudo -u www-data php artisan view:cache || echo "View cache failed"
         
-                # Run database migrations
+        # Run database migrations
         echo "Running database migrations..."
         # Disable foreign key checks for migration
         mysql -u eclore_user -p${{ secrets.DB_PASSWORD }} -e "SET FOREIGN_KEY_CHECKS=0;" eclore_db || echo "FK disable failed"
