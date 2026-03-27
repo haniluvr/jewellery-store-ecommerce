@@ -22,6 +22,7 @@ class OrderSeeder extends Seeder
             $trackingNumber = in_array($status, ['shipped', 'delivered']) ? 'EK'.strtoupper(Str::random(10)) : null;
             $shippedAt = in_array($status, ['shipped', 'delivered']) ? now()->subDays(rand(1, 30)) : null;
             $deliveredAt = ($status === 'delivered') ? ($shippedAt ? $shippedAt->copy()->addDays(rand(1, 5)) : now()->subDays(rand(1, 5))) : null;
+            $subtotal = rand(1000, 50000);
 
             DB::table('orders')->insert([
                 'user_id' => $user->id,
