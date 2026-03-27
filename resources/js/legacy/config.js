@@ -4,7 +4,7 @@ window.APP_CONFIG = {
     API_BASE_URL: window.location.origin + '/api',
     
     // App Settings
-    APP_NAME: "David's Wood",
+    APP_NAME: "Éclore Jewellery",
     APP_VERSION: "1.0.0",
     
     // Feature Flags

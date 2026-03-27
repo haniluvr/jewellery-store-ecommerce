@@ -9,7 +9,7 @@ class OrderActivitySeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('order_activities')->truncate();
+        DB::table('order_activities')->delete();
 
         $orders = DB::table('orders')->take(100)->get();
 

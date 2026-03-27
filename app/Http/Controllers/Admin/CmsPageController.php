@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\CmsPage;
+use App\Models\NewsletterSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -56,7 +57,7 @@ class CmsPageController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string|max:500',
-            'type' => 'required|in:page,blog,faq,policy',
+            'type' => 'required|in:'.implode(',', array_keys(\App\Models\CmsPage::getTypeOptions())),
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
@@ -117,7 +118,7 @@ class CmsPageController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string|max:500',
-            'type' => 'required|in:page,blog,faq,policy',
+            'type' => 'required|in:'.implode(',', array_keys(\App\Models\CmsPage::getTypeOptions())),
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
@@ -303,5 +304,73 @@ class CmsPageController extends Controller
         $blogs = $query->paginate(15)->withQueryString();
 
         return view('admin.blogs.index', compact('blogs', 'totalBlogs', 'publishedCount', 'draftCount', 'featuredCount'));
+    }
+
+    /**
+     * Display a listing of newsletter subscriptions.
+     */
+    public function newsletter(Request $request)
+    {
+        $query = NewsletterSubscription::orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('email', 'like', "%{$search}%");
+        }
+
+        $subscriptions = $query->paginate(20)->withQueryString();
+        $totalSubscriptions = NewsletterSubscription::count();
+
+        return view('admin.newsletter.index', compact('subscriptions', 'totalSubscriptions'));
+    }
+
+    /**
+     * Export newsletter subscriptions to CSV.
+     */
+    public function exportNewsletter()
+    {
+        $subscriptions = NewsletterSubscription::all();
+        $filename = 'newsletter_subscriptions_'.date('Y-m-d').'.csv';
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $columns = ['Email', 'Subscribed At'];
+
+        $callback = function () use ($subscriptions, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($subscriptions as $subscription) {
+                $row['Email'] = $subscription->email;
+                $row['Subscribed At'] = $subscription->created_at;
+
+                fputcsv($file, [$row['Email'], $row['Subscribed At']]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Remove the specified newsletter subscription.
+     */
+    public function destroyNewsletter(NewsletterSubscription $subscription)
+    {
+        $oldValues = $subscription->toArray();
+
+        // Log the action (ensure AuditLog is properly accessed)
+        \App\Models\AuditLog::log('newsletter_subscription_deleted', Auth::guard('admin')->user(), $subscription, $oldValues, [], "Removed newsletter subscription for email: {$subscription->email}");
+
+        $subscription->delete();
+
+        return redirect()->back()->with('success', 'Newsletter subscription removed successfully.');
     }
 }

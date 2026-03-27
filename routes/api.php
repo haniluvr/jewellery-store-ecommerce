@@ -12,8 +12,11 @@ Route::get('/newsroom', [App\Http\Controllers\PageController::class, 'newsroom']
 // Get products for homepage
 Route::get('/products', function (Request $request) {
     try {
-        $query = \App\Models\Product::where('is_active', true)
-            ->with(['category']);
+        $query = \App\Models\Product::query()
+            ->with(['category'])
+            ->withCount('approvedReviews as reviews_count')
+            ->withAvg('approvedReviews as average_rating', 'rating')
+            ->where('is_active', true);
 
         // Handle jewelry-specific filters
         $jewelryFilters = ['color', 'material', 'gemstone', 'diamonds', 'category'];
@@ -33,12 +36,16 @@ Route::get('/products', function (Request $request) {
         if ($request->has('price') && $request->get('price') !== '') {
             $priceRange = $request->get('price');
             switch ($priceRange) {
-                case 'under-50k':
-                    $query->where('price', '<', 50000);
+                case 'under-30k':
+                    $query->where('price', '<', 30000);
 
                     break;
-                case '50k-100k':
-                    $query->whereBetween('price', [50000, 100000]);
+                case '30k-60k':
+                    $query->whereBetween('price', [30000, 60000]);
+
+                    break;
+                case '60k-100k':
+                    $query->whereBetween('price', [60000, 100000]);
 
                     break;
                 case 'over-100k':
@@ -51,8 +58,6 @@ Route::get('/products', function (Request $request) {
         // Handle room filtering
         if ($request->has('room') && $request->get('room') !== 'all') {
             $roomValue = $request->get('room');
-            // Only filter if room is specified and not 'all'
-            // whereJsonContains works for JSON columns - checks if the JSON array contains the value
             $query->whereNotNull('room_category')
                 ->where('room_category', '!=', '[]')
                 ->whereJsonContains('room_category', $roomValue);
@@ -74,7 +79,6 @@ Route::get('/products', function (Request $request) {
                 break;
             case 'popularity':
             default:
-                // Use sort_order for popularity, fallback to created_at
                 $query->orderBy('sort_order', 'asc')->orderBy('created_at', 'desc');
 
                 break;

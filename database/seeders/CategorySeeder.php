@@ -10,7 +10,7 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        Category::truncate();
+        Category::query()->delete();
 
         $categories = [
             // Main Categories

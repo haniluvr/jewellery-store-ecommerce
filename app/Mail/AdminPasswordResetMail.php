@@ -35,7 +35,7 @@ class AdminPasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Your Admin Password - David\'s Wood Furniture',
+            subject: 'Reset Your Admin Password - Éclore Jewellery',
         );
     }
 

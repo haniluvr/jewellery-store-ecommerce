@@ -120,7 +120,7 @@
                         type="text"
                         id="business_name"
                         name="business_name"
-                        value="{{ old('business_name', setting('business_name', 'David\'s Wood Furniture')) }}"
+                        value="{{ old('business_name', setting('business_name', 'Éclore Jewellery')) }}"
                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary @error('business_name') border-red-500 @enderror"
                     />
                     @error('business_name')

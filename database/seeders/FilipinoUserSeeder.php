@@ -11,7 +11,7 @@ class FilipinoUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::truncate();
+        User::query()->delete();
 
         $firstNames = ['Maria', 'Leonora', 'Teresa', 'Corazon', 'Imelda', 'Gloria', 'Liza', 'Sara', 'Marcos', 'Rodrigo', 'Benigno', 'Joseph', 'Fidel', 'Ramon', 'Manuel', 'Diosdado', 'Sergio', 'Jose', 'Emilio', 'Juan', 'Angelo', 'Paolo', 'Ricardo', 'Antonio', 'Cristina', 'Carmela', 'Dante', 'Elena', 'Fernando', 'Giselle'];
         $lastNames = ['Marquez', 'Santos', 'Reyes', 'Cruz', 'Bautista', 'Ocampo', 'Garcia', 'Mendoza', 'Pascual', 'Aquino', 'Duterte', 'Estrada', 'Ramos', 'Arroyo', 'Poe', 'Santiago', 'Villa', 'Luna', 'del Pilar', 'Bonifacio', 'Quezon', 'Osmeña', 'Roxas', 'Quirino', 'Magsaysay', 'Macapagal', 'Binay', 'Robredo', 'Domagoso', 'Pacquiao'];

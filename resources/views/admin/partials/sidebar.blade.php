@@ -140,6 +140,21 @@
                 </li>
                 @endif
 
+                <!-- Appointments -->
+                @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('appointments.view')))
+                <li>
+                    <a
+                        class="group relative flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-gray-700 duration-300 ease-in-out hover:bg-primary/5 hover:text-primary dark:text-bodydark1 dark:hover:bg-graydark/50 dark:hover:text-primary {{ request()->routeIs('admin.appointments.*') ? 'bg-primary/10 text-primary shadow-sm dark:bg-graydark/50 dark:text-primary' : '' }}"
+                        href="{{ admin_route('appointments.index') }}"
+                        :title="sidebarCollapsed ? 'Appointments' : ''"
+                        x-tooltip="sidebarCollapsed ? 'Appointments' : ''"
+                    >
+                        <i data-lucide="calendar" class="w-5 h-5 flex-shrink-0"></i>
+                        <span x-show="!sidebarCollapsed" x-transition>Appointments</span>
+                    </a>
+                </li>
+                @endif
+
                 <!-- Orders Accordion -->
                 @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('orders.view')))
                 <li>
@@ -231,6 +246,7 @@
                         @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('users.create')))
                         <li><a href="{{ admin_route('users.create') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.users.create') ? 'text-primary dark:text-primary' : '' }}">Add Customer</a></li>
                         @endif
+                        <li><a href="{{ admin_route('users.archived') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.users.archived') ? 'text-primary dark:text-primary' : '' }}">Archived Users</a></li>
                         @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('notifications.view')))
                         <li><a href="{{ admin_route('messages.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.messages.index') && !request('status') ? 'text-primary dark:text-primary' : '' }}">Messages</a></li>
                         @endif
@@ -280,6 +296,7 @@
                         <li><a href="{{ admin_route('cms-pages.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.cms-pages*') ? 'text-primary dark:text-primary' : '' }}">CMS Pages</a></li>
                         <li><a href="{{ admin_route('blogs.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.blogs*') ? 'text-primary dark:text-primary' : '' }}">Blogs</a></li>
                         <li><a href="{{ admin_route('media-library') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.media-library*') ? 'text-primary dark:text-primary' : '' }}">Media Library</a></li>
+                        <li><a href="{{ admin_route('newsletter.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.newsletter*') ? 'text-primary dark:text-primary' : '' }}">Newsletter</a></li>
                         @endif
                         @if($admin && ($admin->isSuperAdmin() || $admin->hasPermission('reviews.view')))
                         <li><a href="{{ admin_route('reviews.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary {{ request()->routeIs('admin.reviews*') ? 'text-primary dark:text-primary' : '' }}">Product Reviews</a></li>

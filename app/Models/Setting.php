@@ -142,12 +142,12 @@ class Setting extends Model
     // Common settings getters
     public static function siteName(): string
     {
-        return self::get('site_name', 'David\'s Wood Furniture');
+        return self::get('site_name', 'Éclore Jewellery');
     }
 
     public static function siteDescription(): string
     {
-        return self::get('site_description', 'Premium handcrafted wooden furniture');
+        return self::get('site_description', 'Premium handcrafted luxury jewellery');
     }
 
     public static function contactEmail(): string

@@ -26,7 +26,7 @@ class AdminOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Admin Login Verification Code - David\'s Wood Furniture',
+            subject: 'Admin Login Verification Code - Éclore Jewellery',
         );
     }
 

@@ -11,7 +11,7 @@ class WishlistItemSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('wishlist_items')->truncate();
+        DB::table('wishlist_items')->delete();
 
         $users = User::all();
         $products = Product::all();

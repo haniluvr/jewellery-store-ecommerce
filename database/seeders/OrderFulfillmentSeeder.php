@@ -9,7 +9,7 @@ class OrderFulfillmentSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('order_fulfillment')->truncate();
+        DB::table('order_fulfillment')->delete();
 
         $orders = DB::table('orders')->whereIn('status', ['shipped', 'delivered', 'processing'])->get();
 

@@ -56,14 +56,27 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
                         </div>
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-stone-500">Total Delivered</p>
                         <p class="text-2xl font-semibold text-stone-900">{{ number_format($stats['total_delivered'] ?? 0) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Returns -->
+            <div class="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="refresh-cw" class="w-5 h-5 text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-stone-500">Active RMAs</p>
+                        <p class="text-2xl font-semibold text-stone-900">{{ number_format($stats['active_returns'] ?? 0) }}</p>
                     </div>
                 </div>
             </div>
@@ -73,33 +86,11 @@
     <!-- Filters -->
     <div class="pt-3 pb-6">
         <div class="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
-            <form method="GET" action="{{ admin_route('delivery-tracking.index') }}" class="flex flex-wrap items-end gap-4 justify-between">
-                <div class="flex-1 min-w-[200px]">
+            <form method="GET" action="{{ admin_route('delivery-tracking.index') }}" class="flex flex-wrap items-end gap-4">
+                <div class="flex-1 min-w-[300px]">
                     <label for="search" class="block text-sm font-medium text-stone-700 mb-2">Search</label>
                     <input type="text" id="search" name="search" value="{{ request('search') }}" 
-                           placeholder="Order #, Tracking #, Customer..."
-                           class="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                </div>
-                <div class="flex-1 min-w-[200px]">
-                    <label for="status" class="block text-sm font-medium text-stone-700 mb-2">Status</label>
-                    <select id="status" name="status" class="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">All Status</option>
-                        <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>Shipped</option>
-                        <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
-                    </select>
-                </div>
-                <div class="flex-1 min-w-[200px]">
-                    <label for="carrier" class="block text-sm font-medium text-stone-700 mb-2">Carrier</label>
-                    <select id="carrier" name="carrier" class="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">All Carriers</option>
-                        @foreach($carriers as $carrier)
-                            <option value="{{ $carrier }}" {{ request('carrier') == $carrier ? 'selected' : '' }}>{{ $carrier }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex-1 min-w-[200px]">
-                    <label for="date_from" class="block text-sm font-medium text-stone-700 mb-2">Date From</label>
-                    <input type="date" id="date_from" name="date_from" value="{{ request('date_from') }}" 
+                           placeholder="Order #, RMA #, Tracking #, Customer..."
                            class="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div class="flex items-end gap-2">
@@ -114,87 +105,111 @@
         </div>
     </div>
 
-    <!-- Orders List -->
+    <!-- Tracking List -->
     <div class="pb-8">
-        <div class="bg-white rounded-xl shadow-sm border border-stone-200">
-            @if($orders->count() > 0)
+        <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+            @if($items->count() > 0)
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-stone-200">
-                        <thead class="bg-stone-50">
+                        <thead class="bg-stone-50 text-stone-500">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Order</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Customer</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Tracking Number</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Carrier</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Shipped Date</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Actions</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Reference</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Customer</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Tracking / RMA</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Last Update</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-stone-200">
-                            @foreach($orders as $order)
-                                <tr class="hover:bg-stone-50 transition-colors duration-150">
+                            @foreach($items as $item)
+                                <tr class="hover:bg-stone-50/50 transition-colors duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-stone-900">#{{ $order->order_number }}</div>
-                                        <div class="text-sm text-stone-500">{{ $order->orderItems->count() }} items</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-stone-900">{{ $order->user->first_name }} {{ $order->user->last_name }}</div>
-                                        <div class="text-sm text-stone-500">{{ $order->user->email }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center space-x-2">
-                                            <code class="px-2 py-1 bg-stone-100 rounded text-sm font-mono text-stone-900">
-                                                {{ $order->tracking_number }}
-                                            </code>
-                                            <button onclick="copyTrackingNumber('{{ $order->tracking_number }}')" 
-                                                    class="text-stone-500 hover:text-stone-700">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($order->carrier)
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                {{ $order->carrier }}
+                                        @if($item->tracking_type === 'order')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                                <i data-lucide="package" class="w-3.5 h-3.5"></i>
+                                                Outgoing
                                             </span>
                                         @else
-                                            <span class="text-sm text-stone-400">Not specified</span>
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                                                Return/Repair
+                                            </span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($order->status === 'delivered')
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Delivered
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                In Transit
-                                            </span>
+                                        <div class="text-sm font-semibold text-stone-900">
+                                            {{ $item->tracking_type === 'order' ? '#' . $item->order_number : ($item->rma_number ?: 'Pending RMA') }}
+                                        </div>
+                                        @if($item->tracking_type === 'return' && $item->order)
+                                            <div class="text-xs text-stone-500">Order #{{ $item->order->order_number }}</div>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-900">
-                                        @if($order->shipped_at)
-                                            {{ $order->shipped_at->format('M d, Y') }}
+                                        <div class="font-medium font-stone-900">{{ $item->user->first_name }} {{ $item->user->last_name }}</div>
+                                        <div class="text-stone-400 text-xs">{{ $item->user->email }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($item->tracking_type === 'order')
+                                            <div class="flex items-center gap-2">
+                                                <span class="px-2 py-1 bg-stone-100 rounded text-xs font-mono text-stone-600">
+                                                    {{ $item->tracking_number }}
+                                                </span>
+                                                <button onclick="copyTrackingNumber('{{ $item->tracking_number }}')" class="p-1 hover:bg-stone-100 rounded transition-colors" title="Copy">
+                                                    <i data-lucide="copy" class="w-3.5 h-3.5 text-stone-400"></i>
+                                                </button>
+                                            </div>
+                                            @if($item->carrier)
+                                                <div class="text-[10px] text-stone-400 uppercase mt-1 px-0.5 tracking-wider">{{ $item->carrier }}</div>
+                                            @endif
                                         @else
-                                            <span class="text-stone-400">Not shipped</span>
+                                            <div class="flex items-center gap-2">
+                                                <span class="px-2 py-1 bg-purple-50 rounded text-xs font-mono text-purple-600 border border-purple-100">
+                                                    {{ $item->rma_number ?: 'NOT ASSIGNED' }}
+                                                </span>
+                                                @if($item->rma_number)
+                                                <button onclick="copyTrackingNumber('{{ $item->rma_number }}')" class="p-1 hover:bg-purple-100 rounded transition-colors" title="Copy">
+                                                    <i data-lucide="copy" class="w-3.5 h-3.5 text-purple-400"></i>
+                                                </button>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @php
+                                            $statusClass = match($item->status) {
+                                                'delivered', 'completed', 'refunded' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                                                'shipped', 'approved', 'processing' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                                'received' => 'bg-amber-100 text-amber-800 border-amber-200',
+                                                default => 'bg-stone-100 text-stone-800 border-stone-200'
+                                            };
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border {{ $statusClass }}">
+                                            {{ ucfirst($item->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                                        @if($item->tracking_type === 'order')
+                                            {{ $item->shipped_at ? $item->shipped_at->format('M d, Y') : '---' }}
+                                        @else
+                                            {{ $item->updated_at ? $item->updated_at->format('M d, Y') : '---' }}
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="{{ admin_route('delivery-tracking.show', $order) }}" class="text-emerald-600 hover:text-emerald-900 transition-colors duration-150" title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                                </svg>
-                                            </a>
-                                            <a href="{{ admin_route('orders.show', $order) }}" class="text-stone-600 hover:text-stone-900 transition-colors duration-150" title="View Order">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                                </svg>
-                                            </a>
+                                        <div class="flex items-center justify-end gap-2">
+                                            @if($item->tracking_type === 'order')
+                                                <a href="{{ admin_route('delivery-tracking.show', $item) }}" class="p-2 text-stone-600 hover:text-emerald-600 transition-colors" title="Track Details">
+                                                    <i data-lucide="map-pin" class="w-4.5 h-4.5"></i>
+                                                </a>
+                                                <a href="{{ admin_route('orders.show', $item) }}" class="p-2 text-stone-600 hover:text-emerald-600 transition-colors" title="View Order">
+                                                    <i data-lucide="external-link" class="w-4.5 h-4.5"></i>
+                                                </a>
+                                            @else
+                                                <a href="#" class="p-2 text-stone-600 hover:text-purple-600 transition-colors" title="View Return Details">
+                                                    <i data-lucide="eye" class="w-4.5 h-4.5"></i>
+                                                </a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -202,6 +217,18 @@
                         </tbody>
                     </table>
                 </div>
+            @else
+                <div class="p-16 text-center">
+                    <div class="mx-auto h-20 w-20 rounded-full bg-stone-50 flex items-center justify-center mb-6">
+                        <i data-lucide="truck" class="h-10 w-10 text-stone-300"></i>
+                    </div>
+                    <h3 class="text-stone-900 font-bold text-lg">No Logistics Activity</h3>
+                    <p class="text-stone-500 max-w-sm mx-auto mt-2">There are currently no active deliveries or confirmed returns in the system.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
 
                 <!-- Pagination -->
                 @if($orders->hasPages())

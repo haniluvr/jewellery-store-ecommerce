@@ -10,7 +10,7 @@ class OrderItemSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('order_items')->truncate();
+        DB::table('order_items')->delete();
 
         $orders = DB::table('orders')->get();
         $products = Product::all();

@@ -9,7 +9,7 @@ class PaymentGatewaySeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('payment_gateways')->truncate();
+        DB::table('payment_gateways')->delete();
         DB::table('payment_gateways')->insert([
             ['name' => 'PayMongo', 'gateway_key' => 'paymongo', 'display_name' => 'Credit Card / GCash', 'description' => 'Secure payment via PayMongo', 'is_active' => true, 'created_at' => now()],
             ['name' => 'PayPal', 'gateway_key' => 'paypal', 'display_name' => 'PayPal Secure', 'description' => 'Pay with your PayPal account', 'is_active' => true, 'created_at' => now()],

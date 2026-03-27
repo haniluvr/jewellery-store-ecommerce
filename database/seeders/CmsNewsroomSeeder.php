@@ -9,7 +9,7 @@ class CmsNewsroomSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('cms_pages')->truncate();
+        DB::table('cms_pages')->delete();
 
         $pages = [
             [

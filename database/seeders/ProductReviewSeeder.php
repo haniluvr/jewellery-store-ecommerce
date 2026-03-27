@@ -11,7 +11,7 @@ class ProductReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('product_reviews')->truncate();
+        DB::table('product_reviews')->delete();
 
         $products = Product::all();
         $users = User::all();

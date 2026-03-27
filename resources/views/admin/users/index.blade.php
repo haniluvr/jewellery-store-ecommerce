@@ -217,76 +217,77 @@
             @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex items-center space-x-2" x-data="{ dropdownOpen: false }">
-                                            <button @click="dropdownOpen = !dropdownOpen" class="text-stone-600 hover:text-stone-900 transition-colors duration-150">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                                </svg>
-                </button>
-                
-                                            <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" class="absolute right-0 top-full z-40 w-48 space-y-1 rounded-lg border border-stone-200 bg-white p-1.5 shadow-lg" x-cloak>
-                                                <a href="{{ admin_route('users.show', $user) }}" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-50">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                                    </svg>
-                        View Details
-                    </a>
-                                                <a href="{{ admin_route('users.edit', $user) }}" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-50">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                    </svg>
-                                                    Edit Customer
-                    </a>
-                    
-                    @if($user->is_suspended)
-                    <form action="{{ admin_route('users.unsuspend', $user) }}" method="POST" class="inline">
-                        @csrf
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-green-600 hover:bg-green-50">
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                            </svg>
-                            Unsuspend
-                        </button>
-                    </form>
-                    @else
-                    <form action="{{ admin_route('users.suspend', $user) }}" method="POST" class="inline">
-                        @csrf
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-yellow-600 hover:bg-yellow-50" onclick="return confirm('Are you sure you want to suspend this customer?')">
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
-                                                            </svg>
-                            Suspend
-                        </button>
-                    </form>
-                    @endif
-                    
-                    @if(!$user->email_verified_at)
-                    <form action="{{ admin_route('users.verify-email', $user) }}" method="POST" class="inline">
-                        @csrf
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-blue-600 hover:bg-blue-50">
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                                            </svg>
-                            Verify Email
-                        </button>
-                    </form>
-                    @endif
-                    
-                    @if($user->orders_count === 0)
-                    <form action="{{ admin_route('users.destroy', $user) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50" onclick="return confirm('Are you sure you want to delete this customer?')">
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                            </svg>
-                                                            Delete Customer
-                        </button>
-                    </form>
-                    @endif
-                </div>
-            </div>
+                                        <div class="flex items-center justify-end space-x-3" x-data="{ dropdownOpen: false }">
+                                            <a href="{{ admin_route('users.show', $user) }}" class="p-2 text-stone-600 hover:text-emerald-600 transition-colors" title="View Profile">
+                                                <i data-lucide="eye" class="w-4.5 h-4.5"></i>
+                                            </a>
+                                            
+                                            <div class="relative">
+                                                <button @click.stop="dropdownOpen = !dropdownOpen" 
+                                                        type="button"
+                                                        class="p-2 text-stone-600 hover:text-emerald-600 transition-colors rounded-lg hover:bg-stone-100 flex items-center justify-center"
+                                                        :class="{ 'bg-stone-100 text-emerald-600': dropdownOpen }">
+                                                    <i data-lucide="more-vertical" class="w-4.5 h-4.5"></i>
+                                                </button>
+
+                                                <!-- Dropdown Menu -->
+                                                <div x-show="dropdownOpen" 
+                                                     x-cloak
+                                                     @click.outside="dropdownOpen = false"
+                                                     x-transition:enter="transition ease-out duration-100"
+                                                     x-transition:enter-start="opacity-0 scale-95"
+                                                     x-transition:enter-end="opacity-100 scale-100"
+                                                     style="display: none;"
+                                                     class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-stone-200 z-[100] py-2 origin-top-right">
+                                                    
+                                                    <a href="{{ admin_route('users.edit', $user) }}" class="flex items-center px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-emerald-600">
+                                                        <i data-lucide="edit-2" class="w-4 h-4 mr-3"></i>
+                                                        Edit Customer
+                                                    </a>
+
+                                                    @if($user->is_suspended)
+                                                        <button type="button" 
+                                                                onclick="window.confirmAction('Are you sure you want to unsuspend this customer?', () => { document.getElementById('unsuspend-form-{{ $user->id }}').submit() }, { type: 'success', confirmText: 'Unsuspend' })"
+                                                                class="w-full flex items-center px-4 py-2 text-sm text-green-600 hover:bg-green-50">
+                                                            <i data-lucide="unlock" class="w-4 h-4 mr-3"></i>
+                                                            Unsuspend
+                                                        </button>
+                                                        <form id="unsuspend-form-{{ $user->id }}" action="{{ admin_route('users.unsuspend', $user) }}" method="POST" class="hidden">@csrf</form>
+                                                    @else
+                                                        <button type="button" 
+                                                                onclick="window.confirmAction('Are you sure you want to suspend this customer? They will not be able to log in or place orders.', () => { document.getElementById('suspend-form-{{ $user->id }}').submit() }, { type: 'warning', confirmText: 'Suspend' })"
+                                                                class="w-full flex items-center px-4 py-2 text-sm text-amber-600 hover:bg-amber-50">
+                                                            <i data-lucide="lock" class="w-4 h-4 mr-3"></i>
+                                                            Suspend
+                                                        </button>
+                                                        <form id="suspend-form-{{ $user->id }}" action="{{ admin_route('users.suspend', $user) }}" method="POST" class="hidden">@csrf</form>
+                                                    @endif
+
+                                                    @if(!$user->email_verified_at)
+                                                        <form action="{{ admin_route('users.verify-email', $user) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="w-full flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
+                                                                <i data-lucide="mail-check" class="w-4 h-4 mr-3"></i>
+                                                                Verify Email
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    <div class="h-px bg-stone-100 my-2"></div>
+
+                                                    <button type="button" 
+                                                            onclick="window.confirmAction('Are you sure you want to delete this customer? This action is irreversible.', () => { document.getElementById('delete-form-{{ $user->id }}').submit() }, { type: 'danger', confirmText: 'Delete Customer' })"
+                                                            class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                        <i data-lucide="trash-2" class="w-4 h-4 mr-3"></i>
+                                                        Delete Customer
+                                                    </button>
+                                                    <form id="delete-form-{{ $user->id }}" action="{{ admin_route('users.destroy', $user) }}" method="POST" class="hidden">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

@@ -37,8 +37,8 @@ class MagicLinkMail extends Mailable
     public function envelope(): Envelope
     {
         $subject = $this->type === 'password_reset'
-            ? 'Reset Your Password - David\'s Wood Furniture'
-            : 'Complete Your Login - David\'s Wood Furniture';
+            ? 'Reset Your Password - Éclore Jewellery'
+            : 'Complete Your Login - Éclore Jewellery';
 
         return new Envelope(
             subject: $subject,

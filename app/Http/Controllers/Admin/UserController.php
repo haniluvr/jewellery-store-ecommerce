@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
 use App\Models\Admin;
+use App\Models\ArchivedUser;
 use App\Models\AuditLog;
 use App\Models\Order;
 use App\Models\User;
@@ -862,5 +863,26 @@ class UserController extends Controller
                 'total' => $all_customers->total(),
             ],
         ]);
+    }
+
+    /**
+     * Display a listing of archived users.
+     */
+    public function archivedUsers(Request $request)
+    {
+        $query = ArchivedUser::orderBy('archived_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('email', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%");
+            });
+        }
+
+        $archivedUsers = $query->paginate(20)->withQueryString();
+
+        return view('admin.users.archived', compact('archivedUsers'));
     }
 }

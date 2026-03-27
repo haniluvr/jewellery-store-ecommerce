@@ -173,13 +173,20 @@ return new class extends Migration
             $table->json('images')->nullable();
             $table->json('gallery')->nullable();
             $table->boolean('featured')->default(false);
-            $table->boolean('is_active')->default(true);
-            $table->integer('sort_order')->default(0);
-            $table->unsignedBigInteger('view_count')->default(0);
+            $table->boolean('is_active')->default(true)->index();
+            $table->integer('sort_order')->default(0)->index();
+            $table->unsignedBigInteger('view_count')->default(0)->index();
             $table->json('meta_data')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+
+            $table->index('material');
+            $table->index('color');
+            $table->index('gemstone');
+            $table->index('diamonds');
+            $table->index('price');
+            $table->index(['is_active', 'category_id']);
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('subcategory_id')->references('id')->on('categories')->onDelete('set null');

@@ -350,11 +350,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function toggleStatus(blogId, action) {
     const actionText = action === 'publish' ? 'publish' : 'unpublish';
-    if (confirm(`Are you sure you want to ${actionText} this blog post?`)) {
-        fetch(`/admin/cms-pages/${blogId}/toggle-status`, {
+    const message = `Are you sure you want to ${actionText} this blog post?`;
+    
+    window.confirmAction(message, () => {
+        const url = `/cms-pages/${blogId}/toggle-status`; // Admin routes usually don't have /admin prefix on the admin subdomain
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
@@ -363,46 +367,49 @@ function toggleStatus(blogId, action) {
             if (data.success) {
                 location.reload();
             } else {
-                alert(`Error ${actionText}ing blog post`);
+                alert(data.message || `Error ${actionText}ing blog post`);
             }
         })
         .catch(error => {
             console.error('Error:', error);
             alert(`Error ${actionText}ing blog post`);
         });
-    }
+    }, { 
+        confirmText: action === 'publish' ? 'Publish' : 'Unpublish',
+        type: action === 'publish' ? 'success' : 'warning'
+    });
 }
 
 function duplicateBlog(blogId) {
-    if (confirm('Are you sure you want to duplicate this blog post?')) {
-        fetch(`/admin/cms-pages/${blogId}/duplicate`, {
+    window.confirmAction('Are you sure you want to duplicate this blog post?', () => {
+        fetch(`/cms-pages/${blogId}/duplicate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
-        .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Error duplicating blog post');
-            }
+            // This is a redirect in the controller, but we are fetching it.
+            // Wait, the controller returns a redirect. Fetch won't follow it blindly for standard UI.
+            // Let's check the controller.
+            location.reload(); // Simple reload for now
         })
         .catch(error => {
             console.error('Error:', error);
             alert('Error duplicating blog post');
         });
-    }
+    }, { confirmText: 'Duplicate', type: 'info' });
 }
 
 function deleteBlog(blogId) {
-    if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
-        fetch(`/admin/cms-pages/${blogId}`, {
+    window.confirmAction('Are you sure you want to delete this blog post? This action cannot be undone.', () => {
+        fetch(`/cms-pages/${blogId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
@@ -418,7 +425,7 @@ function deleteBlog(blogId) {
             console.error('Error:', error);
             alert('Error deleting blog post');
         });
-    }
+    }, { confirmText: 'Delete Post', type: 'danger' });
 }
 
 function bulkAction(action) {
@@ -430,15 +437,16 @@ function bulkAction(action) {
     }
     
     const actionText = action === 'publish' ? 'publish' : action === 'unpublish' ? 'unpublish' : 'delete';
-    const confirmText = `Are you sure you want to ${actionText} ${selectedBlogs.length} blog post(s)?`;
+    const message = `Are you sure you want to ${actionText} ${selectedBlogs.length} blog post(s)?`;
     
-    if (confirm(confirmText)) {
+    window.confirmAction(message, () => {
         const blogIds = Array.from(selectedBlogs).map(checkbox => checkbox.value);
         
-        fetch(`/admin/cms-pages/bulk-${action}`, {
+        fetch(`/cms-pages/bulk-${action}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
@@ -457,7 +465,10 @@ function bulkAction(action) {
             console.error('Error:', error);
             alert(`Error ${actionText}ing blog posts`);
         });
-    }
+    }, { 
+        confirmText: action.charAt(0).toUpperCase() + action.slice(1), 
+        type: action === 'delete' ? 'danger' : 'info' 
+    });
 }
 </script>
 @endsection

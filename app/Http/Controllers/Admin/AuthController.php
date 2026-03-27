@@ -32,12 +32,15 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
+        $credentials['email'] = trim($credentials['email']);
         $remember = $request->boolean('remember');
 
         // Check if admin exists and is active
         $admin = Admin::where('email', $credentials['email'])->first();
 
         if (! $admin) {
+            \Log::warning('Admin lookup failed for email: '.$credentials['email']);
+
             throw ValidationException::withMessages([
                 'email' => ['These credentials do not match our records.'],
             ]);
@@ -50,6 +53,8 @@ class AuthController extends Controller
         }
 
         if (! Hash::check($credentials['password'], $admin->password)) {
+            \Log::warning('Admin password check failed for: '.$credentials['email']);
+
             throw ValidationException::withMessages([
                 'email' => ['These credentials do not match our records.'],
             ]);

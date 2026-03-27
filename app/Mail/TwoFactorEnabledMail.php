@@ -28,7 +28,7 @@ class TwoFactorEnabledMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Two-Factor Authentication Enabled - David\'s Wood Furniture',
+            subject: 'Two-Factor Authentication Enabled - Éclore Jewellery',
         );
     }
 

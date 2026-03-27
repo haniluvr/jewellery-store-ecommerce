@@ -9,7 +9,7 @@ class ReturnRepairSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('returns_repairs')->truncate();
+        DB::table('returns_repairs')->delete();
 
         $orders = DB::table('orders')->where('status', 'delivered')->take(10)->get();
 

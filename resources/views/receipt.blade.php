@@ -100,8 +100,8 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <h1 class="text-2xl font-bold mb-1">RECEIPT</h1>
-                        <p class="text-base opacity-90">Éclore</p>
-                        <p class="text-xs opacity-75">Handcrafted Furniture with Timeless Design</p>
+                        <p class="text-base opacity-90">Éclore Jewellery</p>
+                        <p class="text-xs opacity-75">Exquisite Jewellery with Timeless Elegance</p>
                     </div>
                     <div class="text-right">
                         <div class="bg-white text-[#8b7355] px-3 py-1 rounded-lg inline-block">

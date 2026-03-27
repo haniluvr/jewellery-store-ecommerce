@@ -78,6 +78,14 @@ $adminRoutes = function () {
             Route::get('categories/{category}/subcategories', [App\Http\Controllers\Admin\CategoryController::class, 'getSubcategories'])->name('categories.subcategories');
         });
 
+        // Appointment Management
+        Route::middleware('admin.permission:appointments.view')->group(function () {
+            Route::get('appointments', [App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('appointments.index');
+            Route::get('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'show'])->name('appointments.show');
+            Route::patch('appointments/{appointment}/status', [App\Http\Controllers\Admin\AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
+            Route::delete('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('appointments.destroy');
+        });
+
         // Order Management
         // Route::middleware('admin.permission:orders.view')->group(function () {
         // IMPORTANT: Custom routes must come BEFORE resource routes to avoid conflicts
@@ -154,6 +162,7 @@ $adminRoutes = function () {
             Route::get('all-customers/{all_customer}/analytics', [App\Http\Controllers\Admin\UserController::class, 'getCustomerAnalytics'])->name('users.analytics');
             Route::post('all-customers/bulk-update-tags', [App\Http\Controllers\Admin\UserController::class, 'bulkUpdateTags'])->name('users.bulk-update-tags');
             Route::get('all-customers/group/{group}', [App\Http\Controllers\Admin\UserController::class, 'getByGroup'])->name('users.by-group');
+            Route::get('archived-customers', [App\Http\Controllers\Admin\UserController::class, 'archivedUsers'])->name('users.archived');
         });
 
         // Admin User Management
@@ -238,6 +247,9 @@ $adminRoutes = function () {
             Route::post('cms-pages/{cmsPage}/duplicate', [App\Http\Controllers\Admin\CmsPageController::class, 'duplicate'])->name('cms-pages.duplicate');
             Route::get('cms-pages/{cmsPage}/preview', [App\Http\Controllers\Admin\CmsPageController::class, 'preview'])->name('cms-pages.preview');
             Route::post('cms-pages/generate-slug', [App\Http\Controllers\Admin\CmsPageController::class, 'generateSlug'])->name('cms-pages.generate-slug');
+            Route::get('newsletter', [App\Http\Controllers\Admin\CmsPageController::class, 'newsletter'])->name('newsletter.index');
+            Route::get('newsletter/export', [App\Http\Controllers\Admin\CmsPageController::class, 'exportNewsletter'])->name('newsletter.export');
+            Route::delete('newsletter/{subscription}', [App\Http\Controllers\Admin\CmsPageController::class, 'destroyNewsletter'])->name('newsletter.destroy');
         });
 
         // Blogs

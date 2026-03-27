@@ -201,146 +201,177 @@ async function initProductsSection() {
     window.productsPerPage = perPage;
     window.isProductsPage = pageType === 'products';
 
+    // Try to initialize products section
     try {
         // Check if API is available
         if (!window.api) {
-            renderProductsWithFilter([]);
+            console.error('API helper not available');
             return;
         }
 
-        // Load products from API with current page and persisted filter/sort/room
-        const initialFilterParams = {};
-        if (initialCategory !== 'all') {
-            initialFilterParams.category = initialCategory;
-        }
-        if (initialRoom !== 'all') {
-            initialFilterParams.room = initialRoom;
-        }
-        const response = await window.api.getProducts({ 
-            ...initialFilterParams,
+        // Load products from API with current page and persisted filter/sort
+        const params = {
+            category: initialCategory,
             sort: initialSort,
-            per_page: perPage, 
-            page: currentPage 
-        });
+            per_page: perPage,
+            page: currentPage
+        };
         
-        // Check the actual response structure - API returns data directly
-        const apiProducts = response.data || [];
+        // Remove 'all' from params
+        if (params.category === 'all') delete params.category;
 
-        // Fallback to API products only
-        const productsToUse = Array.isArray(apiProducts) && apiProducts.length > 0 ? apiProducts : [];
-
-        // Initial render
-        renderProductsWithFilter(productsToUse);
+        const response = await window.api.getProducts(params);
+        
+        // Render initial data
+        renderProductsWithFilter(response.data || []);
         
         // Render pagination if on products page
         if (window.isProductsPage && response.meta) {
             renderPagination(response.meta);
         }
 
-        // Sync UI with URL-derived filter/sort/room
+        // Sync UI with current state
         const sortSelect = document.getElementById('sort-select');
         const filterCategory = document.getElementById('filter-category');
-        const filterColor = document.getElementById('filter-color');
-        const filterMaterial = document.getElementById('filter-material');
-        const filterGemstone = document.getElementById('filter-gemstone');
-        const filterDiamonds = document.getElementById('filter-diamonds');
-        const filterPrice = document.getElementById('filter-price');
+        const filters = ['filter-color', 'filter-material', 'filter-gemstone', 'filter-diamonds', 'filter-price'];
+        const filterElements = filters.map(id => document.getElementById(id));
         
-        // Function to gather all filter states and trigger update
+        if (sortSelect) sortSelect.value = initialSort;
+        if (filterCategory) filterCategory.value = initialCategory;
+        
+        // Map elements back to values from URL if needed
+        const urlParamsSync = new URLSearchParams(window.location.search);
+        [...filterElements, sortSelect, filterCategory].forEach(el => {
+            if (el) {
+                const key = el.id.replace('filter-', '').replace('-select', '').replace('sort', 'sort');
+                const val = urlParamsSync.get(key);
+                if (val) el.value = val;
+            }
+        });
+
+        // ── Clear Filters Logic ──
+        const clearBtnContainer = document.getElementById('clear-filters-container');
+        const clearBtn = document.getElementById('btn-clear-filters');
+
+        function syncClearFiltersButton() {
+            if (!clearBtnContainer) return;
+
+            let hasFilters = (filterCategory ? filterCategory.value !== 'all' : false) || 
+                            (sortSelect ? sortSelect.value !== 'popularity' : false);
+            
+            // Check other filters
+            filterElements.forEach(el => {
+                if (el && el.value !== '') hasFilters = true;
+            });
+
+            if (hasFilters) {
+                clearBtnContainer.classList.remove('opacity-0', 'invisible', 'w-0');
+                clearBtnContainer.classList.add('opacity-100', 'visible', 'w-24');
+            } else {
+                clearBtnContainer.classList.add('opacity-0', 'invisible', 'w-0');
+                clearBtnContainer.classList.remove('opacity-100', 'visible', 'w-24');
+            }
+        }
+
+        // ── Unified Filter Handler ──
         async function handleFilterChange() {
-            const filters = {
+            syncClearFiltersButton();
+            const currentFilters = {
                 category: filterCategory ? filterCategory.value : 'all',
-                color: filterColor ? filterColor.value : '',
-                material: filterMaterial ? filterMaterial.value : '',
-                gemstone: filterGemstone ? filterGemstone.value : '',
-                diamonds: filterDiamonds ? filterDiamonds.value : '',
-                price: filterPrice ? filterPrice.value : '',
-                sort: sortSelect ? sortSelect.value : 'popularity'
+                sort: sortSelect ? sortSelect.value : 'popularity',
+                page: 1
             };
 
-            // Update global state
-            window.currentProductsFilter = filters.category;
-            window.currentProductsSort = filters.sort;
+            // Gather values for all filters
+            filters.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.value) {
+                    currentFilters[id.replace('filter-', '')] = el.value;
+                }
+            });
+
+            // Update state
+            window.currentProductsFilter = currentFilters.category;
+            window.currentProductsSort = currentFilters.sort;
             window.currentProductsPage = 1;
 
+            // Update URL immediately (before API call)
+            if (window.isProductsPage) {
+                const nextUrl = new URL(window.location);
+                ['page', 'sort', 'category', 'color', 'material', 'gemstone', 'diamonds', 'price'].forEach(k => nextUrl.searchParams.delete(k));
+                Object.keys(currentFilters).forEach(key => {
+                    const val = currentFilters[key];
+                    const isDefault = !val || val === 'all' || val === '' || (key === 'sort' && val === 'popularity') || (key === 'page' && val === 1);
+                    if (!isDefault) {
+                        nextUrl.searchParams.set(key, val);
+                    }
+                });
+                window.history.replaceState({}, '', nextUrl.toString());
+            }
+
             try {
-                const params = {
+                // Build fresh params for API
+                const apiParams = {
                     per_page: window.productsPerPage,
                     page: 1,
-                    sort: filters.sort
+                    sort: currentFilters.sort
                 };
 
-                // Add active filters to API params
-                if (filters.category !== 'all') params.category = filters.category;
-                if (filters.color) params.color = filters.color;
-                if (filters.material) params.material = filters.material;
-                if (filters.gemstone) params.gemstone = filters.gemstone;
-                if (filters.diamonds) params.diamonds = filters.diamonds;
-                if (filters.price) params.price = filters.price;
+                Object.keys(currentFilters).forEach(key => {
+                    if (key !== 'sort' && key !== 'page' && currentFilters[key] !== 'all') {
+                        apiParams[key] = currentFilters[key];
+                    }
+                });
 
-                const response = await window.api.getProducts(params);
-                const products = response.data || [];
-                renderProductsWithFilter(products);
+                const response = await window.api.getProducts(apiParams);
+                renderProductsWithFilter(response.data || []);
 
-                // Update pagination
                 if (window.isProductsPage && response.meta) {
                     renderPagination(response.meta);
                 }
-
-                // Update URL to persist state
-                if (window.isProductsPage) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    Object.keys(filters).forEach(key => {
-                        if (filters[key] && filters[key] !== '' && filters[key] !== 'all') {
-                            urlParams.set(key, filters[key]);
-                        } else {
-                            urlParams.delete(key);
-                        }
-                    });
-                    urlParams.set('page', '1');
-                    window.history.replaceState({}, '', window.location.pathname + '?' + urlParams.toString());
-                }
-            } catch (error) {
-                console.error('Filtering error:', error);
-                renderProductsWithFilter([]);
-                const pagContainer = document.getElementById('pagination-container');
-                if (pagContainer) pagContainer.innerHTML = '';
+            } catch (err) {
+                console.error('Filtering failed:', err);
             }
         }
 
         // Attach listeners
-        [filterCategory, filterColor, filterMaterial, filterGemstone, filterDiamonds, filterPrice, sortSelect].forEach(el => {
+        [sortSelect, filterCategory, ...filterElements].forEach(el => {
             if (el) el.addEventListener('change', handleFilterChange);
         });
 
-        // Initialize UI from URL
-        if (filterCategory) filterCategory.value = urlParams.get('category') || 'all';
-        if (filterColor) filterColor.value = urlParams.get('color') || '';
-        if (filterMaterial) filterMaterial.value = urlParams.get('material') || '';
-        if (filterGemstone) filterGemstone.value = urlParams.get('gemstone') || '';
-        if (filterDiamonds) filterDiamonds.value = urlParams.get('diamonds') || '';
-        if (filterPrice) filterPrice.value = urlParams.get('price') || '';
-        if (sortSelect) sortSelect.value = urlParams.get('sort') || 'popularity';
-        } catch (error) {
-            console.error('Initialization error:', error);
-            initDatabaseProducts();
+        // Attach clear button listener
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                if (sortSelect) sortSelect.value = 'popularity';
+                if (filterCategory) filterCategory.value = 'all';
+                filterElements.forEach(el => { if (el) el.value = ''; });
+                // Clear URL immediately (don't wait for API)
+                if (window.isProductsPage) {
+                    const cleanUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, '', cleanUrl);
+                }
+                handleFilterChange();
+            });
         }
+
+        // Initial sync
+        syncClearFiltersButton();
+
+    } catch (error) {
+        console.error('Initialization error:', error);
     }
+}
 
 // ── Render Products with Filter (Global) ──
     function renderProductsWithFilter(products) {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
     
-        // Clear grid with fade out effect
-        grid.style.transition = 'opacity 0.2s ease-in-out';
-        grid.style.opacity = '0.3';
+        // Clear and render immediately (no opacity delay)
+        grid.style.opacity = '1';
         grid.innerHTML = '';
-        
-        // Small delay to allow fade out
-        setTimeout(() => {
-            grid.style.opacity = '1';
 
+        if (true) {
             if (products.length === 0) {
                 grid.innerHTML = '<div class="col-span-full text-center py-8" data-aos="fade-up"><p class="text-gray-500">No products found.</p></div>';
                 // Refresh AOS for empty state
@@ -357,18 +388,19 @@ async function initProductsSection() {
             col.setAttribute('data-aos-delay', (index * 50).toString()); // Smooth sequential delay
             col.setAttribute('data-aos-duration', '450');
 
-            // Handle both API and local product formats
+            // Handle both API and local product formats with robust fallbacks
             const productData = {
                 id: product.id,
                 name: product.name,
                 description: product.short_description || product.description || product.desc,
                 price: product.price,
-                image: product.primary_image || (product.images && product.images.length > 0 ? getStorageUrl(product.images[0]) : null) || product.image || 'https://via.placeholder.com/300x300?text=No+Image',
-                average_rating: product.average_rating || product.rating || product.review_rating || 0,
+                images: product.images,
+                image: (product.images && product.images.length > 0 ? product.images[0] : null) || product.primary_image || product.image || 'https://via.placeholder.com/300x300?text=No+Image',
+                average_rating: product.average_rating || product.rating || 0,
                 reviews_count: product.reviews_count || 0,
                 stock: product.stock_status || product.stock || 'in-stock',
+                category: product.category,
                 material: product.material,
-                dimensions: product.dimensions,
                 slug: product.slug
             };
 
@@ -381,7 +413,7 @@ async function initProductsSection() {
             col.innerHTML = `
                 <div class="group flex flex-col h-full bg-transparent transition-all duration-500">
                     <div class="relative overflow-hidden bg-[#f9f9f9] aspect-[4/5]">
-                        <img src="${getStorageUrl((productData.images && productData.images[0]) || productData.primary_image || productData.image)}" 
+                        <img src="${getStorageUrl(productData.image)}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                              alt="${productData.name}">
                         
@@ -432,16 +464,22 @@ async function initProductsSection() {
                 grid.appendChild(col);
             });
 
-            // Re-init icons with small delay to ensure DOM is ready
+            // Re-init icons with robust method
             if (typeof lucide !== 'undefined') {
-                setTimeout(() => lucide.createIcons(), 50);
+                setTimeout(() => {
+                    try {
+                        lucide.createIcons();
+                    } catch (e) {
+                        console.warn('Lucide icons failed to update:', e);
+                    }
+                }, 100);
             }
             if (typeof feather !== 'undefined') feather.replace();
             
             // Refresh AOS animations for new content with immediate trigger
             if (typeof AOS !== 'undefined') {
-                // Force refresh AOS to detect new elements
-                AOS.refreshHard();
+                // Lighter AOS refresh (no full DOM rescan)
+                AOS.refresh();
             }
 
             // Attach event handlers
@@ -449,124 +487,121 @@ async function initProductsSection() {
             initAddToCartButtons();
             
             // Initialize wishlist buttons after DOM is fully updated
-            // Use requestAnimationFrame to ensure DOM is ready
             requestAnimationFrame(() => {
-            initWishlistButtons();
+                initWishlistButtons();
             });
-        }, 150); // Small delay for smooth transition
+        } // end immediate render
     }
 
 // ── Render Pagination Controls (Server-side navigation) ──
+// ── Render Pagination Controls (AJAX Redesign) ──
 function renderPagination(meta) {
-    const paginationContainer = document.getElementById('pagination-container');
-    if (!paginationContainer) {
-        return;
-    }
+    const container = document.getElementById('pagination-container');
+    if (!container) return;
     
     const { current_page, last_page, total } = meta;
-    
-    // Hide pagination if only one page
     if (last_page <= 1) {
-        paginationContainer.innerHTML = '';
+        container.innerHTML = '';
         return;
-    }
-    
-    // Helper function to build URL with page + current filter/sort parameters
-    function buildPageUrl(page) {
-        const params = new URLSearchParams(window.location.search);
-        // Ensure current filter/sort are preserved
-        const category = window.currentProductsFilter || params.get('category') || 'all';
-        const sort = window.currentProductsSort || params.get('sort') || 'popularity';
-        if (category && category !== 'all') {
-            params.set('category', category);
-        } else {
-            params.delete('category');
-        }
-        if (sort && sort !== 'popularity') {
-            params.set('sort', sort);
-        } else {
-            params.delete('sort');
-        }
-        params.set('page', page);
-        return window.location.pathname + '?' + params.toString();
     }
     
     let html = '';
     
-    // Previous button
-    if (current_page > 1) {
-        html += `
-            <a href="${buildPageUrl(current_page - 1)}" class="pagination-btn">
-                <i data-lucide="chevron-left" class="w-4 h-4"></i>
-            </a>
-        `;
-    } else {
-        html += `
-            <span class="pagination-btn" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
-                <i data-lucide="chevron-left" class="w-4 h-4"></i>
-            </span>
-        `;
-    }
+    // Helper to generate button HTML
+    const getBtn = (page, content, active = false, disabled = false) => {
+        if (disabled) return `<span class="pagination-btn opacity-50 cursor-not-allowed">${content}</span>`;
+        if (active) return `<span class="pagination-btn active">${content}</span>`;
+        return `<button type="button" class="pagination-btn products-page-link" data-page="${page}">${content}</button>`;
+    };
     
-    // Page numbers
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, current_page - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(last_page, startPage + maxVisiblePages - 1);
+    // Prev
+    html += getBtn(current_page - 1, '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m15 18-6-6 6-6"/></svg>', false, current_page <= 1);
     
-    // Adjust start if we're near the end
-    if (endPage - startPage < maxVisiblePages - 1) {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    // First page
-    if (startPage > 1) {
-        html += `<a href="${buildPageUrl(1)}" class="pagination-btn">1</a>`;
-        if (startPage > 2) {
-            html += `<span class="pagination-info">...</span>`;
+    // Logic for page numbers
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+    let l;
+
+    for (let i = 1; i <= last_page; i++) {
+        if (i === 1 || i === last_page || (i >= current_page - delta && i <= current_page + delta)) {
+            range.push(i);
         }
     }
-    
-    // Page numbers
-    for (let i = startPage; i <= endPage; i++) {
-        if (i === current_page) {
-            html += `<span class="pagination-btn active">${i}</span>`;
-        } else {
-            html += `<a href="${buildPageUrl(i)}" class="pagination-btn">${i}</a>`;
+
+    range.forEach(i => {
+        if (l) {
+            if (i - l === 2) rangeWithDots.push(l + 1);
+            else if (i - l !== 1) rangeWithDots.push('...');
         }
-    }
+        rangeWithDots.push(i);
+        l = i;
+    });
+
+    rangeWithDots.forEach(i => {
+        if (i === '...') html += '<span class="px-2 font-mono text-gray-400">...</span>';
+        else html += getBtn(i, i, i === current_page);
+    });
+
+    // Next
+    html += getBtn(current_page + 1, '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m9 18 6-6-6-6"/></svg>', false, current_page >= last_page);
     
-    // Last page
-    if (endPage < last_page) {
-        if (endPage < last_page - 1) {
-            html += `<span class="pagination-info">...</span>`;
-        }
-        html += `<a href="${buildPageUrl(last_page)}" class="pagination-btn">${last_page}</a>`;
-    }
+    // Info text
+    const start = (current_page - 1) * window.productsPerPage + 1;
+    const end = Math.min(current_page * window.productsPerPage, total);
+    html += `<span class="text-[10px] uppercase tracking-widest text-gray-500 ml-4">Showing ${start}-${end} of ${total}</span>`;
     
-    // Next button
-    if (current_page < last_page) {
-        html += `
-            <a href="${buildPageUrl(current_page + 1)}" class="pagination-btn">
-                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </a>
-        `;
-    } else {
-        html += `
-            <span class="pagination-btn" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
-                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </span>
-        `;
-    }
+    container.innerHTML = html;
     
-    // Add info text
-    const startItem = (current_page - 1) * window.productsPerPage + 1;
-    const endItem = Math.min(current_page * window.productsPerPage, total);
-    html += `<span class="pagination-info">Showing ${startItem}-${endItem} of ${total}</span>`;
-    
-    paginationContainer.innerHTML = html;
-    
+    // Attach listeners
+    container.querySelectorAll('.products-page-link').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const page = parseInt(btn.getAttribute('data-page'));
+            window.currentProductsPage = page;
+            
+            // Build params
+            const params = {
+                per_page: window.productsPerPage,
+                page: page,
+                category: window.currentProductsFilter,
+                sort: window.currentProductsSort
+            };
+            
+            // Add other filters
+            const filterIds = ['filter-color', 'filter-material', 'filter-gemstone', 'filter-diamonds', 'filter-price'];
+            filterIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.value) params[id.replace('filter-', '')] = el.value;
+            });
+            
+            if (params.category === 'all') delete params.category;
+
+            try {
+                const response = await window.api.getProducts(params);
+                renderProductsWithFilter(response.data || []);
+                renderPagination(response.meta);
+                
+                // Scroll to top of grid
+                document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Update URL
+                if (window.isProductsPage) {
+                    const nextUrl = new URL(window.location);
+                    nextUrl.searchParams.set('page', page);
+                    window.history.pushState({}, '', nextUrl.toString());
+                }
+            } catch (err) {
+                console.error('Pagination click failed:', err);
+            }
+        });
+    });
+
     // Re-init icons
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    if (typeof lucide !== 'undefined') {
+        try {
+            lucide.createIcons();
+        } catch (e) {}
+    }
 }
 
 // ── Newsroom AJAX Pagination ──
@@ -651,8 +686,8 @@ function renderNewsStories(stories) {
     const grid = document.getElementById('news-stories-grid');
     if (!grid) return;
 
-    grid.style.transition = 'opacity 0.2s ease-in-out';
-    grid.style.opacity = '0.3';
+    grid.style.transition = 'opacity 0.1s ease-in-out';
+    grid.style.opacity = '0.4';
 
     setTimeout(() => {
         grid.style.opacity = '1';
@@ -687,7 +722,7 @@ function renderNewsStories(stories) {
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
         if (typeof AOS !== 'undefined') AOS.refreshHard();
-    }, 150);
+    }, 50); // Reduced delay for newsroom as well
 }
 
 function renderNewsPagination(meta) {
@@ -3136,11 +3171,9 @@ async function initDatabaseProducts() {
         
         const response = await fetch(apiUrl, {
             method: 'GET',
-            credentials: 'include', // Include cookies for session management
+            credentials: 'include',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
             }
         });

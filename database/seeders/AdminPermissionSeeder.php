@@ -9,7 +9,7 @@ class AdminPermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('admin_permissions')->truncate();
+        DB::table('admin_permissions')->delete();
         $roles = ['super_admin', 'admin', 'manager', 'staff'];
         $permissions = ['manage_products', 'manage_orders', 'manage_users', 'view_reports', 'manage_settings'];
 

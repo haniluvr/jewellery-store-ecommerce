@@ -35,7 +35,7 @@ class PasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Your Password - David\'s Wood Furniture',
+            subject: 'Reset Your Password - Éclore Jewellery',
         );
     }
 

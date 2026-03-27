@@ -10,46 +10,67 @@ class DeliveryTrackingController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::whereIn('status', ['shipped', 'delivered'])
+        // 1. Fetch Orders (Shipped/Delivered)
+        $orderQuery = Order::whereIn('status', ['shipped', 'delivered'])
             ->whereNotNull('tracking_number')
             ->with(['user', 'orderItems.product']);
 
-        // Search by order number, tracking number, or customer name
+        // 2. Fetch Returns/Repairs (Approved/Received/Processing/Repaired)
+        // Note: Using 'approved' as 'confirmed' based on model status definitions
+        $returnQuery = \App\Models\ReturnRepair::whereIn('status', ['approved', 'received', 'processing', 'repaired'])
+            ->with(['user', 'order']);
+
+        // Apply Search to both
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
+
+            $orderQuery->where(function ($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
                     ->orWhere('tracking_number', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($userQuery) use ($search) {
                         $userQuery->where('first_name', 'like', "%{$search}%")
-                            ->orWhere('last_name', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%");
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                    });
+            });
+
+            $returnQuery->where(function ($q) use ($search) {
+                $q->where('rma_number', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
                     });
             });
         }
 
-        // Filter by status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $orders = $orderQuery->orderBy('shipped_at', 'desc')->get()->map(function ($item) {
+            $item->tracking_type = 'order';
 
-        // Filter by carrier
-        if ($request->filled('carrier')) {
-            $query->where('carrier', $request->carrier);
-        }
+            return $item;
+        });
 
-        // Filter by date range
-        if ($request->filled('date_from')) {
-            $query->whereDate('shipped_at', '>=', $request->date_from);
-        }
+        $returns = $returnQuery->orderBy('updated_at', 'desc')->get()->map(function ($item) {
+            $item->tracking_type = 'return';
 
-        if ($request->filled('date_to')) {
-            $query->whereDate('shipped_at', '<=', $request->date_to);
-        }
+            return $item;
+        });
 
-        $orders = $query->orderBy('shipped_at', 'desc')->paginate(15);
+        // Combine and Paginate (Manual pagination for simplicity in this case or just combine collections)
+        $combined = $orders->concat($returns)->sortByDesc(function ($item) {
+            return $item->tracking_type === 'order' ? $item->shipped_at : $item->updated_at;
+        });
 
-        // Get unique carriers for filter
+        // Statistics
+        $stats = [
+            'total_shipped' => Order::where('status', 'shipped')->whereNotNull('tracking_number')->count(),
+            'total_delivered' => Order::where('status', 'delivered')->whereNotNull('tracking_number')->count(),
+            'active_returns' => \App\Models\ReturnRepair::whereIn('status', ['approved', 'received', 'processing', 'repaired'])->count(),
+            'in_transit' => Order::where('status', 'shipped')
+                ->whereNotNull('tracking_number')
+                ->whereNull('delivered_at')
+                ->count(),
+        ];
+
+        // Unique carriers for filter
         $carriers = Order::whereNotNull('carrier')
             ->whereIn('status', ['shipped', 'delivered'])
             ->distinct()
@@ -58,17 +79,11 @@ class DeliveryTrackingController extends Controller
             ->sort()
             ->values();
 
-        // Calculate statistics
-        $stats = [
-            'total_shipped' => Order::where('status', 'shipped')->whereNotNull('tracking_number')->count(),
-            'total_delivered' => Order::where('status', 'delivered')->whereNotNull('tracking_number')->count(),
-            'in_transit' => Order::where('status', 'shipped')
-                ->whereNotNull('tracking_number')
-                ->whereNull('delivered_at')
-                ->count(),
-        ];
-
-        return view('admin.delivery-tracking.index', compact('orders', 'carriers', 'stats'));
+        return view('admin.delivery-tracking.index', [
+            'items' => $combined,
+            'carriers' => $carriers,
+            'stats' => $stats,
+        ]);
     }
 
     public function show(Order $order)

@@ -67,8 +67,8 @@ class TruncateAllTablesSeeder extends Seeder
             }
 
             if (Schema::hasTable($table)) {
-                DB::table($table)->truncate();
-                $this->command->info("✅ Truncated table: {$table}");
+                DB::table($table)->delete();
+                $this->command->info("✅ Deleted data from table: {$table}");
                 $truncatedCount++;
             } else {
                 $this->command->warn("⚠️ Table does not exist: {$table}");

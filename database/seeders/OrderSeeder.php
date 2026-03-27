@@ -11,7 +11,7 @@ class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('orders')->truncate();
+        DB::table('orders')->delete();
 
         $users = User::all();
         $statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
@@ -19,13 +19,19 @@ class OrderSeeder extends Seeder
         for ($i = 0; $i < 300; $i++) {
             $user = $users->random();
             $status = $statuses[array_rand($statuses)];
-            $subtotal = rand(25000, 750000);
+            $trackingNumber = in_array($status, ['shipped', 'delivered']) ? 'EK'.strtoupper(Str::random(10)) : null;
+            $shippedAt = in_array($status, ['shipped', 'delivered']) ? now()->subDays(rand(1, 30)) : null;
+            $deliveredAt = ($status === 'delivered') ? ($shippedAt ? $shippedAt->copy()->addDays(rand(1, 5)) : now()->subDays(rand(1, 5))) : null;
 
             DB::table('orders')->insert([
                 'user_id' => $user->id,
                 'order_number' => 'ORD-'.strtoupper(Str::random(8)),
                 'status' => $status,
-                'fulfillment_status' => ($status === 'delivered') ? 'delivered' : 'pending',
+                'fulfillment_status' => ($status === 'delivered') ? 'delivered' : (($status === 'shipped') ? 'shipped' : 'pending'),
+                'tracking_number' => $trackingNumber,
+                'carrier' => $trackingNumber ? ['DHL', 'FedEx', 'UPS', 'LBC'][array_rand(['DHL', 'FedEx', 'UPS', 'LBC'])] : null,
+                'shipped_at' => $shippedAt,
+                'delivered_at' => $deliveredAt,
                 'subtotal' => $subtotal,
                 'tax_amount' => $subtotal * 0.12,
                 'shipping_amount' => 500,

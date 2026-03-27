@@ -10,7 +10,7 @@ class ProductPopularitySeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('product_popularity')->truncate();
+        DB::table('product_popularity')->delete();
 
         $products = Product::all();
 

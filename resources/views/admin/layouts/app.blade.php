@@ -350,7 +350,9 @@
         }
     </style>
     
-    @stack('styles')
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-boxdark-2 dark:to-boxdark" x-data="{ 
     sidebarOpen: false, 
@@ -423,6 +425,9 @@ x-init="
     @include('admin.partials.modal-permission-denied')
     
     @stack('scripts')
+    
+    <!-- Global Confirmation Modal -->
+    @include('admin.partials.modal-confirm')
     
     <!-- Initialize Lucide Icons -->
     <script>
@@ -659,7 +664,7 @@ x-init="
                 formData.append('type', 'cms');
                 formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
                         
-                        fetch('/admin/images/upload', {
+                        fetch("{{ admin_route('images.upload') }}", {
                             method: 'POST',
                             body: formData,
                             headers: {

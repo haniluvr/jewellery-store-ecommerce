@@ -35,7 +35,7 @@ class NewsletterMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Latest News & Featured Products - David\'s Wood Furniture',
+            subject: 'Latest News & Featured Products - Éclore Jewellery',
         );
     }
 

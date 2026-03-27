@@ -158,8 +158,10 @@ class CmsPage extends Model
     public static function getTypeOptions(): array
     {
         return [
-            'page' => 'Page',
-            'blog' => 'Blog Post',
+            'page' => 'Static Page',
+            'press_release' => 'Press Release',
+            'exhibition' => 'Exhibition',
+            'insight' => 'Insight/Article',
             'faq' => 'FAQ',
             'policy' => 'Policy',
         ];

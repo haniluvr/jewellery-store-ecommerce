@@ -286,122 +286,85 @@
             </div>
         </div>
 
-        <!-- Product Details -->
+        <!-- Product Details / Jewelry Specifications -->
         <div class="bg-white dark:bg-boxdark rounded-2xl shadow-xl border border-stone-200 dark:border-strokedark overflow-hidden">
             <div class="px-8 py-6 border-b border-stone-200 dark:border-strokedark bg-gradient-to-r from-indigo-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700">
                 <div class="flex items-center gap-3">
                     <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-600 rounded-xl">
-                        <i data-lucide="ruler" class="w-5 h-5 text-white"></i>
+                        <i data-lucide="gem" class="w-5 h-5 text-white"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-stone-900 dark:text-white">Product Details</h3>
+                    <h3 class="text-xl font-semibold text-stone-900 dark:text-white">Jewelry Specifications</h3>
                 </div>
-                <p class="mt-1 text-sm text-stone-600 dark:text-gray-400">Specify physical characteristics of the product</p>
+                <p class="mt-1 text-sm text-stone-600 dark:text-gray-400">Specify the physical and material attributes of this jewellery piece</p>
             </div>
             <div class="p-8 space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="space-y-2">
-                        <label for="weight" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
-                            Weight (kg)
-                        </label>
-                        <div class="relative">
-                            <input type="number" 
-                                   name="weight" 
-                                   id="weight"
-                                   step="0.01"
-                                   min="0"
-                                   value="{{ old('weight') }}"
-                                   placeholder="0.00"
-                                   class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('weight') border-red-300 @enderror">
-                            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                <span class="text-stone-500 text-sm">kg</span>
-                            </div>
-                        </div>
-                        @error('weight')
-                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="space-y-2">
-                        <label for="dimensions" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
-                            Dimensions
-                        </label>
-                        <input type="text" 
-                               name="dimensions" 
-                               id="dimensions"
-                               value="{{ old('dimensions') }}"
-                               placeholder="e.g., 100cm x 50cm x 30cm"
-                               class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('dimensions') border-red-300 @enderror">
-                        @error('dimensions')
-                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label for="material" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
-                            Material
+                            Metal / Material
                         </label>
-                        <input type="text" 
-                               name="material" 
+                        <input type="text"
+                               name="material"
                                id="material"
                                value="{{ old('material') }}"
-                               placeholder="e.g., Oak Wood, Pine, MDF"
+                               placeholder="e.g., 18K Gold, Sterling Silver, Platinum"
                                class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('material') border-red-300 @enderror">
                         @error('material')
                             <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="space-y-2">
+                        <label for="color" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
+                            Color
+                        </label>
+                        <input type="text"
+                               name="color"
+                               id="color"
+                               value="{{ old('color') }}"
+                               placeholder="e.g., Rose Gold, White Gold, Yellow Gold"
+                               class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('color') border-red-300 @enderror">
+                        @error('color')
+                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
-                <!-- Room Categories (Tagging Style) -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-stone-700 dark:text-stone-300">
-                        Room Categories
-                    </label>
-                    <p class="text-xs text-stone-500 dark:text-gray-400 mb-3">Select one or more rooms where this product can be used</p>
-                    @php
-                        $roomOptions = [
-                            'bedroom' => ['name' => 'Bedroom', 'icon' => 'bed-double'],
-                            'living-room' => ['name' => 'Living Room', 'icon' => 'sofa'],
-                            'dining-room' => ['name' => 'Dining Room', 'icon' => 'utensils'],
-                            'bathroom' => ['name' => 'Bathroom', 'icon' => 'bath'],
-                            'office' => ['name' => 'Office', 'icon' => 'lamp-desk'],
-                            'garden-and-balcony' => ['name' => 'Garden & Balcony', 'icon' => 'flower'],
-                        ];
-                        $selectedRooms = old('room_category', []);
-                        if (!is_array($selectedRooms)) {
-                            $selectedRooms = [];
-                        }
-                    @endphp
-                    <div class="flex flex-wrap gap-2" id="room-tags-container">
-                        @foreach($roomOptions as $roomSlug => $roomData)
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" 
-                                       name="room_category[]" 
-                                       value="{{ $roomSlug }}"
-                                       {{ in_array($roomSlug, $selectedRooms) ? 'checked' : '' }}
-                                       class="sr-only room-checkbox">
-                                <span class="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 
-                                    {{ in_array($roomSlug, $selectedRooms) 
-                                        ? 'bg-primary text-white shadow-md' 
-                                        : 'bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600' }}">
-                                    <i data-lucide="{{ $roomData['icon'] }}" class="w-4 h-4 mr-2"></i>
-                                    {{ $roomData['name'] }}
-                                    @if(in_array($roomSlug, $selectedRooms))
-                                        <i data-lucide="check" class="w-4 h-4 ml-2"></i>
-                                    @endif
-                                </span>
-                            </label>
-                        @endforeach
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label for="gemstone" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
+                            Gemstone
+                        </label>
+                        <input type="text"
+                               name="gemstone"
+                               id="gemstone"
+                               value="{{ old('gemstone') }}"
+                               placeholder="e.g., Ruby, Emerald, Sapphire, None"
+                               class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('gemstone') border-red-300 @enderror">
+                        @error('gemstone')
+                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('room_category')
-                        <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                    @error('room_category.*')
-                        <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
+
+                    <div class="space-y-2">
+                        <label for="diamonds" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
+                            Diamonds
+                        </label>
+                        <input type="text"
+                               name="diamonds"
+                               id="diamonds"
+                               value="{{ old('diamonds') }}"
+                               placeholder="e.g., 0.5ct, SI1, G-Color or None"
+                               class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-500 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:placeholder-stone-400 @error('diamonds') border-red-300 @enderror">
+                        @error('diamonds')
+                            <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
+
+
 
         <!-- Product Images -->
         <div class="bg-white dark:bg-boxdark rounded-2xl shadow-xl border border-stone-200 dark:border-strokedark overflow-hidden">

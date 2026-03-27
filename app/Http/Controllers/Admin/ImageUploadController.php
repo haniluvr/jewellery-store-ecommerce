@@ -38,7 +38,8 @@ class ImageUploadController extends Controller
                 $path = $this->getStoragePath($type, $productId);
 
                 // Store original image
-                $originalPath = $image->storeAs($path, $filename, 'public');
+                $disk = \Illuminate\Support\Facades\Storage::getDynamicDisk();
+                $originalPath = $image->storeAs($path, $filename, $disk);
 
                 // Generate thumbnails
                 $thumbnails = $this->generateThumbnails($image, $path, $filename);
@@ -46,7 +47,7 @@ class ImageUploadController extends Controller
                 $uploadedImages[] = [
                     'filename' => $filename,
                     'path' => $originalPath,
-                    'url' => asset('storage/'.$originalPath),
+                    'url' => storage_url($originalPath),
                     'thumbnails' => $thumbnails,
                     'size' => $image->getSize(),
                     'mime_type' => $image->getMimeType(),
@@ -101,8 +102,9 @@ class ImageUploadController extends Controller
             $cmsPath = 'cms/images';
             $images = [];
 
-            if (Storage::disk('public')->exists($cmsPath)) {
-                $files = Storage::disk('public')->files($cmsPath);
+            $disk = \Illuminate\Support\Facades\Storage::getDynamicDisk();
+            if (Storage::disk($disk)->exists($cmsPath)) {
+                $files = Storage::disk($disk)->files($cmsPath);
 
                 foreach ($files as $file) {
                     // Skip thumbnails directory
@@ -113,9 +115,9 @@ class ImageUploadController extends Controller
                     $images[] = [
                         'filename' => basename($file),
                         'path' => $file,
-                        'url' => asset('storage/'.$file),
-                        'size' => Storage::disk('public')->size($file),
-                        'created_at' => Storage::disk('public')->lastModified($file),
+                        'url' => storage_url($file),
+                        'size' => Storage::disk($disk)->size($file),
+                        'created_at' => Storage::disk($disk)->lastModified($file),
                     ];
                 }
 
@@ -203,29 +205,19 @@ class ImageUploadController extends Controller
         ];
 
         try {
-            // For now, just return the original image as thumbnails
-            // This will be enhanced when Intervention Image is installed
             foreach ($sizes as $size => $dimensions) {
                 $thumbnailFilename = $this->getThumbnailFilename($filename, $size);
                 $thumbnailPath = $path.'/thumbnails/'.$thumbnailFilename;
 
-                // Create thumbnails directory if it doesn't exist
-                $thumbnailDir = storage_path('app/public/'.$path.'/thumbnails');
-                if (! file_exists($thumbnailDir)) {
-                    mkdir($thumbnailDir, 0755, true);
-                }
-
                 // Copy original image as thumbnail for now
-                $originalPath = storage_path('app/public/'.$path.'/'.$filename);
-                $thumbnailFullPath = storage_path('app/public/'.$thumbnailPath);
-
-                if (file_exists($originalPath)) {
-                    copy($originalPath, $thumbnailFullPath);
+                $disk = \Illuminate\Support\Facades\Storage::getDynamicDisk();
+                if (Storage::disk($disk)->exists($path.'/'.$filename)) {
+                    Storage::disk($disk)->copy($path.'/'.$filename, $thumbnailPath);
                 }
 
                 $thumbnails[$size] = [
                     'path' => $thumbnailPath,
-                    'url' => asset('storage/'.$thumbnailPath),
+                    'url' => storage_url($thumbnailPath),
                     'width' => $dimensions[0],
                     'height' => $dimensions[1],
                 ];

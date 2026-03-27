@@ -1,4 +1,4 @@
-﻿# Éclore - S3 Storage Enabled - E-Commerce Platform 🚀
+# Éclore - S3 Storage Enabled - E-Commerce Platform 🚀
 
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-12.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12.0">
@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License">
 </p>
 
-A modern, full-featured e-commerce platform for a wood furniture business, built with Laravel 12. The platform features a beautiful customer-facing storefront and a powerful admin dashboard accessed via subdomain with comprehensive product management, order tracking, inventory control, and analytics.
+A modern, full-featured e-commerce platform for a luxury jewellery business, built with Laravel 12. The platform features a beautiful customer-facing storefront and a powerful admin dashboard accessed via subdomain with comprehensive product management, order tracking, inventory control, and analytics.
 
 ---
 
@@ -39,7 +39,7 @@ A modern, full-featured e-commerce platform for a wood furniture business, built
 ## Features
 
 ### Customer Portal
-- **Product Catalog** - Browse furniture by categories, rooms, and subcategories
+- **Product Catalog** - Browse jewellery by categories, gemstones, and materials
 - **Advanced Search** - Filter products by price, category, availability
 - **Product Pagination** - Efficient browsing with 8 products on home, 28 on products page
 - **Shopping Cart** - Add/remove items, update quantities, real-time total calculation
@@ -158,7 +158,7 @@ Before you begin, ensure you have the following installed:
 #### Clone the Repository
 ```bash
 git clone https://github.com/haniluvr/davids-wood-furniture.git
-cd davids-wood-furniture
+cd jewellery-store-ecommerce
 ```
 
 #### Install Dependencies

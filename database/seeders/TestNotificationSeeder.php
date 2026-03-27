@@ -9,6 +9,6 @@ class TestNotificationSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('notifications')->truncate();
+        DB::table('notifications')->delete();
     }
 }

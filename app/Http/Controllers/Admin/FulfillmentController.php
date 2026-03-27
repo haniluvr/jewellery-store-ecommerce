@@ -95,7 +95,7 @@ class FulfillmentController extends Controller
             'label_printed' => 'required|boolean',
             'shipped' => 'required|boolean',
             'carrier' => 'required_if:shipped,true|string|max:100',
-            'tracking_number' => 'required_if:shipped,true|string|max:100',
+            'tracking_number' => 'nullable|string|max:100',
             'shipping_notes' => 'nullable|string|max:1000',
         ]);
 
@@ -111,7 +111,7 @@ class FulfillmentController extends Controller
             $updateData['shipped_at'] = now();
             $updateData['shipped_by'] = auth('admin')->id();
             $updateData['carrier'] = $request->carrier;
-            $updateData['tracking_number'] = $request->tracking_number;
+            $trackingNumber = $request->tracking_number ?: $order->generateTrackingNumber();
 
             // Update order status and fulfillment status
             $order->update([
@@ -119,8 +119,10 @@ class FulfillmentController extends Controller
                 'fulfillment_status' => 'shipped',
                 'shipped_at' => now(),
                 'carrier' => $request->carrier,
-                'tracking_number' => $request->tracking_number,
+                'tracking_number' => $trackingNumber,
             ]);
+
+            $updateData['tracking_number'] = $trackingNumber;
         }
 
         $fulfillment->update($updateData);
@@ -157,7 +159,7 @@ class FulfillmentController extends Controller
                     continue;
                 }
 
-                $trackingNumber = $trackingNumbers[$index] ?? null;
+                $trackingNumber = ($trackingNumbers[$index] ?? null) ?: $order->generateTrackingNumber();
 
                 $fulfillment = $order->fulfillment()->firstOrCreate([]);
 
@@ -166,11 +168,8 @@ class FulfillmentController extends Controller
                     'shipped_at' => now(),
                     'shipped_by' => auth('admin')->id(),
                     'carrier' => $carrier,
+                    'tracking_number' => $trackingNumber,
                 ];
-
-                if ($trackingNumber) {
-                    $fulfillmentData['tracking_number'] = $trackingNumber;
-                }
 
                 $fulfillment->update($fulfillmentData);
 
@@ -179,11 +178,8 @@ class FulfillmentController extends Controller
                     'fulfillment_status' => 'shipped',
                     'shipped_at' => now(),
                     'carrier' => $carrier,
+                    'tracking_number' => $trackingNumber,
                 ];
-
-                if ($trackingNumber) {
-                    $orderData['tracking_number'] = $trackingNumber;
-                }
 
                 $order->update($orderData);
                 $updatedCount++;

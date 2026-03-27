@@ -231,10 +231,9 @@
                                     class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white @error('type') border-red-300 @enderror"
                                     required
                                 >
-                                    <option value="page" {{ old('type', 'page') === 'page' ? 'selected' : '' }}>Page</option>
-                                    <option value="blog" {{ old('type') === 'blog' ? 'selected' : '' }}>Blog Post</option>
-                                    <option value="faq" {{ old('type') === 'faq' ? 'selected' : '' }}>FAQ</option>
-                                    <option value="policy" {{ old('type') === 'policy' ? 'selected' : '' }}>Policy</option>
+                                    @foreach(\App\Models\CmsPage::getTypeOptions() as $value => $label)
+                                        <option value="{{ $value }}" {{ old('type', 'page') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
                                 </select>
                                 @error('type')
                                     <p class="mt-1 text-sm text-red-500 dark:text-red-400">{{ $message }}</p>

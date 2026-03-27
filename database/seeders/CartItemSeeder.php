@@ -11,7 +11,7 @@ class CartItemSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('cart_items')->truncate();
+        DB::table('cart_items')->delete();
 
         $users = User::all();
         $products = Product::all();

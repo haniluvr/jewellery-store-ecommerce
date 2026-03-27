@@ -11,79 +11,220 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        Product::truncate();
+        Product::query()->delete();
 
         $subcategories = Category::whereNotNull('parent_id')->orderBy('category_order')->get();
 
-        $prefixes = ['Éclore', 'Lumière', 'Soleil', 'Clair', 'Aura', 'Celestial', 'Opulence', 'Royal', 'Divine', 'Radiance'];
-        $materials = ['18k Yellow Gold', 'Platinum', '18k White Gold', '14k Rose Gold', 'Sterling Silver'];
-        $gemstones = ['Diamond', 'Sapphire', 'Emerald', 'Ruby', 'Aquamarine', 'Pearl', 'Opal', 'Morganite'];
+        // Allowed Values according to user request
+        $colors = ['yellow gold', 'white gold', 'rose gold', 'platinum', 'sterling silver', 'two-tone', 'mixed metals'];
+        $materials = ['14k gold', '18k gold', '925 sterling silver', 'platinum 950', 'palladium', 'titanium', 'stainless steel', 'vermeil'];
+        $gemstones = ['diamond', 'ruby', 'emerald', 'sapphire', 'pearl', 'morganite', 'aquamarine', 'amethyst', 'topaz', 'onyx', 'mixed gemstones', 'no gemstone'];
+        $diamond_scales = ['no diamond', 'accent (< 0.10 ct)', '0.10 - 0.29 ct', '0.30 - 0.49 ct', '0.50 - 0.99 ct', '1.00 + ct'];
 
-        $productCount = 0;
+        $prefixes = ['Éclore', 'Lumière', 'Soleil', 'Clair', 'Aura', 'Celestial', 'Opulence', 'Royal', 'Divine', 'Radiance'];
 
         foreach ($subcategories as $sub) {
-            for ($i = 1; $i <= 5; $i++) {
+            $count = 5; // Default
+            $minPrice = 10000;
+            $maxPrice = 50000;
+
+            // Specific Subcategory Mapping
+            switch ($sub->name) {
+                // Rings (25 total)
+                case 'Engagement Rings': $count = 5;
+                    $minPrice = 25000;
+                    $maxPrice = 120000;
+
+                    break;
+                case 'Wedding Bands': $count = 5;
+                    $minPrice = 8000;
+                    $maxPrice = 45000;
+
+                    break;
+                case 'Statement Rings': $count = 5;
+                    $minPrice = 12000;
+                    $maxPrice = 55000;
+
+                    break;
+                case 'Gemstone Rings': $count = 5;
+                    $minPrice = 15000;
+                    $maxPrice = 65000;
+
+                    break;
+                case "Signet & Men's Rings": $count = 5;
+                    $minPrice = 10000;
+                    $maxPrice = 40000;
+
+                    break;
+
+                    // Necklaces (20 total)
+                case 'Solitaire Pendants': $count = 4;
+                    $minPrice = 6000;
+                    $maxPrice = 45000;
+
+                    break;
+                case 'Statement Necklaces': $count = 4;
+                    $minPrice = 18000;
+                    $maxPrice = 75000;
+
+                    break;
+                case 'Fine Chains': $count = 4;
+                    $minPrice = 4000;
+                    $maxPrice = 35000;
+
+                    break;
+                case 'Lockets & Charms': $count = 4;
+                    $minPrice = 7000;
+                    $maxPrice = 30000;
+
+                    break;
+                case 'Chokers & Collars': $count = 4;
+                    $minPrice = 9000;
+                    $maxPrice = 50000;
+
+                    break;
+
+                    // Earrings (20 total)
+                case 'Diamond Studs': $count = 4;
+                    $minPrice = 8000;
+                    $maxPrice = 65000;
+
+                    break;
+                case 'Drop & Dangle Earrings': $count = 4;
+                    $minPrice = 10000;
+                    $maxPrice = 55000;
+
+                    break;
+                case 'Hoop Earrings': $count = 4;
+                    $minPrice = 5000;
+                    $maxPrice = 35000;
+
+                    break;
+                case 'Chandelier Earrings': $count = 4;
+                    $minPrice = 15000;
+                    $maxPrice = 70000;
+
+                    break;
+                case 'Ear Cuffs & Climbers': $count = 4;
+                    $minPrice = 3500;
+                    $maxPrice = 25000;
+
+                    break;
+
+                    // Bracelets (20 total)
+                case 'Tennis Bracelets': $count = 4;
+                    $minPrice = 18000;
+                    $maxPrice = 85000;
+
+                    break;
+                case 'Charm Bracelets': $count = 4;
+                    $minPrice = 9000;
+                    $maxPrice = 40000;
+
+                    break;
+                case 'Cuff Bracelets': $count = 4;
+                    $minPrice = 12000;
+                    $maxPrice = 55000;
+
+                    break;
+                case 'Bangle Sets': $count = 4;
+                    $minPrice = 8000;
+                    $maxPrice = 45000;
+
+                    break;
+                case 'Chain Bracelets': $count = 4;
+                    $minPrice = 5000;
+                    $maxPrice = 35000;
+
+                    break;
+
+                    // Timepieces (15 total)
+                case "Luxury Women's Watches": $count = 3;
+                    $minPrice = 15000;
+                    $maxPrice = 85000;
+
+                    break;
+                case "Men's Dress Watches": $count = 3;
+                    $minPrice = 20000;
+                    $maxPrice = 95000;
+
+                    break;
+                case 'Jewelry Boxes & Travel Cases': $count = 3;
+                    $minPrice = 1500;
+                    $maxPrice = 12000;
+
+                    break;
+                case 'Cufflinks & Tie Bars': $count = 3;
+                    $minPrice = 2500;
+                    $maxPrice = 18000;
+
+                    break;
+                case 'Brooches & Pins': $count = 3;
+                    $minPrice = 4000;
+                    $maxPrice = 22000;
+
+                    break;
+            }
+
+            for ($i = 1; $i <= $count; $i++) {
                 $prefix = $prefixes[array_rand($prefixes)];
+                $color = $colors[array_rand($colors)];
                 $material = $materials[array_rand($materials)];
-                $gemstone = $gemstones[array_rand($gemstones)];
+
+                // Gemstone Logic
+                if (str_contains($sub->name, 'Diamond')) {
+                    $gemstone = 'diamond';
+                } elseif (str_contains($sub->name, 'Gemstone')) {
+                    $gemstone = $gemstones[array_rand(array_diff($gemstones, ['no gemstone', 'diamond']))];
+                } else {
+                    $gemstone = $gemstones[array_rand($gemstones)];
+                }
+
+                // Diamond scale logic
+                if ($gemstone === 'diamond') {
+                    $diamond = $diamond_scales[array_rand(array_diff($diamond_scales, ['no diamond']))];
+                } else {
+                    $diamond = 'no diamond';
+                }
 
                 $name = "{$prefix} ".Str::singular($sub->name)." in {$material}";
-                if (rand(0, 1)) {
-                    $name .= " with {$gemstone}";
+                if ($gemstone !== 'no gemstone') {
+                    $name .= ' with '.Str::ucfirst($gemstone);
                 }
 
-                // SKU Logic: [A][BB][DD]
-                // A = category_id (1-5)
-                // BB = subcategory.category_order (01-25)
-                // DD = item number (01-05)
                 $sku = sprintf('%d%02d%02d', $sub->parent_id, $sub->category_order, $i);
-
-                // Determine price point based on category and material
-                $price = 0;
-                $isPremium = (str_contains($material, 'Platinum') || str_contains($gemstone, 'Diamond'));
-
-                if ($sub->parent_id == 3) { // Earrings
-                    $price = $isPremium ? rand(90000, 370000) : rand(10000, 25000);
-                } elseif ($sub->parent_id == 1) { // Rings
-                    $price = $isPremium ? rand(45000, 150000) : rand(20000, 50000);
-                } elseif ($sub->parent_id == 2) { // Necklaces
-                    $price = $isPremium ? rand(120000, 450000) : rand(15000, 45000);
-                } elseif ($sub->parent_id == 4) { // Bracelets
-                    $price = $isPremium ? rand(80000, 250000) : rand(18000, 40000);
-                } else { // Others/Accessories
-                    $price = rand(15000, 120000);
-                }
-
-                $cost = $price * 0.45;
+                $price = rand($minPrice, $maxPrice);
+                $cost = $price * 0.5;
 
                 Product::create([
                     'category_id' => $sub->parent_id,
                     'subcategory_id' => $sub->id,
                     'name' => $name,
                     'slug' => Str::slug($name).'-'.$sku,
-                    'description' => "An exquisite masterpiece from our premium collection. This piece features handcrafted detailing in {$material}, epitomizing the elegance of Éclore Fine Jewelry.",
-                    'short_description' => 'Elegant '.Str::lower($sub->name).' crafted with precision.',
+                    'description' => "A bespoke jewellery piece from Éclore's exclusive vault. This masterpiece showcases fine craftsmanship in {$material} with a meticulous {$color} finish, accentuating the natural brilliance of the {$gemstone}.",
+                    'short_description' => 'Exquisite handcrafted '.Str::lower($sub->name),
                     'price' => $price,
                     'cost_price' => $cost,
-                    'sale_price' => rand(0, 5) === 0 ? $price * 0.85 : null,
-                    'tax_class' => 'standard',
+                    'sale_price' => rand(1, 10) === 1 ? $price * 0.9 : null,
+                    'tax_class' => 'VAT',
                     'sku' => $sku,
-                    'barcode' => 'BAR'.$sku.rand(100, 999),
-                    'stock_quantity' => rand(2, 15),
+                    'barcode' => 'BCL'.strtoupper(Str::random(8)),
+                    'stock_quantity' => rand(1, 12),
                     'low_stock_threshold' => 2,
                     'manage_stock' => true,
                     'in_stock' => true,
                     'material' => $material,
-                    'color' => 'Gold',
+                    'color' => $color,
                     'gemstone' => $gemstone,
-                    'diamonds' => rand(0, 2) === 0 ? '0.5ct' : 'None',
-                    'images' => ['https://placehold.co/800x800/f4f1ea/333333?text=Eclore+Fine+Jewelry'],
+                    'diamonds' => $diamond,
+                    'images' => ['https://placehold.co/800x1000/f8f8f8/1a1a1a?text='.urlencode($name)],
                     'gallery' => [
-                        'https://placehold.co/800x800/f4f1ea/333333?text=Detail+View',
-                        'https://placehold.co/800x800/f4f1ea/333333?text=On+Model',
+                        'https://placehold.co/800x1000/f8f8f8/1a1a1a?text=Detail',
+                        'https://placehold.co/800x1000/f8f8f8/1a1a1a?text=Lifestyle',
                     ],
-                    'view_count' => rand(100, 2000),
+                    'featured' => rand(1, 20) === 1,
                     'is_active' => true,
+                    'view_count' => rand(50, 5000),
                     'created_by' => 1,
                     'updated_by' => 1,
                 ]);

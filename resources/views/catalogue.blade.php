@@ -7,7 +7,7 @@
 /* Sticky filter bar styles */
 .sticky-filter-bar {
     position: sticky;
-    top: 64px;
+    top: 120px;
     z-index: 40;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
@@ -284,10 +284,13 @@
                     <div class="relative group w-[110px]">
                         <select class="appearance-none bg-transparent border-none py-2 px-2 w-full text-[10px] uppercase tracking-[0.15em] font-medium text-gray-700 hover:text-[#B6965D] cursor-pointer focus:ring-0" id="filter-color">
                             <option value="">Color</option>
-                            <option value="gold">Gold</option>
-                            <option value="rose-gold">Rose Gold</option>
-                            <option value="white-gold">White Gold</option>
-                            <option value="silver">Silver</option>
+                            <option value="yellow gold">Yellow Gold</option>
+                            <option value="white gold">White Gold</option>
+                            <option value="rose gold">Rose Gold</option>
+                            <option value="platinum">Platinum</option>
+                            <option value="sterling silver">Silver</option>
+                            <option value="two-tone">Two-Tone</option>
+                            <option value="mixed metals">Mixed</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>
@@ -296,9 +299,13 @@
                     <div class="relative group w-[110px]">
                         <select class="appearance-none bg-transparent border-none py-2 px-2 w-full text-[10px] uppercase tracking-[0.15em] font-medium text-gray-700 hover:text-[#B6965D] cursor-pointer focus:ring-0" id="filter-material">
                             <option value="">Material</option>
-                            <option value="18k-gold">18K Gold</option>
-                            <option value="platinum">Platinum</option>
-                            <option value="sterling-silver">Sterling Silver</option>
+                            <option value="18k gold">18K Gold</option>
+                            <option value="14k gold">14K Gold</option>
+                            <option value="platinum 950">Plat 950</option>
+                            <option value="925 sterling silver">925 Silver</option>
+                            <option value="palladium">Palladium</option>
+                            <option value="titanium">Titanium</option>
+                            <option value="vermeil">Vermeil</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>
@@ -309,8 +316,13 @@
                             <option value="">Gemstone</option>
                             <option value="diamond">Diamond</option>
                             <option value="ruby">Ruby</option>
-                            <option value="sapphire">Sapphire</option>
                             <option value="emerald">Emerald</option>
+                            <option value="sapphire">Sapphire</option>
+                            <option value="pearl">Pearl</option>
+                            <option value="morganite">Morganite</option>
+                            <option value="aquamarine">Aquamarine</option>
+                            <option value="onyx">Onyx</option>
+                            <option value="no gemstone">None</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>
@@ -318,9 +330,13 @@
                     <!-- Diamonds -->
                     <div class="relative group w-[110px]">
                         <select class="appearance-none bg-transparent border-none py-2 px-2 w-full text-[10px] uppercase tracking-[0.15em] font-medium text-gray-700 hover:text-[#B6965D] cursor-pointer focus:ring-0" id="filter-diamonds">
-                            <option value="">Diamonds</option>
-                            <option value="natural">Natural</option>
-                            <option value="lab-grown">Lab Grown</option>
+                            <option value="">Carat</option>
+                            <option value="accent (< 0.10 ct)">Accent</option>
+                            <option value="0.10 - 0.29 ct">0.10-0.29</option>
+                            <option value="0.30 - 0.49 ct">0.30-0.49</option>
+                            <option value="0.50 - 0.99 ct">0.50-0.99</option>
+                            <option value="1.00 + ct">1.00+</option>
+                            <option value="no diamond">None</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>
@@ -329,9 +345,10 @@
                     <div class="relative group w-[110px]">
                         <select class="appearance-none bg-transparent border-none py-2 px-2 w-full text-[10px] uppercase tracking-[0.15em] font-medium text-gray-700 hover:text-[#B6965D] cursor-pointer focus:ring-0" id="filter-price">
                             <option value="">Price</option>
-                            <option value="under-50k">Under ₱50,000</option>
-                            <option value="50k-100k">₱50,000 - ₱100,000</option>
-                            <option value="over-100k">Over ₱100,000</option>
+                            <option value="under-30k">< 30k</option>
+                            <option value="30k-60k">30k-60k</option>
+                            <option value="60k-100k">60k-100k</option>
+                            <option value="over-100k">> 100k</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>
@@ -344,9 +361,17 @@
                             <option value="necklaces-pendants">Necklaces</option>
                             <option value="earrings">Earrings</option>
                             <option value="bracelets-bangles">Bracelets</option>
-                            <option value="timepieces-fine-accessories">Timepieces</option>
+                            <option value="timepieces-fine-accessories">Others</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
+                    </div>
+
+                    <!-- Clear Filters (Hidden by Default) -->
+                    <div id="clear-filters-container" class="opacity-0 invisible transition-all duration-300 flex items-center border-l border-gray-100 ml-4 pl-4 shrink-0 overflow-hidden w-0">
+                        <button id="btn-clear-filters" class="group flex items-center gap-1.5 text-[9px] uppercase tracking-[0.25em] font-bold text-gray-400 hover:text-[#B6965D] transition-colors whitespace-nowrap">
+                            <i data-lucide="x" class="w-3.5 h-3.5 transition-all group-hover:scale-110"></i>
+                            <span>Clear</span>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -83,11 +83,17 @@ class PageController extends Controller
         $currentCategory = $request->get('category', 'Latest');
 
         $query = \App\Models\CmsPage::published()
-            ->where('type', 'blog')
+            ->whereIn('type', ['press_release', 'exhibition', 'insight'])
             ->orderBy('published_at', 'desc');
 
-        if ($currentCategory !== 'Latest') {
-            $query->where('category', $currentCategory);
+        $typeMap = [
+            'Press Releases' => 'press_release',
+            'Exhibitions' => 'exhibition',
+            'Insights' => 'insight',
+        ];
+
+        if ($currentCategory !== 'Latest' && isset($typeMap[$currentCategory])) {
+            $query->where('type', $typeMap[$currentCategory]);
         }
 
         // Featured story (only for 'Latest' or if no specific category is selected, or just the top one for the category)
