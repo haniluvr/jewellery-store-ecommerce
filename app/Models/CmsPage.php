@@ -46,11 +46,21 @@ class CmsPage extends Model
             if (empty($page->slug)) {
                 $page->slug = Str::slug($page->title);
             }
+
+            // Set published_at if active and currently empty
+            if ($page->is_active && empty($page->published_at)) {
+                $page->published_at = now();
+            }
         });
 
         static::updating(function ($page) {
             if ($page->isDirty('title') && empty($page->slug)) {
                 $page->slug = Str::slug($page->title);
+            }
+
+            // Set published_at if being activated and empty
+            if ($page->is_active && $page->isDirty('is_active') && empty($page->published_at)) {
+                $page->published_at = now();
             }
         });
     }
@@ -106,6 +116,10 @@ class CmsPage extends Model
 
     public function getExcerptAttribute(): string
     {
+        if ($this->attributes['excerpt'] ?? null) {
+            return $this->attributes['excerpt'];
+        }
+
         return Str::limit(strip_tags($this->content), 150);
     }
 
@@ -162,8 +176,11 @@ class CmsPage extends Model
             'press_release' => 'Press Release',
             'exhibition' => 'Exhibition',
             'insight' => 'Insight/Article',
+            'blog' => 'Blog Post',
+            'news' => 'News Update',
             'faq' => 'FAQ',
             'policy' => 'Policy',
+            'update' => 'System Update',
         ];
     }
 

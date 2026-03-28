@@ -44,10 +44,9 @@
                     <label for="type" class="block text-sm font-medium text-stone-700 mb-2">Type</label>
                     <select id="type" name="type" class="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                         <option value="">All Types</option>
-                        <option value="page" {{ request('type') == 'page' ? 'selected' : '' }}>Page</option>
-                        <option value="blog" {{ request('type') == 'blog' ? 'selected' : '' }}>Blog Post</option>
-                        <option value="faq" {{ request('type') == 'faq' ? 'selected' : '' }}>FAQ</option>
-                        <option value="policy" {{ request('type') == 'policy' ? 'selected' : '' }}>Policy</option>
+                        @foreach(\App\Models\CmsPage::getTypeOptions() as $value => $label)
+                            <option value="{{ $value }}" {{ request('type') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="flex items-end gap-2">

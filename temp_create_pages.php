@@ -30,6 +30,8 @@ foreach ($pages as $page) {
             'content' => 'Content for '.$page['title'],
             'meta_description' => $page['meta_description'],
             'is_active' => 1,
+            'published_at' => now(),
+            'type' => 'insight',
         ]
     );
 }
