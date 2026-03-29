@@ -61,6 +61,7 @@ class CmsPageController extends Controller
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +70,21 @@ class CmsPageController extends Controller
                 ->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->except('featured_image');
+
+        // Handle Featured Image Upload
+        if ($request->hasFile('featured_image')) {
+            $image = $request->file('featured_image');
+            $filename = 'featured_'.now()->format('Ymd_His').'_'.Str::random(5).'.'.$image->getClientOriginalExtension();
+            $path = 'cms/featured_images';
+
+            $disk = \Illuminate\Support\Facades\Storage::getDynamicDisk();
+            $storedPath = $image->storeAs($path, $filename, $disk);
+            $data['featured_image'] = $storedPath;
+        } elseif ($request->featured_image_url) {
+            // Handle URL from library if still used
+            $data['featured_image'] = str_replace(storage_url(''), '', $request->featured_image_url);
+        }
 
         // Generate slug if not provided
         if (empty($data['slug'])) {
@@ -122,6 +137,7 @@ class CmsPageController extends Controller
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -131,7 +147,33 @@ class CmsPageController extends Controller
         }
 
         $oldValues = $cmsPage->toArray();
-        $data = $request->all();
+        $data = $request->except('featured_image');
+
+        // Handle Featured Image Removal
+        if ($request->remove_featured_image) {
+            if ($cmsPage->featured_image) {
+                \Illuminate\Support\Facades\Storage::dynamic()->delete($cmsPage->featured_image);
+            }
+            $data['featured_image'] = null;
+        }
+
+        // Handle Featured Image Upload
+        if ($request->hasFile('featured_image')) {
+            // Delete old one
+            if ($cmsPage->featured_image) {
+                \Illuminate\Support\Facades\Storage::dynamic()->delete($cmsPage->featured_image);
+            }
+
+            $image = $request->file('featured_image');
+            $filename = 'featured_'.now()->format('Ymd_His').'_'.Str::random(5).'.'.$image->getClientOriginalExtension();
+            $path = 'cms/featured_images';
+
+            $disk = \Illuminate\Support\Facades\Storage::getDynamicDisk();
+            $storedPath = $image->storeAs($path, $filename, $disk);
+            $data['featured_image'] = $storedPath;
+        } elseif ($request->featured_image_url) {
+            $data['featured_image'] = str_replace(storage_url(''), '', $request->featured_image_url);
+        }
 
         // Generate slug if not provided
         if (empty($data['slug'])) {

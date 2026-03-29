@@ -670,6 +670,7 @@ x-init="
                 
                 quillTextareas.forEach(textarea => {
                     if (textarea.dataset.quillInitialized) return;
+                    textarea.dataset.quillInitialized = 'true';
                     
                     // Create container for Quill
                     const quillContainer = document.createElement('div');
@@ -714,13 +715,47 @@ x-init="
                     // Custom image handler
                     const toolbar = quill.getModule('toolbar');
                     toolbar.addHandler('image', function() {
-                        openMediaLibrary(function(imageUrl) {
-                            const range = quill.getSelection();
-                            if (range) {
-                                quill.insertEmbed(range.index, 'image', imageUrl);
-                                quill.setSelection(range.index + 1);
+                        const input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/jpeg,image/png,image/jpg,image/webp');
+                        input.click();
+
+                        input.onchange = () => {
+                            const file = input.files[0];
+                            if (/^image\//.test(file.type)) {
+                                const formData = new FormData();
+                                formData.append('images[]', file);
+                                formData.append('type', 'cms');
+                                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+                                // Show loading state if needed
+                                
+                                fetch("{{ admin_route('images.upload') }}", {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(result => {
+                                    if (result.success && result.images && result.images.length > 0) {
+                                        const imageUrl = result.images[0].url;
+                                        const range = quill.getSelection();
+                                        if (range) {
+                                            quill.insertEmbed(range.index, 'image', imageUrl);
+                                            quill.setSelection(range.index + 1);
+                                        }
+                                    } else {
+                                        alert('Upload failed: ' + (result.message || 'Unknown error'));
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error uploading image:', error);
+                                    alert('Error uploading image');
+                                });
                             }
-                        });
+                        };
                     });
                     
                     // Mark as initialized
@@ -870,7 +905,7 @@ x-init="
         function handleImageUpload(input) {
             if (input.files && input.files[0]) {
                 const formData = new FormData();
-                formData.append('image', input.files[0]);
+                formData.append('images[]', input.files[0]);
                 formData.append('type', 'cms');
                 formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
                         

@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <form action="{{ admin_route('cms-pages.store') }}" method="POST" class="space-y-8" id="cmsForm">
+    <form action="{{ admin_route('cms-pages.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" id="cmsForm">
         @csrf
         
         <!-- Main Content Area -->
@@ -294,22 +294,44 @@
                             </div>
 
                             <!-- Featured Image -->
-                            <div class="lg:col-span-2 space-y-2">
-                                <label for="featured_image" class="block text-sm font-medium text-stone-700 dark:text-stone-300">
-                                    Featured Image
+                            <div class="lg:col-span-2 space-y-4">
+                                <label class="block text-sm font-medium text-stone-700 dark:text-stone-300">
+                                    Featured Image <span class="text-xs text-stone-500 font-normal">(JPG, PNG, WEBP - Max 5MB)</span>
                                 </label>
-                                <div class="flex items-center space-x-4">
+                                
+                                <div id="featured-image-container" class="relative group">
                                     <input
                                         type="file"
                                         id="featured_image"
                                         name="featured_image"
-                                        accept="image/*"
-                                        class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white @error('featured_image') border-red-300 @enderror"
+                                        accept=".jpg,.jpeg,.png,.webp"
+                                        class="hidden"
+                                        onchange="previewFeaturedImage(this)"
                                     />
-                                    <button type="button" onclick="openMediaLibraryForFeatured()" class="px-4 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors duration-200">
-                                        <i data-lucide="image" class="w-4 h-4 mr-2 inline"></i>
-                                        Choose from Library
-                                    </button>
+                                    
+                                    <div id="image-preview-placeholder" 
+                                         onclick="document.getElementById('featured_image').click()"
+                                         class="cursor-pointer border-2 border-dashed border-stone-200 dark:border-strokedark rounded-2xl p-12 transition-all duration-200 hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-500/5 group">
+                                        <div class="flex flex-col items-center">
+                                            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                                                <i data-lucide="upload-cloud" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                                            </div>
+                                            <p class="text-stone-900 dark:text-white font-medium">Click to upload featured image</p>
+                                            <p class="text-sm text-stone-500 dark:text-gray-400 mt-1">or drag and drop here</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="image-preview-active" class="hidden relative rounded-2xl overflow-hidden border border-stone-200 dark:border-strokedark shadow-lg group">
+                                        <img id="featured-preview-img" src="#" alt="Preview" class="w-full h-64 object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-4">
+                                            <button type="button" onclick="document.getElementById('featured_image').click()" class="p-3 bg-white rounded-xl text-stone-900 hover:bg-stone-50 transition-colors shadow-lg">
+                                                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                                            </button>
+                                            <button type="button" onclick="clearFeaturedImage()" class="p-3 bg-red-600 rounded-xl text-white hover:bg-red-700 transition-colors shadow-lg">
+                                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 @error('featured_image')
                                     <p class="mt-1 text-sm text-red-500 dark:text-red-400">{{ $message }}</p>
@@ -433,72 +455,28 @@ function updateSeoPreview() {
     document.getElementById('seo-preview-slug').textContent = slug;
 }
 
-// Featured image media library
-function openMediaLibraryForFeatured() {
-    if (typeof openMediaLibrary === 'function') {
-        openMediaLibrary(function(imageUrl) {
-            // Create a preview of the selected image
-            const featuredImageInput = document.getElementById('featured_image');
-            const preview = document.createElement('div');
-            preview.className = 'mt-2 p-4 border border-stone-200 dark:border-strokedark rounded-xl bg-stone-50 dark:bg-gray-800';
-            preview.innerHTML = `
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <img src="${imageUrl}" alt="Featured image preview" class="w-16 h-16 object-cover rounded">
-                        <div>
-                            <p class="text-sm font-medium text-stone-900 dark:text-white">Selected Image</p>
-                            <p class="text-xs text-stone-500 dark:text-gray-400">Click to remove</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="removeFeaturedImagePreview()" class="text-red-500 hover:text-red-700">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            `;
-            
-            // Remove existing preview
-            const existingPreview = document.querySelector('.featured-image-preview');
-            if (existingPreview) {
-                existingPreview.remove();
-            }
-            
-            preview.className += ' featured-image-preview';
-            featuredImageInput.parentNode.appendChild(preview);
-            
-            // Store the image URL for form submission
-            featuredImageInput.dataset.selectedImageUrl = imageUrl;
-        });
-    } else {
-        alert('Media library is not available');
+// Featured image preview
+function previewFeaturedImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('featured-preview-img').src = e.target.result;
+            document.getElementById('image-preview-placeholder').classList.add('hidden');
+            document.getElementById('image-preview-active').classList.remove('hidden');
+        };
+        
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
-function removeFeaturedImagePreview() {
-    const preview = document.querySelector('.featured-image-preview');
-    if (preview) {
-        preview.remove();
-    }
-    
-    const featuredImageInput = document.getElementById('featured_image');
-    if (featuredImageInput) {
-        delete featuredImageInput.dataset.selectedImageUrl;
-    }
+function clearFeaturedImage() {
+    const input = document.getElementById('featured_image');
+    input.value = '';
+    document.getElementById('image-preview-placeholder').classList.remove('hidden');
+    document.getElementById('image-preview-active').classList.add('hidden');
+    document.getElementById('featured-preview-img').src = '#';
 }
-
-// Form submission with featured image handling
-document.getElementById('cmsForm').addEventListener('submit', function(e) {
-    const featuredImageInput = document.getElementById('featured_image');
-    const selectedImageUrl = featuredImageInput?.dataset.selectedImageUrl;
-    
-    if (selectedImageUrl && !featuredImageInput.files.length) {
-        // Create a hidden input with the selected image URL
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'featured_image_url';
-        hiddenInput.value = selectedImageUrl;
-        this.appendChild(hiddenInput);
-    }
-});
 </script>
 @endpush
 @endsection

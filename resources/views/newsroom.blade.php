@@ -26,7 +26,7 @@
             <!-- Main Story (Featured) -->
             <article class="xl:w-8/12 group" data-aos="fade-up">
                 <div class="relative w-full aspect-[21/10] overflow-hidden bg-gray-100 mb-10 shadow-2xl">
-                    <img src="{{ asset('frontend/assets/' . ($featuredStory->featured_image ?: 'necklace.webp')) }}" alt="{{ $featuredStory->title }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110">
+                    <img src="{{ $featuredStory->featured_image_url ?: asset('frontend/assets/necklace.webp') }}" alt="{{ $featuredStory->title }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110">
                     <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent"></div>
                     <div class="absolute bottom-8 left-8 right-8">
                         <span class="bg-[#B6965D] text-white text-[8px] uppercase tracking-[0.4em] px-4 py-1 font-bold">{{ $featuredStory->category }}</span>
@@ -63,7 +63,7 @@
                         <!-- Brief -->
                         <a href="{{ url($highlight->slug) }}" class="flex gap-6 group cursor-pointer">
                             <div class="w-24 h-24 flex-shrink-0 overflow-hidden bg-gray-50">
-                                <img src="{{ asset('frontend/assets/' . ($highlight->featured_image ?: 'ring.webp')) }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="{{ $highlight->title }}">
+                                <img src="{{ $highlight->featured_image_url ?: asset('frontend/assets/ring.webp') }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="{{ $highlight->title }}">
                             </div>
                             <div>
                                 <h4 class="text-sm font-semibold text-gray-900 mb-2 leading-snug group-hover:text-[#B6965D] transition-colors line-clamp-2">{{ $highlight->title }}</h4>

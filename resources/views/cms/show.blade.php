@@ -12,7 +12,7 @@
     <meta property="og:title" content="{{ $page->meta_title ?: $page->title }}">
     <meta property="og:description" content="{{ $page->excerpt ?: Str::limit(strip_tags($page->content), 160) }}">
     @if($page->featured_image)
-        <meta property="og:image" content="{{ asset('frontend/assets/'. $page->featured_image) }}">
+        <meta property="og:image" content="{{ $page->featured_image_url }}">
     @endif
 @endsection
 
@@ -67,7 +67,7 @@
 
         @if($page->featured_image)
             <div class="mt-16 relative w-full aspect-[21/9] overflow-hidden shadow-2xl group" data-aos="zoom-out">
-                <img src="{{ asset('frontend/assets/' . $page->featured_image) }}" 
+                <img src="{{ $page->featured_image_url }}" 
                      alt="{{ $page->title }}" 
                      class="w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105">
                 <div class="absolute inset-0 bg-black/5"></div>
@@ -166,7 +166,7 @@
                 <div class="group cursor-pointer">
                     <a href="{{ url($article->slug) }}">
                         <div class="aspect-[16/10] overflow-hidden mb-8 shadow-sm relative">
-                            <img src="{{ asset('frontend/assets/' . ($article->featured_image ?: 'necklace.webp')) }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" alt="{{ $article->title }}">
+                            <img src="{{ $article->featured_image_url ?: asset('frontend/assets/necklace.webp') }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" alt="{{ $article->title }}">
                             <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
                         <span class="text-[9px] uppercase tracking-[0.3em] text-[#B6965D] mb-4 block">{{ $article->category }}</span>

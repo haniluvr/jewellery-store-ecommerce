@@ -108,7 +108,18 @@ class CmsPage extends Model
     public function getFeaturedImageUrlAttribute(): ?string
     {
         if ($this->featured_image) {
-            return asset('storage/'.$this->featured_image);
+            // Check if it's already a full URL
+            if (strpos($this->featured_image, 'http') === 0 || strpos($this->featured_image, '//') === 0) {
+                return $this->featured_image;
+            }
+
+            // If it contains a slash, it's likely a storage path (like cms/featured_images/...)
+            if (strpos($this->featured_image, '/') !== false) {
+                return storage_url($this->featured_image);
+            }
+
+            // Fallback for legacy data (just filenames in frontend/assets)
+            return asset('frontend/assets/'.$this->featured_image);
         }
 
         return null;

@@ -93,6 +93,8 @@
                                                      item.category === 'Shipping' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' :
                                                      item.category === 'Content' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' :
                                                      item.category === 'Reports' ? 'bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400' :
+                                                     item.category === 'Appointments' ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400' :
+                                                     item.category === 'Notifications' ? 'bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400' :
                                                      'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'">
                                             <i :data-lucide="item.icon" class="w-5 h-5"></i>
                                         </div>
@@ -502,6 +504,44 @@ function searchCommand() {
             @endif
             @if($admin && ($isSuperAdmin || $admin->hasPermission('audit.view')))
             { id: 31, title: 'Audit Trail', category: 'Settings', url: '{{ admin_route("audit.index") }}', icon: 'shield-check', keywords: 'audit trail logs history', permission: 'audit.view' },
+            @endif
+
+            // Appointments
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('appointments.view')))
+            { id: 32, title: 'Appointments List', category: 'Appointments', url: '{{ admin_route("appointments.index") }}', icon: 'calendar', keywords: 'appointments bookings schedule', permission: 'appointments.view' },
+            @endif
+
+            // Notifications
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('notifications.view')))
+            { id: 33, title: 'All Notifications', category: 'Notifications', url: '{{ admin_route("notifications.index") }}', icon: 'bell', keywords: 'notifications alerts updates', permission: 'notifications.view' },
+            { id: 34, title: 'Notification Templates', category: 'Notifications', url: '{{ admin_route("notifications.templates") }}', icon: 'layout', keywords: 'notifications templates email sms', permission: 'notifications.view' },
+            @endif
+
+            // Additional Customer Routes
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('users.view')))
+            { id: 35, title: 'Archived Customers', category: 'Customers', url: '{{ admin_route("users.archived") }}', icon: 'user-x', keywords: 'archived customers deleted users', permission: 'users.view' },
+            @endif
+
+            // Additional Setting Routes
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('admins.view')))
+            { id: 36, title: 'Add New Admin', category: 'Settings', url: '{{ admin_route("users.create-admin") }}', icon: 'user-plus', keywords: 'create admin new administrator', permission: 'admins.view' },
+            @endif
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('settings.view')))
+            { id: 37, title: 'Email Previews', category: 'Settings', url: '{{ admin_route("emails.preview") }}', icon: 'eye', keywords: 'email previews templates test', permission: 'settings.view' },
+            @endif
+
+            // Additional Content Routes
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('cms.view')))
+            { id: 38, title: 'Newsletter Subscriptions', category: 'Content', url: '{{ admin_route("newsletter.index") }}', icon: 'mail', keywords: 'newsletter subscriptions marketing', permission: 'cms.view' },
+            @endif
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('products.edit')))
+            { id: 39, title: 'Bulk Image Upload', category: 'Content', url: '{{ admin_route("images.upload-page") }}', icon: 'upload-cloud', keywords: 'bulk image upload photos products', permission: 'products.edit' },
+            @endif
+
+            // Additional Report Routes
+            @if($admin && ($isSuperAdmin || $admin->hasPermission('analytics.view')))
+            { id: 40, title: 'Customer LTV', category: 'Reports', url: '{{ admin_route("analytics.customer-lifetime-value") }}', icon: 'users', keywords: 'customer lifetime value ltv analytics', permission: 'analytics.view' },
+            { id: 41, title: 'Product Performance', category: 'Reports', url: '{{ admin_route("analytics.product-performance") }}', icon: 'trending-up', keywords: 'product performance sales analytics', permission: 'analytics.view' },
             @endif
         ],
         
