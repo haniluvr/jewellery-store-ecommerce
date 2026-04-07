@@ -58,7 +58,7 @@ if (! function_exists('storage_disk')) {
     {
         try {
             // Check for explicit storage disk preference in environment
-            $disk = env('FILESYSTEM_DISK');
+            $disk = config('filesystems.default');
             if ($disk && $disk !== 'local' && $disk !== 'public') {
                 return \Illuminate\Support\Facades\Storage::disk($disk);
             }

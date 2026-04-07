@@ -46,7 +46,7 @@ class StorageServiceProvider extends ServiceProvider
             $host = request()->getHost();
 
             // Use S3 if explicitly set in environment (highest priority)
-            if (env('FILESYSTEM_DISK') === 's3') {
+            if (config('filesystems.default') === 's3') {
                 return 's3';
             }
 
