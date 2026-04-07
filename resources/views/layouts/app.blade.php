@@ -235,6 +235,11 @@
                 initModal('modal-signup');
                 initModal('modalQuickView');
                 
+                // Initialize search functionality for modal
+                if (typeof window.initSearchModal === 'function') {
+                    window.initSearchModal();
+                }
+                
                 // Initialize all offcanvas
                 initOffcanvas('offcanvas-wishlist');
                 initOffcanvas('offcanvas-cart');

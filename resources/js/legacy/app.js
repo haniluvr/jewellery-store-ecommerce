@@ -1733,7 +1733,7 @@ async function loadModalQuickView() {
 }
 
 // ── Initialize Search Modal ──
-function initSearchModal() {
+window.initSearchModal = function() {
     const modal = document.getElementById('modal-search');
     if (!modal) return;
 

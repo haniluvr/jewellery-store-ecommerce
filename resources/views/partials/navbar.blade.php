@@ -42,12 +42,12 @@
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </button>
                 <div id="searchContainer" class="w-0 opacity-0 transition-all duration-500 ease-in-out flex items-center relative">
-                    <input type="text" id="navbarSearch" placeholder="Search by product..." class="bg-transparent border-b border-black outline-none py-1 px-4 text-[10px] uppercase tracking-widest font-azeret w-48 placeholder:text-gray-400">
+                    <input type="text" id="navbarSearch" placeholder="Search by product..." class="bg-transparent border-b border-black outline-none py-1 px-4 text-[10px] uppercase tracking-widest font-azeret w-80 placeholder:text-gray-400">
                     <button id="closeSearch" class="ml-2 navbar-icon-btn text-gray-900">
                         <i data-lucide="x" class="w-3 h-3"></i>
                     </button>
                     <!-- Inline Search Results Dropdown -->
-                    <div id="navbarSearchResults" class="hidden absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-md shadow-xl border border-gray-100 z-50 max-h-80 overflow-y-auto">
+                    <div id="navbarSearchResults" class="hidden absolute top-full left-0 mt-2 w-96 bg-white/95 backdrop-blur-md shadow-xl border border-gray-100 z-50 max-h-80 overflow-y-auto">
                         <div id="navbarSearchContent"></div>
                     </div>
                 </div>
@@ -71,9 +71,9 @@
                 toggle.addEventListener('click', () => {
                     container.classList.toggle('w-0');
                     container.classList.toggle('opacity-0');
-                    container.classList.toggle('w-64');
+                    container.classList.toggle('w-96');
                     container.classList.toggle('opacity-100');
-                    if (container.classList.contains('w-64')) {
+                    if (container.classList.contains('w-96')) {
                         setTimeout(() => input.focus(), 300);
                     } else {
                         hideResults();
@@ -82,7 +82,7 @@
 
                 close.addEventListener('click', () => {
                     container.classList.add('w-0', 'opacity-0');
-                    container.classList.remove('w-64', 'opacity-100');
+                    container.classList.remove('w-96', 'opacity-100');
                     hideResults();
                 });
 
@@ -150,9 +150,9 @@
                 document.addEventListener('click', (e) => {
                     if (!container.contains(e.target) && !toggle.contains(e.target)) {
                         hideResults();
-                        if (container.classList.contains('w-64') && input.value === '') {
+                        if (container.classList.contains('w-96') && input.value === '') {
                             container.classList.add('w-0', 'opacity-0');
-                            container.classList.remove('w-64', 'opacity-100');
+                            container.classList.remove('w-96', 'opacity-100');
                         }
                     }
                 });
@@ -162,7 +162,7 @@
                     if (e.key === 'Escape') {
                         hideResults();
                         container.classList.add('w-0', 'opacity-0');
-                        container.classList.remove('w-64', 'opacity-100');
+                        container.classList.remove('w-96', 'opacity-100');
                     }
                 });
             });

@@ -361,7 +361,7 @@
                             <option value="necklaces-pendants">Necklaces</option>
                             <option value="earrings">Earrings</option>
                             <option value="bracelets-bangles">Bracelets</option>
-                            <option value="timepieces-fine-accessories">Others</option>
+                            <option value="timepieces-accessories">Others</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none transition-transform group-hover:text-[#B6965D]"></i>
                     </div>

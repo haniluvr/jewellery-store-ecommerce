@@ -253,7 +253,7 @@ Route::get('/search', function (Request $request) {
         }
 
         // Limit results for search modal (show max 10 results)
-        $products = $query->orderBy('name', 'asc')->limit(10)->get();
+        $products = $query->orderBy('name', 'asc')->get();
 
         return response()->json([
             'success' => true,
