@@ -17,9 +17,9 @@ class ProductController extends Controller
 {
     private const PLACEHOLDER_PATH = 'products/landscape-placeholder.svg';
 
-    private function deleteImagePath(string $path): void
+    private function deleteImagePath(?string $path): void
     {
-        if ($path === self::PLACEHOLDER_PATH || $path === '.') {
+        if (empty($path) || $path === self::PLACEHOLDER_PATH || $path === '.') {
             return;
         }
 
