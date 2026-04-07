@@ -36,14 +36,14 @@
         
         @stack('styles')
         @php
-            // Determine storage base URL dynamically
+            // Determine storage base URL dynamically using config() instead of env()
+            // This ensures logic works correctly after config:cache in production
             $storageBaseUrl = '';
-            $filesystemDisk = env('FILESYSTEM_DISK', 'public');
-            $appEnv = config('app.env');
+            $filesystemDisk = config('filesystems.default', 'public');
+            $appEnv = config('app.env', 'production');
             
             // Use S3 if explicitly configured or in production
             if ($filesystemDisk === 's3' || $appEnv === 'production') {
-                // Check if S3 is properly configured
                 $s3Url = config('filesystems.disks.s3.url');
                 $s3Bucket = config('filesystems.disks.s3.bucket');
                 $s3Region = config('filesystems.disks.s3.region');
@@ -51,11 +51,11 @@
                 if ($s3Url) {
                     $storageBaseUrl = rtrim($s3Url, '/');
                 } elseif ($s3Bucket && $s3Region) {
-                    // Construct S3 URL if bucket and region are set
-                    $storageBaseUrl = 'https://' . $s3Bucket . '.s3.' . $s3Region . '.amazonaws.com';
+                    // Construct standard S3 URL (works for most modern buckets)
+                    // Format: https://bucket.s3.region.amazonaws.com
+                    $storageBaseUrl = "https://{$s3Bucket}.s3.{$s3Region}.amazonaws.com";
                 }
             }
-            // If local development, leave empty - JS will fallback to local storage
         @endphp
         <meta name="storage-base-url" content="{{ $storageBaseUrl }}">
     </head>
