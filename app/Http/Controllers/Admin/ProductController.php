@@ -177,14 +177,16 @@ class ProductController extends Controller
         // Handle images
         if ($request->hasFile('images')) {
             $images = [];
+
             try {
                 foreach ($request->file('images') as $image) {
                     $path = storage_disk()->putFile('products', $image);
                     $images[] = $path;
                 }
             } catch (\Exception $e) {
-                Log::error('S3 Upload Failed: ' . $e->getMessage());
-                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: ' . $e->getMessage());
+                Log::error('S3 Upload Failed: '.$e->getMessage());
+
+                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: '.$e->getMessage());
             }
             $validated['images'] = $images;
             $validated['gallery'] = $images;
@@ -354,8 +356,9 @@ class ProductController extends Controller
                     $newImages[] = $path;
                 }
             } catch (\Exception $e) {
-                Log::error('S3 Update Upload Failed: ' . $e->getMessage());
-                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: ' . $e->getMessage());
+                Log::error('S3 Update Upload Failed: '.$e->getMessage());
+
+                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: '.$e->getMessage());
             }
         }
 
