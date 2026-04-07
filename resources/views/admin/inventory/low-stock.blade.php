@@ -193,7 +193,7 @@
                             <td class="py-3 px-4">
                                 <div class="flex items-center gap-3">
                                     @if($product->images && count($product->images) > 0)
-                                        <img src="{{ Storage::url($product->images[0]) }}" alt="{{ $product->name }}" class="h-10 w-10 rounded object-cover">
+                                        <img src="{{ storage_url($product->images[0]) }}" alt="{{ $product->name }}" class="h-10 w-10 rounded object-cover">
                                     @else
                                         <div class="h-10 w-10 rounded bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                                             <i data-lucide="package" class="h-5 w-5 text-gray-400"></i>

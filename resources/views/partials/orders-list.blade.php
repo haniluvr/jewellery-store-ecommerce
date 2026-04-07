@@ -244,7 +244,7 @@
                                 <div class="flex items-center flex-1">
                                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center mr-3">
                                         @if($item->product && $item->product->image)
-                                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-cover rounded">
+                                            <img src="{{ storage_url($item->product->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-cover rounded">
                                         @else
                                             <i data-lucide="package" class="w-6 h-6 text-gray-400"></i>
                                         @endif

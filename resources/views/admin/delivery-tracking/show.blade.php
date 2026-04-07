@@ -146,7 +146,7 @@
                         @foreach($order->orderItems as $item)
                             <div class="flex items-center space-x-4 p-4 border border-stone-200 dark:border-strokedark rounded-xl">
                                 @if($item->product && $item->product->images && count($item->product->images) > 0)
-                                    <img src="{{ Storage::url($item->product->images[0]) }}" alt="{{ $item->product->name }}" class="w-16 h-16 rounded-lg object-cover">
+                                    <img src="{{ storage_url($item->product->images[0]) }}" alt="{{ $item->product->name }}" class="w-16 h-16 rounded-lg object-cover">
                                 @else
                                     <div class="w-16 h-16 rounded-lg bg-stone-100 dark:bg-gray-800 flex items-center justify-center">
                                         <i data-lucide="package" class="w-8 h-8 text-stone-400"></i>

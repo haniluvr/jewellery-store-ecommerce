@@ -26,8 +26,8 @@
                 @foreach($heroProducts as $index => $product)
                 @php
                     $imgs = (is_array($product->images) && count($product->images) > 0) ? $product->images : ['products/default.webp'];
-                    $img1 = asset('storage/' . $imgs[0]);
-                    $img2 = (count($imgs) > 1) ? asset('storage/' . $imgs[1]) : $img1;
+                    $img1 = storage_url($imgs[0]);
+                    $img2 = (count($imgs) > 1) ? storage_url($imgs[1]) : $img1;
                     $imagesJson = json_encode([$img1, $img2]);
                     $uKey = 'hero-' . $product->id . '-' . $index;
                 @endphp
@@ -126,8 +126,8 @@
                 @if($talismanProduct)
                 @php
                     $tImgs = (is_array($talismanProduct->images) && count($talismanProduct->images) > 0) ? $talismanProduct->images : ['products/default.webp'];
-                    $tImg1 = asset('storage/' . $tImgs[0]);
-                    $tImg2 = (count($tImgs) > 1) ? asset('storage/' . $tImgs[1]) : $tImg1;
+                    $tImg1 = storage_url($tImgs[0]);
+                    $tImg2 = (count($tImgs) > 1) ? storage_url($tImgs[1]) : $tImg1;
                     $tImagesJson = json_encode([$tImg1, $tImg2]);
                     $tKey = 'talisman-' . $talismanProduct->id;
                 @endphp
@@ -180,8 +180,8 @@
             @foreach($bestsellerProducts as $index => $prod)
             @php
                 $pImgs = (is_array($prod->images) && count($prod->images) > 0) ? $prod->images : ['products/default.webp'];
-                $img1 = asset('storage/' . $pImgs[0]);
-                $img2 = (count($pImgs) > 1) ? asset('storage/' . $pImgs[1]) : $img1;
+                $img1 = storage_url($pImgs[0]);
+                $img2 = (count($pImgs) > 1) ? storage_url($pImgs[1]) : $img1;
                 $imagesJson = json_encode([$img1, $img2]);
                 $uKey = 'best-' . $prod->id . '-' . $index;
             @endphp

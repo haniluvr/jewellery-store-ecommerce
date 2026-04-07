@@ -74,8 +74,12 @@ if (! function_exists('storage_url')) {
      * Get the appropriate storage URL based on environment
      * Uses local URLs for localhost, S3 URLs for production.
      */
-    function storage_url(string $path): string
+    function storage_url(?string $path): string
     {
+        if (!$path) {
+            return '';
+        }
+
         try {
             if (method_exists(\Illuminate\Support\Facades\Storage::class, 'dynamic')) {
                 return \Illuminate\Support\Facades\Storage::dynamic()->url($path);

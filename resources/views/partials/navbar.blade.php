@@ -37,15 +37,19 @@
                     </svg>
                 </span>
             </button>
-            <div class="hidden md:flex items-center bg-transparent group overflow-hidden">
+            <div class="hidden md:flex items-center bg-transparent group overflow-visible relative">
                 <button class="navbar-icon-btn z-20 p-2 text-gray-900" id="toggleSearch" type="button">
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </button>
-                <div id="searchContainer" class="w-0 opacity-0 transition-all duration-500 ease-in-out flex items-center">
+                <div id="searchContainer" class="w-0 opacity-0 transition-all duration-500 ease-in-out flex items-center relative">
                     <input type="text" id="navbarSearch" placeholder="Search by product..." class="bg-transparent border-b border-black outline-none py-1 px-4 text-[10px] uppercase tracking-widest font-azeret w-48 placeholder:text-gray-400">
                     <button id="closeSearch" class="ml-2 navbar-icon-btn text-gray-900">
                         <i data-lucide="x" class="w-3 h-3"></i>
                     </button>
+                    <!-- Inline Search Results Dropdown -->
+                    <div id="navbarSearchResults" class="hidden absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-md shadow-xl border border-gray-100 z-50 max-h-80 overflow-y-auto">
+                        <div id="navbarSearchContent"></div>
+                    </div>
                 </div>
             </div>
             <button class="navbar-icon-btn md:hidden text-gray-900 p-2" id="openSearchModalMobile" type="button">
@@ -59,6 +63,10 @@
                 const container = document.getElementById('searchContainer');
                 const input = document.getElementById('navbarSearch');
                 const close = document.getElementById('closeSearch');
+                const resultsContainer = document.getElementById('navbarSearchResults');
+                const content = document.getElementById('navbarSearchContent');
+
+                let searchTimeout;
 
                 toggle.addEventListener('click', () => {
                     container.classList.toggle('w-0');
@@ -67,12 +75,95 @@
                     container.classList.toggle('opacity-100');
                     if (container.classList.contains('w-64')) {
                         setTimeout(() => input.focus(), 300);
+                    } else {
+                        hideResults();
                     }
                 });
 
                 close.addEventListener('click', () => {
                     container.classList.add('w-0', 'opacity-0');
                     container.classList.remove('w-64', 'opacity-100');
+                    hideResults();
+                });
+
+                input.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    
+                    if (searchTimeout) clearTimeout(searchTimeout);
+
+                    if (query.length < 2) {
+                        hideResults();
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                });
+
+                async function performSearch(query) {
+                    if (!window.api) return;
+
+                    content.innerHTML = '<div class="p-4 text-center text-[10px] tracking-widest text-gray-500 uppercase">Searching...</div>';
+                    resultsContainer.classList.remove('hidden');
+
+                    try {
+                        const response = await window.api.searchProducts(query);
+                        if (response.success && response.data && response.data.length > 0) {
+                            renderResults(response.data);
+                        } else {
+                            content.innerHTML = '<div class="p-4 text-center text-[10px] tracking-widest text-gray-500 uppercase">No results found</div>';
+                        }
+                    } catch (error) {
+                        console.error('Search error:', error);
+                        content.innerHTML = '<div class="p-4 text-center text-[10px] tracking-widest text-red-500 uppercase">Error searching</div>';
+                    }
+                }
+
+                function renderResults(products) {
+                    let html = '';
+                    products.forEach(product => {
+                        const productUrl = `/products/${product.slug}`;
+                        const image = (product.images && product.images.length > 0 ? product.images[0] : product.image) || 'frontend/assets/necklace.webp';
+                        
+                        html += `
+                            <a href="${productUrl}" class="flex items-center p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 group">
+                                <div class="w-10 h-10 flex-shrink-0 bg-gray-50 overflow-hidden">
+                                    <img src="${window.getStorageUrl ? window.getStorageUrl(image) : '/' + image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${product.name}">
+                                </div>
+                                <div class="ml-3 overflow-hidden">
+                                    <p class="text-[10px] font-medium text-gray-900 uppercase tracking-widest truncate">${product.name}</p>
+                                    <p class="text-[9px] text-[#B6965D] uppercase tracking-widest mt-1">₱${Math.floor(product.price).toLocaleString()}</p>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    content.innerHTML = html;
+                }
+
+                function hideResults() {
+                    resultsContainer.classList.add('hidden');
+                    content.innerHTML = '';
+                }
+
+                // Close on click outside
+                document.addEventListener('click', (e) => {
+                    if (!container.contains(e.target) && !toggle.contains(e.target)) {
+                        hideResults();
+                        if (container.classList.contains('w-64') && input.value === '') {
+                            container.classList.add('w-0', 'opacity-0');
+                            container.classList.remove('w-64', 'opacity-100');
+                        }
+                    }
+                });
+
+                // Close on Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        hideResults();
+                        container.classList.add('w-0', 'opacity-0');
+                        container.classList.remove('w-64', 'opacity-100');
+                    }
                 });
             });
         </script>

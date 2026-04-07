@@ -145,7 +145,7 @@
                         @foreach($returnRepair->order->orderItems as $item)
                         <div class="flex items-center gap-4 p-4 border border-stone-200 dark:border-strokedark rounded-lg">
                             @if($item->product && $item->product->images && is_array($item->product->images) && !empty($item->product->images) && isset($item->product->images[0]))
-                                <img src="{{ asset('storage/' . $item->product->images[0]) }}" 
+                                <img src="{{ storage_url($item->product->images[0]) }}" 
                                      alt="{{ $item->product->name }}" 
                                      class="w-16 h-16 object-cover rounded-lg">
                             @else

@@ -393,7 +393,7 @@
                                                 </svg>
                                             </div>
                                         <div class="aspect-square rounded-xl overflow-hidden bg-stone-100 dark:bg-gray-800 border border-stone-200 dark:border-strokedark">
-                                            @php $imageUrl = Storage::url($image); @endphp
+                                            @php $imageUrl = storage_url($image); @endphp
                                             <img src="{{ $imageUrl }}?v={{ time() }}" alt="Product Image" class="w-full h-full object-cover">
                                         </div>
                                         <div class="delete-overlay absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">

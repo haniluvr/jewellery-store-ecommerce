@@ -37,7 +37,7 @@
             <td>
                 <div style="display: flex; align-items: center;">
                     @if($item->product->images && count($item->product->images) > 0)
-                        <img src="{{ asset('storage/' . $item->product->images[0]) }}" alt="{{ $item->product->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
+                        <img src="{{ storage_url($item->product->images[0]) }}" alt="{{ $item->product->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
                     @endif
                     <div>
                         <strong>{{ $item->product->name }}</strong>

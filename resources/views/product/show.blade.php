@@ -521,7 +521,7 @@ body {
                 @php
                     $firstImg = ($product->images && count($product->images) > 0) ? $product->images[0] : null;
                     $mainImage = $firstImg 
-                        ? (str_starts_with($firstImg, 'http') ? $firstImg : Storage::url($firstImg)) 
+                        ? (str_starts_with($firstImg, 'http') ? $firstImg : storage_url($firstImg)) 
                         : asset('frontend/assets/placeholder.jpg');
                 @endphp
                 <img 
@@ -554,7 +554,7 @@ body {
                 <div class="thumbnail-container" style="display: flex; justify-content: flex-start; padding: 1.5rem 0;">
                     <div class="thumbnail-grid" id="thumbnailGrid" style="display: flex; gap: 1rem; overflow-x: auto; scrollbar-width: none;">
                     @foreach($galleryImages as $index => $image)
-                        @php $imgUrl = str_starts_with($image, 'http') ? $image : Storage::url($image); @endphp
+                        @php $imgUrl = str_starts_with($image, 'http') ? $image : storage_url($image); @endphp
                         <div class="thumbnail {{ $index === 0 ? 'active' : '' }}" 
                              style="flex-shrink: 0; width: 90px; height: 110px; background: white; cursor: pointer; border: 1px solid var(--brand-border); transition: all 0.4s ease;"
                              onclick="changeImage('{{ $imgUrl }}', this, {{ $index }})">
@@ -839,7 +839,7 @@ body {
                             @php
                                 $firstRelImg = ($relatedProduct->images && is_array($relatedProduct->images) && count($relatedProduct->images) > 0) ? $relatedProduct->images[0] : null;
                                 $relatedImage = $firstRelImg 
-                                    ? (str_starts_with($firstRelImg, 'http') ? $firstRelImg : Storage::url($firstRelImg)) 
+                                    ? (str_starts_with($firstRelImg, 'http') ? $firstRelImg : storage_url($firstRelImg)) 
                                     : asset('frontend/assets/placeholder.jpg');
                             @endphp
                             <a href="{{ route('products.show', $relatedProduct->slug) }}">

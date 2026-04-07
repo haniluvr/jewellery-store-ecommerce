@@ -276,7 +276,7 @@
                         </div>
                         <div class="relative z-10 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-1000">
                              @php $leftImg = (is_array($leftProduct->images) && count($leftProduct->images) > 0) ? $leftProduct->images[0] : 'products/default.webp'; @endphp
-                             <img loading="lazy" src="{{ asset('storage/' . $leftImg) }}" alt="{{ $leftProduct->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
+                             <img loading="lazy" src="{{ storage_url($leftImg) }}" alt="{{ $leftProduct->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
                         </div>
                         <div class="mt-12 text-center relative z-10">
                             <h3 class="font-playfair text-2xl text-white mb-4">{{ $leftProduct->name }}</h3>
@@ -302,7 +302,7 @@
                                     </div>
                                     <div class="relative z-10 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-1000 slide-img">
                                      @php $prodImg = (is_array($prod->images) && count($prod->images) > 0) ? $prod->images[0] : 'products/default.webp'; @endphp
-                                     <img src="{{ asset('storage/' . $prodImg) }}" alt="{{ $prod->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
+                                     <img src="{{ storage_url($prodImg) }}" alt="{{ $prod->name }}" class="w-64 h-64 object-contain drop-shadow-2xl">
                                     </div>
                                     <div class="mt-12 text-center relative z-10">
                                         <h3 class="font-playfair text-2xl text-white mb-4">{{ $prod->name }}</h3>
@@ -491,8 +491,8 @@
 
                     @forelse($displayIconProducts as $index => $iconProd)
                     @php
-                        $iconImg1 = (is_array($iconProd->images) && count($iconProd->images) > 0) ? asset('storage/' . $iconProd->images[0]) : asset('frontend/assets/ring.webp');
-                        $iconImg2 = (is_array($iconProd->images) && count($iconProd->images) > 1) ? asset('storage/' . $iconProd->images[1]) : $iconImg1;
+                        $iconImg1 = (is_array($iconProd->images) && count($iconProd->images) > 0) ? storage_url($iconProd->images[0]) : asset('frontend/assets/ring.webp');
+                        $iconImg2 = (is_array($iconProd->images) && count($iconProd->images) > 1) ? storage_url($iconProd->images[1]) : $iconImg1;
                         $iconImagesJson = json_encode([$iconImg1, $iconImg2]);
                         $uniqueKey = 'icon-' . $iconProd->id . '-' . $index;
                     @endphp

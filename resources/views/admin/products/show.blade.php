@@ -275,9 +275,9 @@
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                     @foreach($product->images as $index => $image)
                                         <div class="group relative rounded-xl overflow-hidden border border-stone-200 dark:border-strokedark hover:shadow-lg transition-all duration-200">
-                                            <img src="{{ Storage::url($image) }}" alt="{{ $product->name }} - Image {{ $index + 1 }}" class="h-48 w-full object-cover">
+                                            <img src="{{ storage_url($image) }}" alt="{{ $product->name }} - Image {{ $index + 1 }}" class="h-48 w-full object-cover">
                                             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all group-hover:bg-opacity-50">
-                                                <button class="hidden text-white group-hover:block transform hover:scale-110 transition-transform" onclick="openImageModal('{{ Storage::url($image) }}')">
+                                                <button class="hidden text-white group-hover:block transform hover:scale-110 transition-transform" onclick="openImageModal('{{ storage_url($image) }}')">
                                                     <i data-lucide="zoom-in" class="h-8 w-8"></i>
                                             </button>
                                         </div>
