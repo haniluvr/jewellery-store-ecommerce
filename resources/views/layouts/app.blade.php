@@ -13,6 +13,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src='https://www.noupe.com/embed/019d659c5e1473f7bd0f24cf93f8f30305c9.js'></script>
         <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
         
         <!-- Typography Fixes -->
