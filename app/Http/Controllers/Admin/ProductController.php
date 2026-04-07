@@ -180,13 +180,7 @@ class ProductController extends Controller
 
             try {
                 foreach ($request->file('images') as $image) {
-                    $disk = storage_disk();
-                    Log::info('DEBUG - DISK TYPE: '.get_class($disk));
-                    Log::info('DEBUG - ADAPTER: '.get_class($disk->getAdapter()));
-                    Log::info('ATTEMPTING UPLOAD:', ['file' => $image->getClientOriginalName(), 'size' => $image->getSize()]);
-
-                    $path = $disk->putFile('', $image);
-                    Log::info('UPLOAD RESULT PATH: "'.$path.'"');
+                    $path = storage_disk()->putFile('', $image);
                     $images[] = $path;
                 }
             } catch (\Exception $e) {
@@ -357,10 +351,8 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             try {
                 foreach ($request->file('images') as $image) {
-                    Log::info('ATTEMPTING UPDATE UPLOAD:', ['file' => $image->getClientOriginalName(), 'size' => $image->getSize()]);
                     // Upload directly to the root of the bucket as requested
                     $path = storage_disk()->putFile('', $image);
-                    Log::info('UPDATE UPLOAD RESULT PATH: "'.$path.'"');
                     $newImages[] = $path;
                 }
             } catch (\Exception $e) {

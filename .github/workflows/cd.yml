@@ -197,7 +197,7 @@ jobs:
         APP_NAME="Éclore Jewellery Shop"
         APP_ENV=production
         APP_KEY=${{ secrets.APP_KEY }}
-        APP_DEBUG=true
+        APP_DEBUG=false
         APP_URL=https://eclorejewellery.shop
         ADMIN_URL=https://admin.eclorejewellery.shop
         BASE_DOMAIN=eclorejewellery.shop
