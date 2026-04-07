@@ -12,6 +12,13 @@ window.getStorageUrl = function(path) {
         return trimmedPath;
     }
 
+    // Check if it's a public asset (starts with frontend/, assets/, vendor/, etc.)
+    // If it looks like a public asset, return it relative to root
+    const publicDirs = ['frontend/', 'assets/', 'vendor/', 'admin/', 'images/', 'img/'];
+    if (publicDirs.some(dir => trimmedPath.startsWith(dir))) {
+        return '/' + (trimmedPath.startsWith('/') ? trimmedPath.substring(1) : trimmedPath);
+    }
+
     // Use meta-provided base if available (S3/CloudFront)
     const meta = document.querySelector('meta[name="storage-base-url"]');
     const base = meta && meta.content ? meta.content.replace(/\/+$/, '') : '';
@@ -141,17 +148,19 @@ function initModal(id) {
 
     // Create global functions for show/hide
     const show = function() { 
-        // Force remove hidden class and override all styles
+        // Force remove hidden class and add flex for layout
         el.classList.remove('hidden');
-        el.classList.add('block');
+        el.classList.add('flex', 'show'); // Add 'show' for CSS transitions
         el.style.opacity = '1';
+        el.style.zIndex = '9999'; 
         // Lock body scroll
         document.body.classList.add('overflow-hidden');
     };
 
     const hide = function() { 
-        el.style.display = 'none';
+        el.classList.remove('flex', 'show');
         el.classList.add('hidden');
+        el.style.display = 'none';
         // Unlock body scroll
         document.body.classList.remove('overflow-hidden');
     };
@@ -423,7 +432,7 @@ async function initProductsSection() {
                         <div class="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <button class="wishlist-btn bg-white/95 p-2 rounded-full shadow-sm hover:bg-white transition-all transform hover:scale-110" 
                                     data-product-id="${productData.id || ''}" onclick="event.stopPropagation();">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#1a1a1a] group-[.is-wishlisted]:fill-red-500 group-[.is-wishlisted]:text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                                <i id="heart-icon-${productData.id || ''}" data-lucide="heart" class="w-4 h-4 text-[#1a1a1a] group-[.is-wishlisted]:fill-red-500 group-[.is-wishlisted]:text-red-500"></i>
                             </button>
                         </div>
 
@@ -443,7 +452,7 @@ async function initProductsSection() {
                              </button>
                              <button class="btn-add-to-cart flex-1 bg-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#a6864d] transition-all duration-400" 
                                     data-product-id="${productData.id}">
-                                Add to Cart
+                                Add to bag
                              </button>
                         </div>
                     </div>
@@ -891,7 +900,7 @@ async function animateButtonSuccess(clickedElement) {
     
     // Restore original state
     if (textSpan) {
-        textSpan.textContent = 'Add to cart';
+        textSpan.textContent = 'Add to bag';
     }
     button.className = originalClasses;
     button.removeChild(sparkleBadge);
@@ -1058,61 +1067,51 @@ function initWishlistButtons() {
 // ── Update All Wishlist Button States (Batch) ──
 async function updateAllWishlistButtonStates(buttons) {
     try {
-        // Extract all product IDs
-        const productIds = Array.from(buttons)
-            .map(btn => btn.getAttribute('data-product-id'))
-            .filter(id => id);
+        if (!window.api) return;
 
-        if (productIds.length === 0) return;
+        // Fetch the entire wishlist once to avoid multiple API calls
+        // This makes the UI much faster and ensures consistency on refresh
+        const wishlistItems = await window.api.getWishlist() || [];
+        
+        // Extract product IDs into a Set for fast O(1) lookup
+        const wishlistIds = new Set();
+        wishlistItems.forEach(item => {
+            // Some responses return an array of items with .product_id, others return product objects directly
+            const id = item.product_id || item.product?.id || item.id;
+            if (id) wishlistIds.add(parseInt(id));
+        });
 
-        // Batch check all wishlist states
-        const wishlistStates = await Promise.all(
-            productIds.map(async (productId) => {
-                if (!productId) {
-                    console.warn('updateWishlistButtonStates: Invalid product ID', productId);
-                    return {
-                        productId,
-                        isInWishlist: false
-                    };
-                }
-                try {
-                    const response = await window.api.checkWishlist(productId);
-                    return {
-                        productId,
-                        isInWishlist: response.in_wishlist
-                    };
-                } catch (error) {
-                    console.warn(`Failed to check wishlist for product ${productId}:`, error);
-                    return {
-                        productId,
-                        isInWishlist: false
-                    };
-                }
-            })
-        );
+        // Update all buttons based on the fetched wishlist
+        buttons.forEach(btn => {
+            const productId = parseInt(btn.getAttribute('data-product-id'));
+            if (!productId) return;
 
-        // Update all icons simultaneously
-        wishlistStates.forEach(({ productId, isInWishlist }) => {
+            const isInWishlist = wishlistIds.has(productId);
             const icon = document.getElementById(`heart-icon-${productId}`);
-            if (!icon) return;
-
-            if (isInWishlist) {
-                icon.classList.add('active');
-                icon.setAttribute('fill', 'currentColor');
-                icon.setAttribute('stroke', 'none');
-            } else {
-                icon.classList.remove('active');
-                icon.setAttribute('fill', 'none');
-                icon.setAttribute('stroke', 'currentColor');
+            
+            if (icon) {
+                if (isInWishlist) {
+                    icon.classList.add('active');
+                    icon.setAttribute('fill', 'currentColor');
+                    // Add is-wishlisted to card container
+                    const card = icon.closest('.group');
+                    if (card) card.classList.add('is-wishlisted');
+                } else {
+                    icon.classList.remove('active');
+                    icon.setAttribute('fill', 'none');
+                    // Remove is-wishlisted from card container
+                    const card = icon.closest('.group');
+                    if (card) card.classList.remove('is-wishlisted');
+                }
             }
         });
 
         // Re-initialize lucide icons once for all changes
-        if (typeof lucide !== 'undefined') {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
             lucide.createIcons();
         }
     } catch (error) {
-        console.warn('Failed to update wishlist button states:', error);
+        console.warn('Failed to batch update wishlist button states:', error);
     }
 }
 
@@ -1136,10 +1135,22 @@ async function updateWishlistButtonState(productId) {
             icon.classList.add('active');
             icon.setAttribute('fill', 'currentColor');
             icon.setAttribute('stroke', 'none');
+            // Add active class to button container
+            const btn = icon.closest('.wishlist-btn');
+            if (btn) btn.classList.add('active');
+            // If it's a card container, add is-wishlisted
+            const card = icon.closest('.group');
+            if (card) card.classList.add('is-wishlisted');
         } else {
             icon.classList.remove('active');
             icon.setAttribute('fill', 'none');
             icon.setAttribute('stroke', 'currentColor');
+            // Remove active class from button container
+            const btn = icon.closest('.wishlist-btn');
+            if (btn) btn.classList.remove('active');
+            // If it's a card container, remove is-wishlisted
+            const card = icon.closest('.group');
+            if (card) card.classList.remove('is-wishlisted');
         }
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1228,7 +1239,7 @@ async function updateWishlistOffcanvas() {
                         <h6 class="text-sm font-medium text-gray-900">${p.name}</h6>
                         <p class="text-sm text-gray-500">₱${Math.floor(p.price).toLocaleString()}</p>
                         <button class="btn-add-to-cart mt-1 px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors" data-product-id="${p.id}">
-                            Add to Cart
+                            Add to bag
                         </button>
                     </div>
                     <div class="flex-shrink-0">
@@ -1424,11 +1435,15 @@ async function fillQuickViewModal(product) {
     const image = document.getElementById('quick-view-image');
     const desc = document.getElementById('quick-view-desc');
     const price = document.getElementById('quick-view-price');
+    const category = document.getElementById('quick-view-category');
+    const productLink = document.getElementById('quick-view-product-link');
     
     if (label) label.textContent = product.name;
     if (image) image.src = product.primary_image || (product.images && product.images.length > 0 ? getStorageUrl(product.images[0]) : null) || product.image || '/frontend/assets/chair.png';
-    if (desc) desc.textContent = product.description || product.short_description || 'No description available';
+    if (desc) desc.textContent = product.description || product.short_description || 'A bespoke piece from the Éclore archives, curated for the modern collector.';
     if (price) price.textContent = `₱${Math.floor(product.price).toLocaleString('en-US')}`;
+    if (category) category.textContent = product.category?.name || 'Jewellery Collection';
+    if (productLink) productLink.href = `/products/${product.slug || product.id}`;
     
     // Update rating and stars
     const rating = product.average_rating || product.rating || product.review_rating || 0;
@@ -1438,23 +1453,23 @@ async function fillQuickViewModal(product) {
     // Show 5 stars with proper filling based on rating
     if (ratingText) {
         ratingText.textContent = rating > 0 ? rating.toFixed(1) : '0.0';
-        ratingText.className = 'text-sm font-medium text-amber-500';
     }
     if (starContainer) {
         let starsHTML = '';
+        const starColor = '#d4af37'; // Elegant gold color
         for (let i = 1; i <= 5; i++) {
             if (i <= Math.floor(rating)) {
                 // Full star
-                starsHTML += `<i data-lucide="star" class="w-4 h-4 text-amber-400 fill-current"></i>`;
+                starsHTML += `<i data-lucide="star" class="w-2.5 h-2.5 fill-current" style="color: ${starColor}"></i>`;
             } else if (i === Math.ceil(rating) && rating % 1 >= 0.5) {
-                // Half star - create with CSS mask
-                starsHTML += `<div class="relative w-4 h-4">
-                    <i data-lucide="star" class="w-4 h-4 text-amber-500 absolute"></i>
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-current absolute" style="clip-path: inset(0 50% 0 0);"></i>
+                // Half star
+                starsHTML += `<div class="relative w-2.5 h-2.5">
+                    <i data-lucide="star" class="w-2.5 h-2.5 absolute opacity-20" style="color: ${starColor}"></i>
+                    <i data-lucide="star" class="w-2.5 h-2.5 fill-current absolute" style="color: ${starColor}; clip-path: inset(0 50% 0 0);"></i>
                 </div>`;
             } else {
                 // Outlined star
-                starsHTML += `<i data-lucide="star" class="w-4 h-4 text-amber-500"></i>`;
+                starsHTML += `<i data-lucide="star" class="w-2.5 h-2.5 opacity-20" style="color: ${starColor}"></i>`;
             }
         }
         starContainer.innerHTML = starsHTML;
@@ -1518,13 +1533,13 @@ function createThumbnailIndicators() {
     // Create thumbnail images
     productImages.forEach((imageSrc, index) => {
         const thumbnail = document.createElement('div');
-        thumbnail.className = `flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 border-2 ${index === 0 ? 'border-amber-400' : 'border-gray-200'}`;
+        thumbnail.className = `flex-shrink-0 w-20 h-20 rounded-sm overflow-hidden cursor-pointer transition-all duration-300 border ${index === 0 ? 'border-stone-900 opacity-100 shadow-sm' : 'border-stone-100 opacity-50 hover:opacity-100'}`;
         thumbnail.setAttribute('data-slide', index);
         
         const img = document.createElement('img');
         img.src = imageSrc;
         img.alt = `Thumbnail ${index + 1}`;
-        img.className = 'w-full h-full object-cover';
+        img.className = 'w-full h-full object-contain p-2 bg-white';
         
         thumbnail.appendChild(img);
         thumbnailsContainer.appendChild(thumbnail);
@@ -1586,11 +1601,11 @@ function updateThumbnailSelection() {
     const thumbnails = document.querySelectorAll('#image-thumbnails [data-slide]');
     thumbnails.forEach((thumbnail, index) => {
         if (index === currentSlide) {
-            thumbnail.classList.remove('border-gray-200');
-            thumbnail.classList.add('border-amber-400');
+            thumbnail.classList.remove('border-stone-100', 'opacity-50');
+            thumbnail.classList.add('border-stone-900', 'opacity-100', 'shadow-sm');
         } else {
-            thumbnail.classList.remove('border-amber-400');
-            thumbnail.classList.add('border-gray-200');
+            thumbnail.classList.remove('border-stone-900', 'opacity-100', 'shadow-sm');
+            thumbnail.classList.add('border-stone-100', 'opacity-50');
         }
     });
 }
@@ -1664,7 +1679,6 @@ async function updateModalWishlistButtonState(productId) {
             // Active state - filled red heart
             heartIcon.classList.add('active');
             heartIcon.setAttribute('fill', 'currentColor');
-            heartIcon.setAttribute('stroke', 'none');
             heartIcon.style.color = '#ef4444'; // red-500
             wishlistText.textContent = 'Liked';
             wishlistBtn.classList.add('text-red-500', 'border-red-500');
@@ -1673,14 +1687,13 @@ async function updateModalWishlistButtonState(productId) {
             // Inactive state - outline heart
             heartIcon.classList.remove('active');
             heartIcon.setAttribute('fill', 'none');
-            heartIcon.setAttribute('stroke', 'currentColor');
             heartIcon.style.color = '#6b7280'; // gray-500
             wishlistText.textContent = 'Wishlist';
             wishlistBtn.classList.remove('text-red-500', 'border-red-500');
             wishlistBtn.classList.add('text-gray-700', 'border-gray-200');
         }
         
-        // Re-initialize lucide icons
+        // Re-initialize lucide icons to apply changes
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
@@ -3568,10 +3581,28 @@ window.reinitializeLucideIcons = function() {
     }
 };
 
-// Fallback Lucide initialization
+// Fallback Lucide initialization and Global Modal Setup
 setTimeout(() => {
-    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    // Initialize common modals
+    if (typeof initModal === 'function') {
+        initModal('modalQuickView');
+        initModal('modal-login');
+        initModal('modal-signup');
+        initModal('modal-search');
+    }
+    
+    // Initialize common offcanvas
+    if (typeof initOffcanvas === 'function') {
+        initOffcanvas('offcanvas-cart');
+        initOffcanvas('offcanvas-wishlist');
+    }
 
+    // Initialize wishlist buttons across the whole page (Catalogue and Details)
+    if (typeof initWishlistButtons === 'function') {
+        initWishlistButtons();
+    }
+
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
         lucide.createIcons();
     }
 }, 1000);

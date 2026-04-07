@@ -341,75 +341,100 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 2rem;
     border: 1px solid var(--brand-border);
+    margin-bottom: 1rem;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
 }
 
 .quantity-label {
     font-family: 'Azeret Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.3em;
+    font-weight: 700;
+    color: var(--brand-gray);
 }
 
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: end;
+    gap: 1.25rem;
 }
 
 .quantity-btn {
     background: transparent;
     border: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
     cursor: pointer;
-    color: var(--brand-black);
-    transition: color 0.3s;
+    color: #999;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 }
 
-.quantity-btn:hover { color: var(--brand-gold); }
+.quantity-btn:hover { color: var(--brand-black); }
 
 .quantity-input {
-    width: 30px;
+    width: 32px;
     text-align: center;
     border: none;
     font-family: 'Azeret Mono', monospace;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--brand-black);
+    background: transparent;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.quantity-input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .action-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .btn-add-cart {
     flex: 1;
-    height: 64px;
+    height: 56px;
     background: var(--brand-black);
     color: white;
-    border: none;
+    border: 1px solid transparent;
     font-family: 'Azeret Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.25em;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    border-radius: 0 !important;
 }
 
 .btn-add-cart:hover {
     background: var(--brand-gold);
-    transform: translateY(-2px);
 }
 
-.btn-wishlist {
-    width: 64px;
-    height: 64px;
+.wishlist-btn {
+    width: 56px;
+    height: 56px;
     background: white;
     border: 1px solid var(--brand-border);
     cursor: pointer;
@@ -417,16 +442,49 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 0 !important;
 }
 
-.btn-wishlist:hover {
+.btn-wishlist-round {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid #fff;
+    color: #333;
+}
+
+.btn-wishlist-round:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.btn-wishlist-round.active {
+    background: white;
+    color: #ef4444;
+}
+
+.btn-wishlist-round.active svg {
+    fill: currentColor;
+}
+
+.wishlist-btn:hover {
     border-color: var(--brand-gold);
     color: var(--brand-gold);
 }
 
-.btn-wishlist.active {
+.wishlist-btn.active {
     color: #ef4444;
     border-color: #ef4444;
+}
+
+.wishlist-btn.active svg {
+    fill: currentColor;
 }
 
 /* Product Tabs */
@@ -655,9 +713,13 @@ body {
                     <div class="quantity-selector">
                         <span class="quantity-label">Quantity</span>
                         <div class="quantity-controls">
-                            <button type="button" class="quantity-btn" onclick="decrementQuantity()">-</button>
+                            <button type="button" class="quantity-btn" onclick="decrementQuantity()">
+                                <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                            </button>
                             <input type="number" class="quantity-input" id="productQuantity" value="1" min="1" max="{{ $product->stock_quantity }}" readonly>
-                            <button type="button" class="quantity-btn" onclick="incrementQuantity()">+</button>
+                            <button type="button" class="quantity-btn" onclick="incrementQuantity()">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            </button>
                         </div>
                     </div>
                 @endif
@@ -669,11 +731,11 @@ body {
                         data-product-id="{{ $product->id }}"
                         {{ $product->stock_quantity <= 0 ? 'disabled' : '' }}
                     >
-                        <span>{{ $product->stock_quantity > 0 ? 'Add to Collection' : 'Out of Stock' }}</span>
+                        <span>{{ $product->stock_quantity > 0 ? 'Add to Bag' : 'Out of Stock' }}</span>
                     </button>
                     
                     <button 
-                        class="btn-wishlist" 
+                        class="wishlist-btn" 
                         id="wishlistBtn-{{ $product->id }}"
                         data-product-id="{{ $product->id }}"
                         title="Add to Wishlist"
@@ -845,8 +907,8 @@ body {
                             <a href="{{ route('products.show', $relatedProduct->slug) }}">
                                 <img src="{{ $relatedImage }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ $relatedProduct->name }}">
                             </a>
-                            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="wishlist-btn p-2 bg-white rounded-full shadow-sm" data-product-id="{{ $relatedProduct->id }}">
+                             <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button class="btn-wishlist-round" data-product-id="{{ $relatedProduct->id }}">
                                     <i data-lucide="heart" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -1081,21 +1143,51 @@ async function animateButtonSuccess(button) {
 }
 
 // Initialize Related Products Buttons
-function initRelatedProductsButtons() {
-    // Initialize quick view buttons
-    if (typeof initModalQuickView === 'function') {
-        initModalQuickView();
-    }
+async function initRelatedProductsButtons() {
+    const wishlistBtns = document.querySelectorAll('.btn-wishlist-round');
     
-    // Initialize add to cart buttons
-    if (typeof initAddToCartButtons === 'function') {
-        initAddToCartButtons();
-    }
-    
-    // Initialize wishlist buttons
-    if (typeof initWishlistButtons === 'function') {
-        initWishlistButtons();
-    }
+    wishlistBtns.forEach(async (btn) => {
+        const productId = btn.getAttribute('data-product-id');
+        const icon = btn.querySelector('svg');
+        
+        // Initial state check
+        try {
+            const response = await fetch(`/api/wishlist/check/${productId}`);
+            const data = await response.json();
+            if (data.in_wishlist) {
+                btn.classList.add('active');
+            }
+        } catch (e) {}
+        
+        // Click handler
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            try {
+                const response = await fetch('/api/wishlist/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    this.classList.toggle('active');
+                    if (data.action === 'added') {
+                        showNotification('Added to Collection', 'success');
+                    } else {
+                        showNotification('Removed from Collection', 'info');
+                    }
+                }
+            } catch (error) {
+                console.error('Error toggling wishlist:', error);
+            }
+        });
+    });
 }
 
 // Review Form Functions
@@ -1293,83 +1385,7 @@ async function initializeWishlistButton() {
     }
 }
 
-// Wishlist Button Click Handler
-document.addEventListener('DOMContentLoaded', function() {
-    const productId = {{ $product->id }};
-    const wishlistBtn = document.getElementById('wishlistBtn-' + productId);
-    
-    // Initialize button state
-    initializeWishlistButton();
-    
-    // Add click event listener
-    if (wishlistBtn) {
-        wishlistBtn.addEventListener('click', async function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            try {
-                // Check if API is available
-                if (!window.api) {
-                    console.error('window.api is not available!');
-                    showNotification('API not available', 'error');
-                    return;
-                }
-                
-                // Toggle wishlist via API
-                const response = await window.api.toggleWishlist(productId);
-                
-                // Update button state
-                const heartIcon = document.getElementById('heart-icon-' + productId);
-                if (heartIcon && response.success) {
-                    const wasAdded = response.was_added;
-                    
-                    if (wasAdded) {
-                        // Item was added to wishlist
-                        heartIcon.classList.add('active');
-                        heartIcon.setAttribute('fill', 'currentColor');
-                        heartIcon.setAttribute('stroke', 'none');
-                        heartIcon.style.fill = '#ef4444';
-                        heartIcon.style.color = '#ef4444';
-                        wishlistBtn.classList.add('active');
-                        showNotification('Added to wishlist', 'success');
-                    } else {
-                        // Item was removed from wishlist
-                        heartIcon.classList.remove('active');
-                        heartIcon.setAttribute('fill', 'none');
-                        heartIcon.setAttribute('stroke', 'currentColor');
-                        heartIcon.style.fill = 'none';
-                        heartIcon.style.color = '';
-                        wishlistBtn.classList.remove('active');
-                        showNotification('Removed from wishlist', 'success');
-                    }
-                    
-                    // Reinitialize lucide icons
-                    if (typeof lucide !== 'undefined') {
-                        lucide.createIcons();
-                    }
-                }
-                
-                // Update wishlist count badge
-                if (typeof updateWishlistCount === 'function') {
-                    await updateWishlistCount();
-                }
-                
-                // Update offcanvas if open
-                const offcanvas = document.getElementById('offcanvas-wishlist');
-                if (offcanvas && getComputedStyle(offcanvas).visibility !== 'hidden') {
-                    if (typeof updateWishlistOffcanvas === 'function') {
-                        await updateWishlistOffcanvas();
-                    }
-                }
-                
-            } catch (error) {
-                console.error('Wishlist toggle error:', error);
-                showNotification('Failed to update wishlist', 'error');
-            }
-        });
-    }
-});
-</script>
+
 @endpush
 @endsection
 

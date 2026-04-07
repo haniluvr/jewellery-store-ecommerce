@@ -201,7 +201,7 @@ function initProductsSection() {
                     </button>
                     <button class="btn btn-add-to-cart max-w-[45%] shrink flex items-center justify-center py-2 px-0" data-product-id="${product.id}">
                         <i data-lucide="shopping-cart" class="lucide-small"></i> 
-                        <span class="font-medium ml-2">Add to cart</span>
+                        <span class="font-medium ml-2">Add to bag</span>
                     </button>
                 </div>
             </div>

@@ -664,7 +664,7 @@
                     @else
                         <div class="text-center py-20">
                             <i data-lucide="shopping-cart" class="text-gray-100 w-16 h-16 mx-auto mb-6"></i>
-                            <h3 class="font-playfair text-xl mb-4">Your cart is unoccupied</h3>
+                            <h3 class="font-playfair text-xl mb-4">Your bag is unoccupied</h3>
                             <a href="{{ route('catalogue') }}" class="text-[10px] tracking-[0.3em] uppercase text-gold hover:text-black transition-colors font-semibold">Browse Catalogue</a>
                         </div>
                     @endif
@@ -2700,7 +2700,7 @@
         
         // Remove item
         if (e.target.closest('.remove-cart-item')) {
-            if (!confirm('Are you sure you want to remove this item from your cart?')) {
+            if (!confirm('Are you sure you want to remove this item from your bag?')) {
                 return;
             }
             

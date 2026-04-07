@@ -1,13 +1,29 @@
 import './bootstrap';
 
-import { createIcons, icons } from 'lucide';
+import { createIcons, icons as iconsObj } from 'lucide';
+import * as allIcons from 'lucide';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Ensure we have a valid icons object (either from named export or wildcard)
+const icons = iconsObj || (allIcons && Object.keys(allIcons).length > 0 ? allIcons : {});
+
 // ── Globals Exposure ──
 // We MUST expose these to window for the legacy/inline scripts across the app
-window.lucide = { createIcons, icons };
-window.createIcons = createIcons;
+window.lucide = { 
+    createIcons: (options = {}) => {
+        try {
+            return createIcons({ icons, ...options });
+        } catch (e) {
+            console.warn('Lucide createIcons wrapper caught an error:', e);
+            // Fallback: try calling original if icons are provided in options
+            if (options.icons) return createIcons(options);
+            throw e;
+        }
+    },
+    icons 
+};
+window.createIcons = window.lucide.createIcons;
 window.icons = icons;
 window.AOS = AOS;
 

@@ -397,7 +397,7 @@ async function initProductsSection() {
                             </button>
                             <button class="btn-add-to-cart flex-1 bg-[#1A1A1A] text-white py-3.5 text-[8.5px] uppercase tracking-[0.005em] font-azeret hover:bg-[#a6864d] transition-all duration-400" 
                                     data-product-id="${productData.id}">
-                                Add to Cart
+                                Add to bag
                             </button>
                         </div>
                     </div>
@@ -659,7 +659,7 @@ async function animateButtonSuccess(clickedElement) {
     
     // Restore original state
     if (textSpan) {
-        textSpan.textContent = 'Add to cart';
+        textSpan.textContent = 'Add to bag';
     }
     button.className = originalClasses;
     button.removeChild(sparkleBadge);
@@ -996,7 +996,7 @@ async function updateWishlistOffcanvas() {
                         <h6 class="text-sm font-medium text-gray-900">${p.name}</h6>
                         <p class="text-sm text-gray-500">₱${Math.floor(p.price).toLocaleString()}</p>
                         <button class="btn-add-to-cart mt-1 px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors" data-product-id="${p.id}">
-                            Add to Cart
+                            Add to bag
                         </button>
                     </div>
                     <div class="flex-shrink-0">

@@ -9,7 +9,7 @@
     <h2 style="color: #1A1A1A; margin: 0 0 20px 0; font-family: 'Playfair Display', serif;">Hello {{ $user->name }},</h2>
     
     <p style="color: #555; line-height: 1.6; margin: 0; font-weight: 300;">
-        We noticed you left some exquisite pieces in your cart. Their timeless beauty is waiting to be yours.
+        We noticed you left some exquisite pieces in your bag. Their timeless beauty is waiting to be yours.
     </p>
 </div>
 

@@ -129,7 +129,13 @@
                         html += `
                             <a href="${productUrl}" class="flex items-center p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 group">
                                 <div class="w-10 h-10 flex-shrink-0 bg-gray-50 overflow-hidden">
-                                    <img src="${window.getStorageUrl ? window.getStorageUrl(image) : '/' + image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${product.name}">
+                                    <img src="${(function(path) {
+                                        if (!path) return '';
+                                        if (window.getStorageUrl) return window.getStorageUrl(path);
+                                        if (path.startsWith('http') || path.startsWith('//') || path.startsWith('data:')) return path;
+                                        if (path.startsWith('frontend/') || path.startsWith('assets/')) return '/' + path;
+                                        return '/storage/' + (path.startsWith('/') ? path.substring(1) : path);
+                                    })(image)}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${product.name}">
                                 </div>
                                 <div class="ml-3 overflow-hidden">
                                     <p class="text-[10px] font-medium text-gray-900 uppercase tracking-widest truncate">${product.name}</p>
