@@ -142,7 +142,7 @@
                     </div>
             
                     <!-- Confirm Password -->
-                    <div class="mb-6" id="confirm-password-group">
+                    <div class="mb-6 overflow-hidden max-h-0 opacity-0 transition-all duration-400" id="confirm-password-group">
                         <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                         <div class="relative">
                             <input 

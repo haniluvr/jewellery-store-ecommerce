@@ -257,10 +257,17 @@
                 const passwordMatchError = modalElement.querySelector('#password-match-error');
                 
                 if (passwordField && confirmPasswordGroup) {
+                    // Initial check for non-empty field
+                    if (passwordField.value.trim().length > 0) {
+                        confirmPasswordGroup.classList.add('show');
+                    }
+                    
                     // Show confirm password group ONLY when user starts typing (not on focus)
                     passwordField.addEventListener('input', function() {
-                        if (passwordField.value.length > 0) {
+                        if (passwordField.value.trim().length > 0) {
                             confirmPasswordGroup.classList.add('show');
+                        } else {
+                            confirmPasswordGroup.classList.remove('show');
                         }
                     });
                     
@@ -273,9 +280,18 @@
                     // Track focus state to ensure UI is show/hide correctly
                     let passwordFieldActive = false;
                     
+                    // Strength meter container
+                    const passwordStrength = modalElement.querySelector('#passwordStrength');
+                    
                     // FUNCTION-1: Show password feedback (progress & hints popover) **only when focused/active**
                     passwordField.addEventListener('focus', function() {
                         passwordFieldActive = true;
+                        
+                        if (passwordStrength) {
+                            passwordStrength.classList.remove('hidden');
+                            passwordStrength.style.display = 'block';
+                            passwordStrength.style.opacity = '1';
+                        }
                         
                         // Reveal the password strength UI
                         if (passwordStrengthIndicator) {
@@ -302,17 +318,14 @@
                     passwordField.addEventListener('blur', function() {
                         passwordFieldActive = false;
                         
-                        // Hide both progress bar and hints popover
-                        if (passwordStrengthIndicator) {
-                            passwordStrengthIndicator.classList.add('hidden');
-                            passwordStrengthIndicator.style.opacity = '0';
-                            passwordStrengthIndicator.style.display = 'none';
-                        }
-                        
-                        if (passwordStrengthHints) {
-                            passwordStrengthHints.classList.add('hidden');
-                            passwordStrengthHints.style.opacity = '0';
-                            passwordStrengthHints.style.display = 'none';
+                        // Use a small delay for folding animation if possible
+                        if (passwordStrength) {
+                            setTimeout(() => {
+                                if (!passwordFieldActive) {
+                                    passwordStrength.classList.add('hidden');
+                                    passwordStrength.style.display = 'none';
+                                }
+                            }, 150);
                         }
                     });
                     
@@ -855,20 +868,21 @@
                 let validationTimeout = null;
 
                 function showPasswordValidation() {
-                    // Show entire password strength container with fold animation
+                    // Show entire password strength container
                     passwordStrength.classList.remove('hidden');
                     passwordStrength.setAttribute('aria-hidden', 'false');
                     
-                    $(passwordStrength).hide().show('fold', { 
-                        duration: 400,
+                    // Trigger fold-down animation
+                    $(passwordStrength).hide().slideDown({ 
+                        duration: 300,
                         easing: 'swing'
                     });
                 }
 
                 function hidePasswordValidation() {
-                    // Hide entire password strength container with fold animation
-                    $(passwordStrength).hide('fold', { 
-                        duration: 300,
+                    // Hide entire password strength container
+                    $(passwordStrength).slideUp({ 
+                        duration: 250,
                         easing: 'swing',
                         complete: function() {
                             passwordStrength.classList.add('hidden');
@@ -998,6 +1012,15 @@
                 });
 
                 passwordInput.addEventListener('input', function() {
+                    const confirmPasswordGroup = document.getElementById('confirm-password-group');
+                    if (confirmPasswordGroup) {
+                        if (this.value.trim().length > 0) {
+                            confirmPasswordGroup.classList.add('show');
+                        } else {
+                            confirmPasswordGroup.classList.remove('show');
+                        }
+                    }
+
                     if (isFocused) {
                         updatePasswordStrength(this.value);
                     }
