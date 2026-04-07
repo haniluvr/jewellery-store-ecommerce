@@ -22,11 +22,15 @@ class ProductController extends Controller
         if ($path === self::PLACEHOLDER_PATH || $path === '.') {
             return;
         }
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+
+        $disk = storage_disk();
+        if ($disk->exists($path)) {
+            $disk->delete($path);
 
             return;
         }
+
+        // Fallback for public disk if the current disk is different
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
@@ -173,9 +177,9 @@ class ProductController extends Controller
         // Handle images
         if ($request->hasFile('images')) {
             $images = [];
-            $storeDisk = config('filesystems.default') === 'local' ? 'public' : config('filesystems.default');
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', $storeDisk);
+                // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
+                $path = storage_disk()->putFile('products', $image);
                 $images[] = $path;
             }
             $validated['images'] = $images;
@@ -339,9 +343,9 @@ class ProductController extends Controller
         // Add new images
         $newImages = [];
         if ($request->hasFile('images')) {
-            $storeDisk = config('filesystems.default') === 'local' ? 'public' : config('filesystems.default');
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', $storeDisk);
+                // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
+                $path = storage_disk()->putFile('products', $image);
                 $newImages[] = $path;
             }
         }

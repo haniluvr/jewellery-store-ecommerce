@@ -389,7 +389,7 @@ class ReturnsRepairsController extends Controller
         $photoPaths = $returnRepair->photos ?? [];
 
         foreach ($request->file('photos') as $photo) {
-            $path = $photo->store('returns-photos', 'public');
+            $path = storage_disk()->putFile('returns-photos', $photo);
             $photoPaths[] = $path;
         }
 
@@ -412,8 +412,8 @@ class ReturnsRepairsController extends Controller
         $photoIndex = array_search($request->photo_path, $photos);
 
         if ($photoIndex !== false) {
-            // Delete file from storage
-            Storage::disk('public')->delete($request->photo_path);
+            // Delete file from storage using dynamic helper
+            storage_disk()->delete($request->photo_path);
 
             // Remove from array
             unset($photos[$photoIndex]);
