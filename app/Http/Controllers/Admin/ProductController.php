@@ -181,6 +181,7 @@ class ProductController extends Controller
             try {
                 foreach ($request->file('images') as $image) {
                     $path = storage_disk()->putFile('products', $image);
+                    Log::info('IMAGE UPLOADED TO: ' . $path);
                     $images[] = $path;
                 }
             } catch (\Exception $e) {
@@ -353,6 +354,7 @@ class ProductController extends Controller
                 foreach ($request->file('images') as $image) {
                     // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
                     $path = storage_disk()->putFile('products', $image);
+                    Log::info('IMAGE UPDATED TO S3: ' . $path);
                     $newImages[] = $path;
                 }
             } catch (\Exception $e) {
