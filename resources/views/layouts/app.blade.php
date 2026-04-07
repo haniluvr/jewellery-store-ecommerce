@@ -37,23 +37,25 @@
         @stack('styles')
         @php
             // Determine storage base URL dynamically using config() instead of env()
-            // This ensures logic works correctly after config:cache in production
             $storageBaseUrl = '';
-            $filesystemDisk = config('filesystems.default', 'public');
             $appEnv = config('app.env', 'production');
+            $filesystemDisk = config('filesystems.default', 'public');
             
             // Use S3 if explicitly configured or in production
             if ($filesystemDisk === 's3' || $appEnv === 'production') {
                 $s3Url = config('filesystems.disks.s3.url');
                 $s3Bucket = config('filesystems.disks.s3.bucket');
-                $s3Region = config('filesystems.disks.s3.region');
+                $s3Region = config('filesystems.disks.s3.region', 'us-east-1');
                 
                 if ($s3Url) {
                     $storageBaseUrl = rtrim($s3Url, '/');
-                } elseif ($s3Bucket && $s3Region) {
-                    // Construct standard S3 URL (works for most modern buckets)
-                    // Format: https://bucket.s3.region.amazonaws.com
-                    $storageBaseUrl = "https://{$s3Bucket}.s3.{$s3Region}.amazonaws.com";
+                } elseif ($s3Bucket) {
+                    // special case for us-east-1 which often uses the global endpoint
+                    if ($s3Region === 'us-east-1') {
+                        $storageBaseUrl = "https://{$s3Bucket}.s3.amazonaws.com";
+                    } else {
+                        $storageBaseUrl = "https://{$s3Bucket}.s3.{$s3Region}.amazonaws.com";
+                    }
                 }
             }
         @endphp
