@@ -177,10 +177,14 @@ class ProductController extends Controller
         // Handle images
         if ($request->hasFile('images')) {
             $images = [];
-            foreach ($request->file('images') as $image) {
-                // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
-                $path = storage_disk()->putFile('products', $image);
-                $images[] = $path;
+            try {
+                foreach ($request->file('images') as $image) {
+                    $path = storage_disk()->putFile('products', $image);
+                    $images[] = $path;
+                }
+            } catch (\Exception $e) {
+                Log::error('S3 Upload Failed: ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: ' . $e->getMessage());
             }
             $validated['images'] = $images;
             $validated['gallery'] = $images;
@@ -343,10 +347,15 @@ class ProductController extends Controller
         // Add new images
         $newImages = [];
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
-                $path = storage_disk()->putFile('products', $image);
-                $newImages[] = $path;
+            try {
+                foreach ($request->file('images') as $image) {
+                    // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
+                    $path = storage_disk()->putFile('products', $image);
+                    $newImages[] = $path;
+                }
+            } catch (\Exception $e) {
+                Log::error('S3 Update Upload Failed: ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'Failed to upload images to S3. Please check your AWS credentials. Error: ' . $e->getMessage());
             }
         }
 
