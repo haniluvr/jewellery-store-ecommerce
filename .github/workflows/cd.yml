@@ -236,13 +236,11 @@ jobs:
         MAIL_FROM_NAME="${APP_NAME}"
 
         # S3 Storage Configuration
-        AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION=${{ secrets.AWS_REGION || 'ap-southeast-1' }}
+        AWS_S3_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_S3_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION=${{ secrets.AWS_REGION || 'ap-southeast-1' }}
-        AWS_BUCKET=${{ secrets.AWS_S3_BUCKET }}
-        AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
-        AWS_S3_ROOT=storage
+        AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET}}
+        AWS_URL=${{ secrets.AWS_URL }}
         AWS_USE_PATH_STYLE_ENDPOINT=false
 
         PUSHER_APP_ID=

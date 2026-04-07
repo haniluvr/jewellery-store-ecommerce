@@ -47,17 +47,15 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_S3_ACCESS_KEY_ID', env('AWS_ACCESS_KEY_ID', '')),
-            'secret' => env('AWS_S3_SECRET_ACCESS_KEY', env('AWS_SECRET_ACCESS_KEY', '')),
-            'region' => env('AWS_DEFAULT_REGION', env('AWS_REGION', 'us-east-1')),
-            'bucket' => env('AWS_S3_BUCKET', env('AWS_BUCKET', '')),
-            'root' => env('AWS_S3_ROOT', ''),
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'bucket' => env('AWS_S3_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'visibility' => 'public',
         ],
     ],
 

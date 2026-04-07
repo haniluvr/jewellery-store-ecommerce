@@ -16,8 +16,8 @@ window.getStorageUrl = function(path) {
     const meta = document.querySelector('meta[name="storage-base-url"]');
     const base = meta && meta.content ? meta.content.replace(/\/+$/, '') : '';
 
-    // Remove any leading slash
-    const cleanPath = trimmedPath.startsWith('/') ? trimmedPath.substring(1) : trimmedPath;
+    // Remove redundant 'storage/' or 'public/' prefix if they exist at the start (to match S3 root)
+    const cleanPath = trimmedPath.startsWith('storage/') ? trimmedPath.substring(8) : (trimmedPath.startsWith('/') ? trimmedPath.substring(1) : trimmedPath);
 
     if (base) return `${base}/${cleanPath}`;
 
