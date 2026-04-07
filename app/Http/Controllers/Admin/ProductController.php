@@ -180,8 +180,13 @@ class ProductController extends Controller
 
             try {
                 foreach ($request->file('images') as $image) {
-                    $path = storage_disk()->putFile('products', $image);
-                    Log::info('IMAGE UPLOADED TO: '.$path);
+                    $disk = storage_disk();
+                    Log::info('DEBUG - DISK TYPE: '.get_class($disk));
+                    Log::info('DEBUG - ADAPTER: '.get_class($disk->getAdapter()));
+                    Log::info('ATTEMPTING UPLOAD:', ['file' => $image->getClientOriginalName(), 'size' => $image->getSize()]);
+
+                    $path = $disk->putFile('', $image);
+                    Log::info('UPLOAD RESULT PATH: "'.$path.'"');
                     $images[] = $path;
                 }
             } catch (\Exception $e) {
@@ -352,9 +357,10 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             try {
                 foreach ($request->file('images') as $image) {
-                    // Use storage_disk() helper to store on the appropriate disk (S3 in production, public locally)
-                    $path = storage_disk()->putFile('products', $image);
-                    Log::info('IMAGE UPDATED TO S3: '.$path);
+                    Log::info('ATTEMPTING UPDATE UPLOAD:', ['file' => $image->getClientOriginalName(), 'size' => $image->getSize()]);
+                    // Upload directly to the root of the bucket as requested
+                    $path = storage_disk()->putFile('', $image);
+                    Log::info('UPDATE UPLOAD RESULT PATH: "'.$path.'"');
                     $newImages[] = $path;
                 }
             } catch (\Exception $e) {
