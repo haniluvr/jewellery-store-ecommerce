@@ -341,7 +341,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem 2rem;
     border: 1px solid var(--brand-border);
     margin-bottom: 1rem;
     background: #fff;
@@ -360,7 +359,7 @@ body {
 .quantity-controls {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
     gap: 1.25rem;
 }
 
@@ -710,7 +709,7 @@ body {
             <!-- Actions -->
             <div class="action-section">
                 @if($product->stock_quantity > 0)
-                    <div class="quantity-selector">
+                    <div class="quantity-selector" style="padding: 1.25rem 2rem;">
                         <span class="quantity-label">Quantity</span>
                         <div class="quantity-controls">
                             <button type="button" class="quantity-btn" onclick="decrementQuantity()">

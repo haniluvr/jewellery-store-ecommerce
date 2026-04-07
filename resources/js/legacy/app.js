@@ -1228,8 +1228,18 @@ async function updateWishlistOffcanvas() {
 
         let html = '<div class="wishlist-items">';
         wishlistItems.forEach(item => {
-            const p = item.product;
-            const image = getStorageUrl((p.images && p.images[0]) || p.primary_image || p.image) || '/frontend/assets/chair.png';
+            const p = item.product || item;
+            
+            // Robust image extraction
+            let imagePath = '';
+            const images = (typeof p.images === 'string' ? JSON.parse(p.images || '[]') : p.images) || [];
+            if (Array.isArray(images) && images.length > 0) {
+                imagePath = images[0];
+            } else {
+                imagePath = p.primary_image || p.image || '';
+            }
+            
+            const image = getStorageUrl(imagePath) || '/frontend/assets/necklace.webp';
             html += `
                 <div class="wishlist-item flex items-center py-4 border-b border-gray-200" data-product-id="${p.id}">
                     <div class="flex-shrink-0 w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
@@ -1439,7 +1449,17 @@ async function fillQuickViewModal(product) {
     const productLink = document.getElementById('quick-view-product-link');
     
     if (label) label.textContent = product.name;
-    if (image) image.src = product.primary_image || (product.images && product.images.length > 0 ? getStorageUrl(product.images[0]) : null) || product.image || '/frontend/assets/chair.png';
+    
+    // Robust image extraction for main image
+    let mainImagePath = '';
+    const imagesArray = (typeof product.images === 'string' ? JSON.parse(product.images || '[]') : product.images) || [];
+    if (Array.isArray(imagesArray) && imagesArray.length > 0) {
+        mainImagePath = imagesArray[0];
+    } else {
+        mainImagePath = product.primary_image || product.image || '';
+    }
+    
+    if (image) image.src = getStorageUrl(mainImagePath) || '/frontend/assets/necklace.webp';
     if (desc) desc.textContent = product.description || product.short_description || 'A bespoke piece from the Éclore archives, curated for the modern collector.';
     if (price) price.textContent = `₱${Math.floor(product.price).toLocaleString('en-US')}`;
     if (category) category.textContent = product.category?.name || 'Jewellery Collection';
@@ -3011,8 +3031,18 @@ async function performLoadCartItems() {
                 // Generate cart items HTML
                 let cartItemsHTML = '';
                 items.forEach((item, index) => {
-                    const productData = item.product_data || {};
-                    const image = getStorageUrl((productData.images && productData.images[0]) || productData.primary_image || productData.image) || '/frontend/assets/chair.png';
+                    const productData = item.product_data || item.product || {};
+                    
+                    // Robust image extraction
+                    let imagePath = '';
+                    const images = (typeof productData.images === 'string' ? JSON.parse(productData.images || '[]') : productData.images) || [];
+                    if (Array.isArray(images) && images.length > 0) {
+                        imagePath = images[0];
+                    } else {
+                        imagePath = productData.primary_image || productData.image || '';
+                    }
+
+                    const image = getStorageUrl(imagePath) || '/frontend/assets/necklace.webp';
                     
                     cartItemsHTML += `
                         <div class="cart-item-new border-b py-3" data-product-id="${item.product_id}">
@@ -3561,6 +3591,14 @@ window.initializeCartSelection = initializeCartSelection;
 window.updateCartSubtotal = updateCartSubtotal;
 window.toggleSelectAll = toggleSelectAll;
 window.updateSelectAllButton = updateSelectAllButton;
+
+// Cart Functions
+window.removeFromCart = removeFromCart;
+window.updateCartQuantity = updateCartQuantity;
+window.loadCartItems = loadCartItems;
+window.updateCartCount = updateCartCount;
+window.performLoadCartItems = performLoadCartItems;
+window.clearCartState = clearCartState;
 
 // Global function to reinitialize cart selection (useful for dynamic content)
 window.reinitializeCartSelection = function() {

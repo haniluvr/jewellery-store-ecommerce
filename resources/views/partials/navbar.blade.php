@@ -124,18 +124,34 @@
                     let html = '';
                     products.forEach(product => {
                         const productUrl = `/products/${product.slug}`;
-                        const image = (product.images && product.images.length > 0 ? product.images[0] : product.image) || 'frontend/assets/necklace.webp';
+                        
+                        // Image extraction
+                        let imagePath = '';
+                        const images = (typeof product.images === 'string' ? JSON.parse(product.images || '[]') : product.images) || [];
+                        if (Array.isArray(images) && images.length > 0) {
+                            imagePath = images[0];
+                        } else {
+                            imagePath = product.image || '';
+                        }
+                        
+                        if (!imagePath) imagePath = 'frontend/assets/necklace.webp';
+
+                        // URL generation matching PHP storage_url logic
+                        const getFullUrl = (path) => {
+                            if (!path) return '';
+                            if (path.startsWith('http')) return path;
+                            if (window.getStorageUrl) return window.getStorageUrl(path);
+                            if (path.startsWith('frontend/') || path.startsWith('assets/')) return '/' + path;
+                            // Last resort fallback
+                            return '/storage/' + (path.startsWith('/') ? path.substring(1) : path);
+                        };
+                        
+                        const fullImageUrl = getFullUrl(imagePath);
                         
                         html += `
                             <a href="${productUrl}" class="flex items-center p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 group">
-                                <div class="w-10 h-10 flex-shrink-0 bg-gray-50 overflow-hidden">
-                                    <img src="${(function(path) {
-                                        if (!path) return '';
-                                        if (window.getStorageUrl) return window.getStorageUrl(path);
-                                        if (path.startsWith('http') || path.startsWith('//') || path.startsWith('data:')) return path;
-                                        if (path.startsWith('frontend/') || path.startsWith('assets/')) return '/' + path;
-                                        return '/storage/' + (path.startsWith('/') ? path.substring(1) : path);
-                                    })(image)}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${product.name}">
+                                <div class="w-10 h-10 flex-shrink-0 bg-gray-100 overflow-hidden">
+                                    <img src="${fullImageUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${product.name}" onerror="this.src='/frontend/assets/necklace.webp'; this.onerror=null;">
                                 </div>
                                 <div class="ml-3 overflow-hidden">
                                     <p class="text-[10px] font-medium text-gray-900 uppercase tracking-widest truncate">${product.name}</p>
