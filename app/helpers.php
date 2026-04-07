@@ -76,7 +76,7 @@ if (! function_exists('storage_url')) {
      */
     function storage_url(?string $path): string
     {
-        if (!$path) {
+        if (! $path) {
             return '';
         }
 
