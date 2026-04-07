@@ -56,22 +56,20 @@ if (! function_exists('storage_disk')) {
      */
     function storage_disk()
     {
+        // Force S3 in production
+        if (config('app.env') === 'production') {
+            return \Illuminate\Support\Facades\Storage::disk('s3');
+        }
+
         try {
-            // Check for explicit storage disk preference in environment
             $disk = config('filesystems.default');
             if ($disk && $disk !== 'local' && $disk !== 'public') {
                 return \Illuminate\Support\Facades\Storage::disk($disk);
             }
-
-            // Fallback to dynamic if available
-            if (method_exists(\Illuminate\Support\Facades\Storage::class, 'dynamic')) {
-                return \Illuminate\Support\Facades\Storage::dynamic();
-            }
         } catch (\Exception $e) {
-            // Fallback if issues arise
+            // Log and fallback
         }
 
-        // Fallback to public disk
         return \Illuminate\Support\Facades\Storage::disk('public');
     }
 }
