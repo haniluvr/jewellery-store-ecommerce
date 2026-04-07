@@ -196,7 +196,7 @@ jobs:
         sudo tee "$APP_DIR/.env" > /dev/null << 'ENV_EOF'
         APP_NAME="Éclore Jewellery Shop"
         APP_ENV=production
-        APP_KEY=
+        APP_KEY=${{ secrets.APP_KEY }}
         APP_DEBUG=false
         APP_URL=https://eclorejewellery.shop
         ADMIN_URL=https://admin.eclorejewellery.shop
@@ -235,9 +235,11 @@ jobs:
         MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}
         MAIL_FROM_NAME="${APP_NAME}"
 
-        # Using IAM Roles (Instance Profile) for S3 access - No keys required in .env
+        # S3 Storage Configuration
+        AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION=ap-southeast-1
-        AWS_BUCKET=${{ secrets.AWS_S3_BUCKET }}
+        AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
         AWS_USE_PATH_STYLE_ENDPOINT=false
 
         PUSHER_APP_ID=
@@ -263,11 +265,6 @@ jobs:
         # Add ubuntu user to www-data group for .env access
         sudo usermod -a -G www-data ubuntu || echo "Failed to add ubuntu to www-data group"
         
-        # Generate Laravel application key
-        echo "Generating Laravel application key..."
-        sudo -u www-data php artisan key:generate --force || echo "Key generation failed, but continuing..."
-        
-        # Clear Laravel caches
         echo "Clearing Laravel caches..."
         sudo -u www-data php artisan config:clear || echo "Config clear failed"
         sudo -u www-data php artisan route:clear || echo "Route clear failed"

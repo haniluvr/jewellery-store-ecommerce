@@ -57,11 +57,18 @@ if (! function_exists('storage_disk')) {
     function storage_disk()
     {
         try {
+            // Check for explicit storage disk preference in environment
+            $disk = env('FILESYSTEM_DISK');
+            if ($disk && $disk !== 'local' && $disk !== 'public') {
+                return \Illuminate\Support\Facades\Storage::disk($disk);
+            }
+
+            // Fallback to dynamic if available
             if (method_exists(\Illuminate\Support\Facades\Storage::class, 'dynamic')) {
                 return \Illuminate\Support\Facades\Storage::dynamic();
             }
         } catch (\Exception $e) {
-            // Fallback if dynamic method doesn't exist
+            // Fallback if issues arise
         }
 
         // Fallback to public disk
@@ -80,15 +87,26 @@ if (! function_exists('storage_url')) {
             return '';
         }
 
-        try {
-            if (method_exists(\Illuminate\Support\Facades\Storage::class, 'dynamic')) {
-                return \Illuminate\Support\Facades\Storage::dynamic()->url($path);
-            }
-        } catch (\Exception $e) {
-            // Fallback if dynamic method doesn't exist
+        // If it's already a full URL, just return it
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
         }
 
-        // Fallback to asset helper
+        try {
+            // Use the centralized dynamic URL generation logic from the Storage macro
+            if (method_exists(\Illuminate\Support\Facades\Storage::class, 'getDynamicUrl')) {
+                return \Illuminate\Support\Facades\Storage::getDynamicUrl($path);
+            }
+
+            // Fallback: Use the dynamic disk's URL generator directly
+            $disk = storage_disk();
+
+            return $disk->url($path);
+        } catch (\Exception $e) {
+            // Silence errors and allow fallback
+        }
+
+        // Final fallback: construct local path if all else fails
         return asset('storage/'.ltrim($path, '/'));
     }
 }

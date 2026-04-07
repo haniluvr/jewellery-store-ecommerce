@@ -367,6 +367,9 @@ async function initProductsSection() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
     
+    // Store products globally for quick view fallback
+    window.currentProducts = products;
+    
         // Clear and render immediately (no opacity delay)
         grid.style.opacity = '1';
         grid.innerHTML = '';
@@ -1346,19 +1349,28 @@ function initModalQuickView() {
             const productSlug = this.getAttribute('data-product-slug');
 
             try {
-                // Try to get product from API first
+                // Try to get product from API or cache
                 let product;
-                if (productSlug) {
+                
+                // 1. Try slug from API if valid
+                if (productSlug && productSlug !== 'undefined' && productSlug !== 'null') {
                     const response = await window.api.getProduct(productSlug);
                     product = response.data;
-                } else {
-                    // Fallback: try to find product in current products list
+                } 
+                
+                // 2. Fallback: try ID from API
+                if (!product && productId) {
+                    const response = await window.api.getProductById(productId);
+                    product = response.data;
+                }
+                
+                // 3. Last resort: find in current local products list
+                if (!product && productId) {
                     product = window.currentProducts?.find(p => p.id === productId);
                 }
 
                 if (!product) {
-                    console.error('Product not found for quick view');
-                    return;
+                    throw new Error('Product not found');
                 }
 
                 // Track view for quick view modal
@@ -1366,21 +1378,30 @@ function initModalQuickView() {
                     await fetch(`/api/products/${productId}/track-view`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
                         },
                     });
                 } catch (error) {
-                    // Silently fail view tracking - don't interrupt user experience
                     console.debug('View tracking failed:', error);
                 }
 
                 // Fill modal with product information
                 await fillQuickViewModal(product);
 
-                // Show modal
+                // Show modal - try multiple casing variations to be safe
                 if (typeof window.showmodalQuickView === 'function') {
                     window.showmodalQuickView();
+                } else if (typeof window.showmodalquickview === 'function') {
+                    window.showmodalquickview();
+                } else if (typeof window.showquickview === 'function') {
+                    window.showquickview();
+                } else {
+                    const modal = document.getElementById('modalQuickView');
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                        modal.style.display = 'flex';
+                        modal.style.opacity = '1';
+                    }
                 }
 
                 // Re-init icons after modal opens

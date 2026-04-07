@@ -22,6 +22,14 @@ class StorageServiceProvider extends ServiceProvider
     {
         // Override the storage URL to be dynamic based on current request
         Storage::macro('getDynamicUrl', function ($path) {
+            $disk = Storage::getDynamicDisk();
+
+            // If using S3, let the S3 driver handle URL generation
+            if ($disk === 's3') {
+                return Storage::disk('s3')->url($path);
+            }
+
+            // Fallback to local URL generation
             $scheme = request()->getScheme();
             $host = request()->getHost();
             $port = request()->getPort();

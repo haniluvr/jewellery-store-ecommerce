@@ -230,7 +230,7 @@
                 initModal('modal-search');
                 initModal('modal-login');
                 initModal('modal-signup');
-                initModal('modal-quick-view');
+                initModal('modalQuickView');
                 
                 // Initialize all offcanvas
                 initOffcanvas('offcanvas-wishlist');
@@ -432,7 +432,7 @@
                 const show = function() { 
                     
                     // For quick-view modal with different structure
-                    if (id === 'modal-quick-view') {
+                    if (id === 'modalQuickView') {
                         el.classList.remove('hidden');
                         el.style.display = 'flex'; // It uses flex layout
                         el.style.opacity = '0';
