@@ -189,10 +189,10 @@
                         <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5"></i>
                         <div class="space-y-2">
                             <p class="text-sm font-medium text-blue-900 dark:text-blue-100">
-                                Two-Factor Authentication is Required
+                                Two-Factor Authentication Settings
                             </p>
                             <p class="text-sm text-blue-700 dark:text-blue-300">
-                                Two-factor authentication (2FA) is mandatory for all admin accounts and cannot be disabled. This adds an extra layer of security to protect your account. When you log in, you will receive a verification code at your personal email address.
+                                Two-factor authentication (2FA) adds an extra layer of security to protect your account. When enabled, you will receive a verification code at your personal email address during login.
                             </p>
                         </div>
                     </div>
@@ -204,11 +204,11 @@
                             <i data-lucide="shield-check" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
                             <div>
                                 <p class="text-sm font-medium text-stone-900 dark:text-white">2FA Status</p>
-                                <p class="text-xs text-stone-600 dark:text-gray-400">Two-factor authentication is {{ $admin->two_factor_enabled ? 'enabled' : 'required' }}</p>
+                                <p class="text-xs text-stone-600 dark:text-gray-400">Two-factor authentication is {{ $admin->two_factor_enabled ? 'enabled' : 'disabled' }}</p>
                             </div>
                         </div>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                            {{ $admin->two_factor_enabled ? 'Enabled' : 'Required' }}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $admin->two_factor_enabled ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
+                            {{ $admin->two_factor_enabled ? 'Enabled' : 'Disabled' }}
                         </span>
                     </div>
 

@@ -120,7 +120,7 @@ return new class extends Migration
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
             $table->rememberToken();
-            $table->boolean('two_factor_enabled')->default(true);
+            $table->boolean('two_factor_enabled')->default(false);
             $table->timestamp('two_factor_verified_at')->nullable();
             $table->timestamps();
         });
